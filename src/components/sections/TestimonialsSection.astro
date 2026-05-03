@@ -1,0 +1,38 @@
+---
+import TestimonialCard from "../ui/TestimonialCard.astro";
+import type { TestimonialCard as TestimonialCardType } from "../../types/TestimonialCard";
+interface Props {
+  testimonials: TestimonialCardType[];
+}
+const { testimonials } = Astro.props;
+---
+
+<section class="testimonials" id="testimonials">
+  <div class="container">
+    <h2 class="section-title">Trusted by Australian GPs and Specialists</h2>
+    <div class="grid">
+      {testimonials.map((t) => <TestimonialCard {...t} />)}
+    </div>
+  </div>
+</section>
+
+<style>
+  .testimonials { background: var(--color-bg-hero); padding: 6rem 1.5rem; }
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 2rem; display: flex; flex-direction: column; gap: 4rem; }
+  .section-title { font-size: var(--text-4xl); font-weight: var(--weight-semibold); color: var(--color-primary); letter-spacing: var(--tracking-tight); text-align: center; margin: 0; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+  @media (max-width: 1024px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
+</style>
+
+<script>
+  import { animate, inView, stagger } from "motion";
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    inView(".testimonials", () => {
+      const title = document.querySelector(".testimonials .section-title");
+      const cards = document.querySelectorAll(".testimonials .card");
+      if (title) animate(title, { opacity: [0, 1], y: [20, 0] }, { duration: 0.5, easing: "ease-out" });
+      if (cards.length) animate(cards, { opacity: [0, 1], y: [32, 0] }, { duration: 0.5, delay: stagger(0.1), easing: [0.22, 1, 0.36, 1] });
+    });
+  }
+</script>

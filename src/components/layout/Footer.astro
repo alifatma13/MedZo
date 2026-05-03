@@ -1,0 +1,173 @@
+---
+import { Image } from "astro:assets";
+import logoImg from "../../res/logo.png";
+
+const services = [
+  "Virtual Practice Management",
+  "Onsite Practice Management",
+  "Medical Billing Services",
+  "HR and Recruitment",
+  "Healthcare Finance",
+  "Compliance & Risk",
+];
+
+const company = [
+  { label: "Why MedZo", href: "#why-medzo" },
+  { label: "Testimonials", href: "#testimonials" },
+  { label: "FAQ", href: "#faq" },
+  { label: "Book a Consult", href: "#contact" },
+];
+
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container">
+    <div class="brand-col">
+      <a href="/" class="footer-logo">
+        <Image
+          src={logoImg}
+          alt="MedZo logo"
+          width={40}
+          height={40}
+          class="logo-icon"
+          format="png"
+          quality="max"
+          densities={[1, 2]}
+        />
+        MedZo
+      </a>
+      <p class="tagline">End-to-end medical practice management across Australia. Operational excellence so you can focus on care.</p>
+    </div>
+
+    <div class="links-col">
+      <h4 class="col-heading">Services</h4>
+      <ul class="link-list">
+        {services.map((s) => <li><a href="#services" class="footer-link">{s}</a></li>)}
+      </ul>
+    </div>
+
+    <div class="links-col">
+      <h4 class="col-heading">Company</h4>
+      <ul class="link-list">
+        {company.map((c) => <li><a href={c.href} class="footer-link">{c.label}</a></li>)}
+      </ul>
+    </div>
+
+    <div class="links-col">
+      <h4 class="col-heading">Contact</h4>
+      <ul class="link-list">
+        <li><a href="mailto:hello@medzo.com.au" class="footer-link">hello@medzo.com.au</a></li>
+        <li><span class="footer-text">Australia-wide</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="bottom-bar">
+    <div class="bottom-inner">
+      <p class="copyright">&copy; {year} MedZo. All rights reserved.</p>
+      <div class="legal-links">
+        <a href="/privacy" class="legal-link">Privacy Policy</a>
+        <a href="/terms" class="legal-link">Terms of Service</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: #0b1c30;
+    color: #fff;
+    font-family: var(--font-nav);
+  }
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 3rem;
+  }
+  .footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: #fff;
+    font-size: var(--text-xl);
+    font-weight: var(--weight-bold);
+    margin-bottom: 1rem;
+  }
+  .logo-icon { height: 40px; width: auto; display: block; }
+  .tagline {
+    font-size: var(--text-sm);
+    color: rgba(255,255,255,0.55);
+    line-height: var(--leading-normal);
+    margin: 0;
+    max-width: 22rem;
+  }
+  .col-heading {
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    color: rgba(255,255,255,0.45);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    margin: 0 0 1rem;
+  }
+  .link-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+  .footer-link {
+    font-size: var(--text-sm);
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .footer-link:hover { color: var(--color-accent); }
+  .footer-link:focus-visible { outline: 2px solid var(--color-accent); border-radius: 2px; }
+  .footer-text {
+    font-size: var(--text-sm);
+    color: rgba(255,255,255,0.7);
+  }
+  .bottom-bar {
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .bottom-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 1.25rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .copyright {
+    font-size: var(--text-sm);
+    color: rgba(255,255,255,0.4);
+    margin: 0;
+  }
+  .legal-links {
+    display: flex;
+    gap: 1.5rem;
+  }
+  .legal-link {
+    font-size: var(--text-sm);
+    color: rgba(255,255,255,0.4);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .legal-link:hover { color: rgba(255,255,255,0.75); }
+  @media (max-width: 1024px) {
+    .container { grid-template-columns: 1fr 1fr; }
+    .brand-col { grid-column: span 2; }
+  }
+  @media (max-width: 640px) {
+    .container { grid-template-columns: 1fr; }
+    .brand-col { grid-column: span 1; }
+    .bottom-inner { flex-direction: column; gap: 0.75rem; text-align: center; }
+  }
+</style>

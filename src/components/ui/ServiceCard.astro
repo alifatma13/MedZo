@@ -1,0 +1,53 @@
+---
+import type { ServiceCard } from "../../types/ServiceCard";
+interface Props extends ServiceCard {}
+const { icon, iconBg, iconColor, title, description } = Astro.props;
+---
+
+<div class="card">
+  <div class="icon-wrap" style={`--icon-bg: ${iconBg}; color: ${iconColor}`}>
+    <Fragment set:html={icon} />
+  </div>
+  <h3 class="card-title">{title}</h3>
+  <p class="card-desc">{description}</p>
+</div>
+
+<style>
+  .card {
+    background: #fff;
+    border: 1px solid var(--color-border);
+    border-radius: 0.75rem;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .icon-wrap {
+    width: 48px;
+    height: 48px;
+    border-radius: 0.5rem;
+    background: var(--icon-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .icon-wrap svg {
+    width: 22px;
+    height: 22px;
+    display: block;
+  }
+  .card-title {
+    font-size: var(--text-base);
+    font-weight: var(--weight-regular);
+    color: var(--color-primary);
+    margin: 0.75rem 0 0;
+    letter-spacing: normal;
+  }
+  .card-desc {
+    font-size: var(--text-base);
+    color: var(--color-text-body);
+    margin: 0;
+    line-height: var(--leading-normal);
+  }
+</style>

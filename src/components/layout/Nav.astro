@@ -1,0 +1,140 @@
+---
+import { Image } from "astro:assets";
+import logoImg from "../../res/logo.png";
+
+const navLinks = [
+  { label: "Services", href: "#services" },
+  { label: "Why MedZo", href: "#why-medzo" },
+  { label: "Testimonials", href: "#testimonials" },
+  { label: "FAQ", href: "#faq" },
+];
+---
+
+<header class="nav-header">
+  <nav class="nav-inner">
+    <a href="/" class="nav-logo">
+      <Image
+        src={logoImg}
+        alt="MedZo logo"
+        class="logo-icon"
+        width={44}
+        height={44}
+        format="png"
+        quality="max"
+        densities={[1, 2]}
+        priority
+      />
+      <span class="logo-text">
+        <span class="wordmark">MedZo</span>
+        <span class="tagline">Care, Streamlined</span>
+      </span>
+    </a>
+    <ul class="nav-links">
+      {navLinks.map((link) => (
+        <li><a href={link.href} class="nav-link">{link.label}</a></li>
+      ))}
+    </ul>
+    <a href="#contact" class="nav-cta">Book a consult</a>
+  </nav>
+</header>
+
+<style>
+  .nav-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--color-bg-hero);
+    box-shadow: none;
+    padding-top: 0.75rem;
+    transition: box-shadow 0.25s ease;
+  }
+  .nav-header.scrolled {
+    box-shadow: 0 1px 12px rgba(0, 0, 0, 0.08);
+  }
+  .nav-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    font-family: var(--font-nav);
+  }
+  .nav-logo {
+    font-size: var(--text-xl);
+    font-weight: var(--weight-bold);
+    color: var(--color-primary);
+    text-decoration: none;
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    letter-spacing: 0.02em;
+  }
+  .logo-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    line-height: 1;
+  }
+  .wordmark {
+    font-family: var(--font-wordmark);
+    font-size: 2.1rem;
+    font-weight: var(--weight-regular);
+    letter-spacing: 0.02em;
+    background: linear-gradient(90deg, var(--color-accent) 0%, var(--color-primary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .tagline {
+    font-family: var(--font-wordmark);
+    font-size: 0.65rem;
+    font-weight: var(--weight-regular);
+    color: var(--color-primary);
+    letter-spacing: 0.08em;
+  }
+  .logo-icon {
+    height: 44px;
+    width: auto;
+    display: block;
+  }
+  .nav-links {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 2rem;
+  }
+  .nav-link {
+    font-size: var(--text-base);
+    color: var(--color-text-body);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .nav-link:hover { color: var(--color-primary); }
+  .nav-link:focus-visible { outline: 2px solid var(--color-accent); border-radius: 2px; }
+  .nav-cta {
+    background: var(--color-primary);
+    color: #fff;
+    padding: 0.5rem 1.25rem;
+    border-radius: 0.5rem;
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    text-decoration: none;
+    transition: transform 0.15s;
+  }
+  .nav-cta:hover { transform: scale(1.04); }
+  .nav-cta:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; }
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+  }
+</style>
+
+<script>
+  const header = document.querySelector(".nav-header");
+  window.addEventListener("scroll", () => {
+    header?.classList.toggle("scrolled", window.scrollY > 10);
+  }, { passive: true });
+</script>

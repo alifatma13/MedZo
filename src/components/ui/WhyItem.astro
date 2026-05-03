@@ -1,0 +1,57 @@
+---
+import type { WhyItem } from "../../types/WhyItem";
+interface Props extends WhyItem {}
+const { icon, title, description } = Astro.props;
+---
+
+<div class="why-item">
+  <div class="icon-circle">
+    <Fragment set:html={icon} />
+  </div>
+  <div class="content">
+    <h4 class="item-title">{title}</h4>
+    <p class="item-desc">{description}</p>
+  </div>
+</div>
+
+<style>
+  .why-item {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  .icon-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 9999px;
+    background: var(--color-accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .icon-circle svg {
+    width: 20px;
+    height: 20px;
+    display: block;
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .item-title {
+    font-size: var(--text-base);
+    font-weight: var(--weight-regular);
+    color: var(--color-primary);
+    margin: 0;
+    letter-spacing: normal;
+    line-height: 1.5;
+  }
+  .item-desc {
+    font-size: var(--text-base);
+    color: var(--color-text-body);
+    margin: 0;
+    line-height: var(--leading-normal);
+  }
+</style>

@@ -1,0 +1,461 @@
+---
+import { Image } from "astro:assets";
+import Button from "../ui/Button.astro";
+import heroImage from "../../res/hero_image.png";
+import type { HeroContent } from "../../types/HeroContent";
+interface Props extends HeroContent {}
+const { heading, subheadingBody, extraBody, ctaPrimary, ctaSecondary } = Astro.props;
+---
+
+<section class="hero" id="hero">
+  <div class="container">
+    <div class="text-col">
+      <h1 class="heading">{heading}</h1>
+      <p class="body-first">{subheadingBody}</p>
+      <p class="body-second">{extraBody}</p>
+      <div class="cta-row">
+        <Button label={ctaPrimary.label} href={ctaPrimary.href} variant="primary" />
+        <Button label={ctaSecondary.label} href={ctaSecondary.href} variant="outline" />
+      </div>
+    </div>
+    <div class="visual-col" aria-hidden="true">
+      <div class="hero-visual">
+        <Image
+          src={heroImage}
+          alt=""
+          class="visual-bg"
+          widths={[560, 720, 960, 1120]}
+          sizes="(max-width: 768px) 100vw, 560px"
+          format="webp"
+          quality={92}
+          loading="eager"
+        />
+        <div class="visual-tint"></div>
+
+        <div class="metric-card metric-card--appointments">
+          <div class="metric-top">
+            <strong>24</strong>
+            <span>+4.2%</span>
+          </div>
+          <p>Appointments</p>
+          <small>This week</small>
+        </div>
+
+        <div class="action-grid">
+          <div class="action-card">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M7 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm10 2a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7ZM2.5 21a5.5 5.5 0 0 1 11 0M12.5 21a4.5 4.5 0 0 1 9 0" />
+            </svg>
+            <span>Patients</span>
+          </div>
+          <div class="action-card">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 7.5h16v11H4z" />
+              <path d="m4 8 8 6 8-6" />
+            </svg>
+            <span>Follow-ups</span>
+          </div>
+          <div class="action-card">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 3v9l6 3" />
+              <path d="M8.5 6.2a7 7 0 1 0 8.2 1.6" />
+              <path d="M15 4h4v4" />
+            </svg>
+            <span>Billing</span>
+          </div>
+          <div class="action-card">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 8h10v8H5z" />
+              <path d="m15 11 5-3v8l-5-3" />
+            </svg>
+            <span>Virtual</span>
+          </div>
+        </div>
+
+        <div class="insight-pill">
+          <span></span>
+          Last 6 month revenue insights
+        </div>
+
+        <div class="revenue-card">
+          <div class="revenue-head">
+            <strong>Revenue Insights</strong>
+            <span>Last 6 mo</span>
+          </div>
+          <div class="chart" aria-hidden="true">
+            <i style="--bar-height: 22%"></i>
+            <i style="--bar-height: 36%"></i>
+            <i style="--bar-height: 48%"></i>
+            <i class="active" style="--bar-height: 78%"></i>
+            <i style="--bar-height: 42%"></i>
+            <i style="--bar-height: 58%"></i>
+          </div>
+          <div class="months">
+            <span>Jan</span>
+            <span>Feb</span>
+            <span>Mar</span>
+            <span>Apr</span>
+            <span>May</span>
+            <span>Jun</span>
+          </div>
+        </div>
+
+        <div class="profile-card">
+          <span class="avatar">SJ</span>
+          <div>
+            <strong>Sarah Jones</strong>
+            <small>Practice manager</small>
+          </div>
+          <span class="rating">4.9</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero { background: var(--color-bg-hero); padding: 5.5rem 1.5rem 6rem; overflow: hidden; }
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+  .text-col { display: flex; flex-direction: column; }
+  .heading { font-size: clamp(2rem, 4vw, 3rem); font-weight: var(--weight-bold); color: var(--color-primary); letter-spacing: var(--tracking-tight); line-height: 1.2; margin: 0 0 1.5rem; }
+  .body-first { color: var(--color-text-body); margin: 0 0 1.5rem; max-width: 32rem; }
+  .body-second { color: var(--color-text-heading); margin: 0 0 3.5rem; max-width: 32rem; }
+  .cta-row { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .visual-col { position: relative; min-width: 0; padding: 2rem 1.35rem 2.35rem 2.2rem; }
+  .hero-visual {
+    position: relative;
+    width: min(100%, 35rem);
+    aspect-ratio: 1.08 / 1;
+    margin-left: auto;
+    border-radius: 8px;
+    background: #eef6ff;
+    box-shadow: 0 28px 60px rgba(0, 50, 125, 0.14);
+    overflow: visible;
+  }
+  .visual-bg,
+  .visual-tint {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .visual-bg {
+    object-fit: cover;
+    object-position: 54% center;
+    display: block;
+    border-radius: 8px;
+  }
+  .visual-tint {
+    border-radius: 8px;
+    background:
+      linear-gradient(90deg, rgba(248,249,255,0.32) 0%, rgba(248,249,255,0.04) 50%, rgba(0,50,125,0.08) 100%),
+      linear-gradient(180deg, rgba(11,28,48,0.02) 0%, rgba(11,28,48,0.18) 100%);
+  }
+  .metric-card,
+  .action-card,
+  .revenue-card,
+  .profile-card,
+  .insight-pill {
+    position: absolute;
+    --float-x: 0.25rem;
+    --float-y: -0.45rem;
+    --float-rotate: 0.35deg;
+    --float-duration: 8s;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.94);
+    box-shadow: 0 1rem 2.4rem rgba(0, 50, 125, 0.12);
+    font-family: var(--font-nav);
+    animation: hero-card-float var(--float-duration) ease-in-out infinite;
+    animation-delay: var(--float-delay, 0s);
+    will-change: transform;
+  }
+  .metric-card {
+    --float-x: 0.28rem;
+    --float-y: -0.55rem;
+    --float-rotate: -0.45deg;
+    --float-duration: 7.8s;
+    --float-delay: -1.2s;
+    left: -6%;
+    top: 8%;
+    width: 7.8rem;
+    padding: 0.95rem 1rem;
+    background: #ebff53;
+    color: #0b1c30;
+  }
+  .metric-top {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .metric-top strong {
+    font-size: 2rem;
+    line-height: 1;
+  }
+  .metric-top span {
+    padding: 0.22rem 0.42rem;
+    border-radius: 999px;
+    background: #fff;
+    font-size: 0.68rem;
+    font-weight: var(--weight-bold);
+  }
+  .metric-card p,
+  .metric-card small {
+    display: block;
+    margin: 0;
+    font-size: 0.66rem;
+    line-height: 1.35;
+  }
+  .metric-card p {
+    margin-top: 0.65rem;
+    font-weight: var(--weight-bold);
+  }
+  .action-grid {
+    position: absolute;
+    inset: 0;
+    width: auto;
+  }
+  .action-card {
+    position: absolute;
+    width: 5.4rem;
+    height: 4.6rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    color: #0b1c30;
+  }
+  .action-card:nth-child(1) {
+    --float-x: 0.28rem;
+    --float-y: -0.55rem;
+    --float-rotate: -0.45deg;
+    --float-duration: 7.8s;
+    --float-delay: -1.2s;
+    top: calc(10% - 4.6rem);
+    left: calc(-6% + 7.8rem);
+    right: auto;
+  }
+  .action-card:nth-child(2) {
+    --float-x: -0.22rem;
+    --float-y: -0.5rem;
+    --float-rotate: -0.35deg;
+    --float-duration: 9.2s;
+    --float-delay: -2.5s;
+    top: 10%;
+    left: auto;
+    right: -5%;
+  }
+  .action-card:nth-child(3) {
+    --float-x: 0.24rem;
+    --float-y: 0.42rem;
+    --float-rotate: -0.3deg;
+    --float-duration: 8.8s;
+    --float-delay: -1.7s;
+    top: 30%;
+    left: auto;
+    right: -5%;
+  }
+  .action-card:nth-child(4) {
+    --float-x: -0.18rem;
+    --float-y: 0.48rem;
+    --float-rotate: 0.35deg;
+    --float-duration: 9.6s;
+    --float-delay: -3.1s;
+    top: 52%;
+    left: auto;
+    right: -5%;
+  }
+  .action-card svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .action-card span {
+    font-size: 0.68rem;
+    font-weight: var(--weight-semibold);
+  }
+  .insight-pill {
+    --float-x: 0.2rem;
+    --float-y: -0.34rem;
+    --float-rotate: 0.2deg;
+    --float-duration: 7.2s;
+    --float-delay: -0.9s;
+    left: -1%;
+    top: calc(58% - 50px);
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.5rem 0.75rem;
+    color: #fff;
+    background: rgba(0, 50, 125, 0.58);
+    font-size: 0.72rem;
+    backdrop-filter: blur(12px);
+  }
+  .insight-pill span {
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 50%;
+    background: #ebff53;
+    box-shadow: 0 0 0 0.28rem rgba(235, 255, 83, 0.2);
+  }
+  .revenue-card {
+    --float-x: -0.32rem;
+    --float-y: -0.5rem;
+    --float-rotate: 0.28deg;
+    --float-duration: 9s;
+    --float-delay: -2s;
+    left: -3%;
+    bottom: 12%;
+    width: 12.2rem;
+    padding: 0.85rem;
+  }
+  .revenue-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+  .revenue-head strong {
+    font-size: 0.76rem;
+  }
+  .revenue-head span {
+    padding: 0.25rem 0.42rem;
+    border-radius: 6px;
+    background: #f2f5fb;
+    color: var(--color-text-body);
+    font-size: 0.58rem;
+  }
+  .chart {
+    height: 3.6rem;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    align-items: end;
+    gap: 0.35rem;
+    margin-top: 0.65rem;
+  }
+  .chart i {
+    height: var(--bar-height);
+    border-radius: 3px 3px 0 0;
+    background: #2f332e;
+  }
+  .chart i.active {
+    background: #ebff53;
+  }
+  .months {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    margin-top: 0.35rem;
+    color: #8b95a5;
+    font-size: 0.55rem;
+    text-align: center;
+  }
+  .profile-card {
+    --float-x: 0.3rem;
+    --float-y: 0.42rem;
+    --float-rotate: -0.25deg;
+    --float-duration: 8.2s;
+    --float-delay: -1.4s;
+    left: auto;
+    right: -5%;
+    bottom: 5%;
+    width: min(20rem, 52%);
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.85rem 1rem;
+  }
+  .avatar {
+    width: 2.25rem;
+    height: 2.25rem;
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: var(--weight-bold);
+  }
+  .profile-card div {
+    min-width: 0;
+  }
+  .profile-card strong,
+  .profile-card small {
+    display: block;
+    white-space: nowrap;
+  }
+  .profile-card strong {
+    color: #0b1c30;
+    font-size: 0.95rem;
+  }
+  .profile-card small {
+    color: var(--color-text-body);
+    font-size: 0.68rem;
+  }
+  .rating {
+    margin-left: auto;
+    padding: 0.25rem 0.5rem;
+    border-radius: 999px;
+    background: #f2f5fb;
+    color: #0b1c30;
+    font-size: 0.66rem;
+    font-weight: var(--weight-bold);
+  }
+  @keyframes hero-card-float {
+    0%, 100% {
+      transform: translate3d(0, 0, 0) rotate(0deg);
+    }
+    50% {
+      transform: translate3d(var(--float-x), var(--float-y), 0) rotate(var(--float-rotate));
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .metric-card,
+    .action-card,
+    .revenue-card,
+    .profile-card,
+    .insight-pill {
+      animation: none;
+      transform: none;
+    }
+  }
+  @media (max-width: 768px) {
+    .hero { padding: 2rem 1.25rem 5rem; }
+    .container { grid-template-columns: 1fr; padding: 0; gap: 2.5rem; }
+    .visual-col { order: 2; padding: 1.4rem 1rem 2rem; }
+    .hero-visual { margin: 0 auto; max-width: 27rem; }
+  }
+  @media (max-width: 480px) {
+    .hero-visual { aspect-ratio: 1 / 1.08; }
+    .visual-bg { object-position: 58% center; }
+    .action-card { width: 4.7rem; height: 3.9rem; }
+    .action-card span { font-size: 0.6rem; }
+    .action-card:nth-child(1) { top: calc(15% - 3.9rem); left: calc(-3% + 6.9rem); right: auto; }
+    .action-card:nth-child(2) { top: 8%; left: auto; right: -4%; }
+    .action-card:nth-child(3) { top: 27%; left: auto; right: -4%; }
+    .action-card:nth-child(4) { top: 46%; left: auto; right: -4%; }
+    .metric-card { left: -3%; top: 15%; width: 6.9rem; padding: 0.75rem; }
+    .metric-top strong { font-size: 1.65rem; }
+    .insight-pill { left: -1%; top: calc(58% - 50px); max-width: 12rem; font-size: 0.62rem; }
+    .revenue-card { left: -2%; bottom: 15%; width: 11rem; }
+    .profile-card { left: 9%; right: -3%; bottom: 7%; width: auto; }
+  }
+</style>
+
+<script>
+  import { animate, stagger } from "motion";
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const heading = document.querySelector(".hero .heading");
+    const bodies = document.querySelectorAll(".hero .body-first, .hero .body-second");
+    const cta = document.querySelector(".hero .cta-row");
+    const imageCol = document.querySelector(".hero .visual-col");
+    if (heading) animate(heading, { opacity: [0, 1], y: [24, 0] }, { duration: 0.6, easing: "ease-out" });
+    if (bodies.length) animate(bodies, { opacity: [0, 1], y: [16, 0] }, { duration: 0.5, delay: stagger(0.15), easing: "ease-out" });
+    if (cta) animate(cta, { opacity: [0, 1], y: [16, 0] }, { duration: 0.5, delay: 0.45, easing: "ease-out" });
+    if (imageCol) animate(imageCol, { opacity: [0, 1], x: [32, 0] }, { duration: 0.7, delay: 0.2, easing: [0.22, 1, 0.36, 1] });
+  }
+</script>

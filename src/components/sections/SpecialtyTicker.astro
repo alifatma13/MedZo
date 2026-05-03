@@ -1,0 +1,75 @@
+---
+const text = {
+	intro: "MedZo works with practices across all areas of Australian healthcare",
+	specialties:
+		"General Practice, medical specialists, allied health, dental, physiotherapy, telehealth providers, and multidisciplinary clinics.",
+};
+---
+
+<section class="ticker">
+	<div class="container">
+		<p class="ticker-text">
+			<span>{text.intro}</span>
+			{" "}
+			<strong class="highlight">{text.specialties}</strong>
+		</p>
+	</div>
+</section>
+
+<script>
+	import { animate, inView } from "motion";
+	if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+		inView(".ticker", () => {
+			const text = document.querySelector(".ticker .ticker-text");
+			if (text)
+				animate(
+					text,
+					{ opacity: [0, 1], y: [28, 0] },
+					{ duration: 0.6, easing: [0.22, 1, 0.36, 1] },
+				);
+		});
+	}
+</script>
+
+<style>
+	.ticker {
+		background: linear-gradient(135deg, #eff4ff 0%, #eef4ff 100%);
+		padding: 3.5rem 1.5rem;
+		position: relative;
+	}
+	.ticker::before,
+	.ticker::after {
+		content: "";
+		position: absolute;
+		left: 0;
+		right: 0;
+		height: 3rem;
+		pointer-events: none;
+	}
+	.ticker::before {
+		top: 0;
+		background: linear-gradient(to bottom, #f8f9ff, transparent);
+	}
+	.ticker::after {
+		bottom: 0;
+		background: linear-gradient(to top, #ffffff, transparent);
+	}
+	.container {
+		max-width: 860px;
+		margin: 0 auto;
+		padding: 0 2rem;
+	}
+	.ticker-text {
+		font-family: var(--font-wordmark);
+		font-size: var(--text-lg, 1.125rem);
+		color: var(--color-text-body);
+		text-align: center;
+		line-height: 1.7;
+		margin: 0;
+		letter-spacing: -0.01em;
+	}
+	.highlight {
+		color: var(--color-primary);
+		font-weight: var(--weight-bold);
+	}
+</style>

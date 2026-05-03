@@ -1,0 +1,44 @@
+---
+import ServiceCard from "../ui/ServiceCard.astro";
+import type { ServiceCard as ServiceCardType } from "../../types/ServiceCard";
+interface Props {
+  services: ServiceCardType[];
+}
+const { services } = Astro.props;
+const heading = { title: "What does MedZo do?", body: "We offer tailored support that scales with your practice, ensuring clinical precision and administrative ease." };
+---
+
+<section class="services" id="services">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">{heading.title}</h2>
+      <p class="section-body">{heading.body}</p>
+    </div>
+    <div class="grid">
+      {services.map((s) => <ServiceCard {...s} />)}
+    </div>
+  </div>
+</section>
+
+<style>
+  .services { background: #fff; padding: 6rem 1.5rem; }
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 2rem; display: flex; flex-direction: column; gap: 4rem; }
+  .section-header { display: flex; flex-direction: column; gap: 1rem; }
+  .section-title { font-size: var(--text-4xl); font-weight: var(--weight-semibold); color: var(--color-primary); letter-spacing: var(--tracking-tight); margin: 0; }
+  .section-body { font-size: var(--text-base); color: var(--color-text-body); margin: 0; max-width: 42rem; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+  @media (max-width: 1024px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
+</style>
+
+<script>
+  import { animate, inView, stagger } from "motion";
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    inView(".services", () => {
+      const title = document.querySelector(".services .section-title");
+      const cards = document.querySelectorAll(".services .card");
+      if (title) animate(title, { opacity: [0, 1], y: [20, 0] }, { duration: 0.5, easing: "ease-out" });
+      if (cards.length) animate(cards, { opacity: [0, 1], y: [32, 0] }, { duration: 0.5, delay: stagger(0.08), easing: [0.22, 1, 0.36, 1] });
+    });
+  }
+</script>
