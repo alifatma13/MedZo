@@ -1,7 +1,5 @@
 export interface ServiceCard {
-  icon: string;
-  iconBg: string;
-  iconColor: string;
+  iconName: string;
   title: string;
   description: string;
 }

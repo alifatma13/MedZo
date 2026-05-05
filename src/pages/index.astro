@@ -7,15 +7,33 @@ import WhyChooseUs from "../components/sections/WhyChooseUs.astro";
 import TestimonialsSection from "../components/sections/TestimonialsSection.astro";
 import FAQSection from "../components/sections/FAQSection.astro";
 import FinalCTA from "../components/sections/FinalCTA.astro";
-import { hero, services, whyItems, testimonials, faqs } from "../lib/content/index";
+import MetricsSection from "../components/sections/MetricsSection.astro";
+import {
+	hero,
+	servicesHeading,
+	services,
+	whyHeading,
+	whyItems,
+	testimonialsHeading,
+	testimonials,
+	faqHeading,
+	faqs,
+	metrics,
+	finalCta,
+	ticker,
+} from "../lib/content/index";
 ---
 
-<Layout title="MedZo — Medical Practice Management Australia">
-  <HeroSection {...hero} />
-  <SpecialtyTicker />
-  <ServicesSection services={services} />
-  <WhyChooseUs items={whyItems} />
-  <TestimonialsSection testimonials={testimonials} />
-  <FAQSection faqs={faqs} />
-  <FinalCTA />
+<Layout title="MedZo - Medical Practice Management for Australian Clinics">
+	<HeroSection {...hero} />
+	<SpecialtyTicker {...ticker} />
+	<MetricsSection metrics={metrics} />
+	<ServicesSection heading={servicesHeading} services={services} />
+	<WhyChooseUs heading={whyHeading} items={whyItems} />
+	<TestimonialsSection
+		heading={testimonialsHeading}
+		testimonials={testimonials}
+	/>
+	<FAQSection heading={faqHeading} faqs={faqs} />
+	<FinalCTA {...finalCta} />
 </Layout>

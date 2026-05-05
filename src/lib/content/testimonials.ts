@@ -1,5 +1,7 @@
 import type { TestimonialCard } from "../../types/TestimonialCard";
 
+export const testimonialsHeading = "Trusted by Australian GPs and Specialists";
+
 export const testimonials: TestimonialCard[] = [
   {
     quote:

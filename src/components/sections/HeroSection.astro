@@ -4,15 +4,20 @@ import Button from "../ui/Button.astro";
 import heroImage from "../../res/hero_image.png";
 import type { HeroContent } from "../../types/HeroContent";
 interface Props extends HeroContent {}
-const { heading, subheadingBody, extraBody, ctaPrimary, ctaSecondary } = Astro.props;
+const { heading, subheading, body, ctaPrimary, ctaSecondary } = Astro.props;
+const headingWords = heading.split(" ");
 ---
 
 <section class="hero" id="hero">
   <div class="container">
     <div class="text-col">
-      <h1 class="heading">{heading}</h1>
-      <p class="body-first">{subheadingBody}</p>
-      <p class="body-second">{extraBody}</p>
+      <h1 class="heading">
+        {headingWords.map((word) => (
+          <span class="word-mask"><span class="word-inner">{word}</span></span>
+        ))}
+      </h1>
+      <p class="body-first">{subheading}</p>
+      <p class="body-second">{body}</p>
       <div class="cta-row">
         <Button label={ctaPrimary.label} href={ctaPrimary.href} variant="primary" />
         <Button label={ctaSecondary.label} href={ctaSecondary.href} variant="outline" />
@@ -27,8 +32,9 @@ const { heading, subheadingBody, extraBody, ctaPrimary, ctaSecondary } = Astro.p
           widths={[560, 720, 960, 1120]}
           sizes="(max-width: 768px) 100vw, 560px"
           format="webp"
-          quality={92}
+          quality={82}
           loading="eager"
+          fetchpriority="high"
         />
         <div class="visual-tint"></div>
 
@@ -118,6 +124,9 @@ const { heading, subheadingBody, extraBody, ctaPrimary, ctaSecondary } = Astro.p
   .container { max-width: 1280px; margin: 0 auto; padding: 0 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
   .text-col { display: flex; flex-direction: column; }
   .heading { font-size: clamp(2rem, 4vw, 3rem); font-weight: var(--weight-bold); color: var(--color-primary); letter-spacing: var(--tracking-tight); line-height: 1.2; margin: 0 0 1.5rem; }
+  .word-mask { display: inline-block; overflow: hidden; vertical-align: bottom; margin-right: 0.28em; line-height: 1.25; }
+  .word-mask:last-child { margin-right: 0; }
+  .word-inner { display: inline-block; }
   .body-first { color: var(--color-text-body); margin: 0 0 1.5rem; max-width: 32rem; }
   .body-second { color: var(--color-text-heading); margin: 0 0 3.5rem; max-width: 32rem; }
   .cta-row { display: flex; gap: 1rem; flex-wrap: wrap; }
@@ -432,30 +441,52 @@ const { heading, subheadingBody, extraBody, ctaPrimary, ctaSecondary } = Astro.p
   @media (max-width: 480px) {
     .hero-visual { aspect-ratio: 1 / 1.08; }
     .visual-bg { object-position: 58% center; }
-    .action-card { width: 4.7rem; height: 3.9rem; }
-    .action-card span { font-size: 0.6rem; }
-    .action-card:nth-child(1) { top: calc(15% - 3.9rem); left: calc(-3% + 6.9rem); right: auto; }
-    .action-card:nth-child(2) { top: 8%; left: auto; right: -4%; }
-    .action-card:nth-child(3) { top: 27%; left: auto; right: -4%; }
-    .action-card:nth-child(4) { top: 46%; left: auto; right: -4%; }
-    .metric-card { left: -3%; top: 15%; width: 6.9rem; padding: 0.75rem; }
-    .metric-top strong { font-size: 1.65rem; }
-    .insight-pill { left: -1%; top: calc(58% - 50px); max-width: 12rem; font-size: 0.62rem; }
-    .revenue-card { left: -2%; bottom: 15%; width: 11rem; }
-    .profile-card { left: 9%; right: -3%; bottom: 7%; width: auto; }
+    .action-card { width: 3.8rem; height: 3.2rem; gap: 0.3rem; }
+    .action-card svg { width: 1rem; height: 1rem; }
+    .action-card span { font-size: 0.55rem; }
+    .action-card:nth-child(1) { top: calc(15% - 3.2rem); left: calc(-3% + 5.8rem); right: auto; }
+    .action-card:nth-child(2) { top: 8%; left: auto; right: -3%; }
+    .action-card:nth-child(3) { top: 27%; left: auto; right: -3%; }
+    .action-card:nth-child(4) { top: 46%; left: auto; right: -3%; }
+    .metric-card { left: -3%; top: 15%; width: 5.8rem; padding: 0.6rem 0.65rem; }
+    .metric-top strong { font-size: 1.35rem; }
+    .metric-top span { font-size: 0.58rem; }
+    .metric-card p, .metric-card small { font-size: 0.58rem; }
+    .insight-pill { display: none; }
+    .revenue-card { left: -2%; bottom: 8%; width: 9.2rem; padding: 0.65rem; }
+    .revenue-head strong { font-size: 0.66rem; }
+    .revenue-head span { font-size: 0.52rem; }
+    .chart { height: 2.8rem; }
+    .months { font-size: 0.48rem; }
+    .profile-card { left: 38%; right: -3%; bottom: -5%; width: auto; padding: 0.65rem 0.75rem; gap: 0.6rem; }
+    .avatar { width: 1.8rem; height: 1.8rem; font-size: 0.6rem; }
+    .profile-card strong { font-size: 0.8rem; }
+    .profile-card small { font-size: 0.58rem; }
+    .rating { font-size: 0.58rem; }
   }
 </style>
 
 <script>
   import { animate, stagger } from "motion";
+
   if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    const heading = document.querySelector(".hero .heading");
-    const bodies = document.querySelectorAll(".hero .body-first, .hero .body-second");
-    const cta = document.querySelector(".hero .cta-row");
-    const imageCol = document.querySelector(".hero .visual-col");
-    if (heading) animate(heading, { opacity: [0, 1], y: [24, 0] }, { duration: 0.6, easing: "ease-out" });
-    if (bodies.length) animate(bodies, { opacity: [0, 1], y: [16, 0] }, { duration: 0.5, delay: stagger(0.15), easing: "ease-out" });
-    if (cta) animate(cta, { opacity: [0, 1], y: [16, 0] }, { duration: 0.5, delay: 0.45, easing: "ease-out" });
-    if (imageCol) animate(imageCol, { opacity: [0, 1], x: [32, 0] }, { duration: 0.7, delay: 0.2, easing: [0.22, 1, 0.36, 1] });
+    // Wait for fonts before animating — prevents system-font → web-font snap mid-animation.
+    // Race against 900ms so a slow font CDN never stalls the entrance indefinitely.
+    const fontsReady = Promise.race([
+      document.fonts.ready,
+      new Promise<void>(resolve => setTimeout(resolve, 900)),
+    ]);
+
+    fontsReady.then(() => {
+      // @ts-ignore
+      animate(".hero .word-inner", { y: ["105%", "0%"], opacity: [0, 1] }, { duration: 0.55, delay: stagger(0.07), easing: [0.22, 1, 0.36, 1] });
+      // @ts-ignore
+      animate(".hero .body-first, .hero .body-second", { opacity: [0, 1], y: [16, 0] }, { duration: 0.5, delay: stagger(0.15, { startDelay: 0.45 }), easing: "ease-out" });
+      // @ts-ignore
+      animate(".hero .cta-row", { opacity: [0, 1], y: [16, 0] }, { duration: 0.5, delay: 0.75, easing: "ease-out" });
+      // @ts-ignore
+      animate(".hero .visual-col", { opacity: [0, 1], x: [32, 0] }, { duration: 0.7, delay: 0.2, easing: [0.22, 1, 0.36, 1] });
+    });
   }
+
 </script>

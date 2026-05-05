@@ -2,14 +2,15 @@
 import FAQItem from "../ui/FAQItem.astro";
 import type { FAQItem as FAQItemType } from "../../types/FAQItem";
 interface Props {
+  heading: string;
   faqs: FAQItemType[];
 }
-const { faqs } = Astro.props;
+const { heading, faqs } = Astro.props;
 ---
 
 <section class="faq" id="faq">
   <div class="container">
-    <h2 class="section-title">Frequently Asked Questions</h2>
+    <h2 class="section-title">{heading}</h2>
     <div class="faq-list">
       {faqs.map((item, i) => <FAQItem {...item} index={i} />)}
     </div>
@@ -45,6 +46,7 @@ const { faqs } = Astro.props;
           if (t.getAttribute("aria-expanded") === "true") {
             t.setAttribute("aria-expanded", "false");
             if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+              // @ts-ignore — motion supports height at runtime
               animate(p, { height: [p.scrollHeight + "px", "0px"], opacity: [1, 0] }, {
                 duration: 0.28, easing: [0.4, 0, 0.2, 1],
               }).finished.then(() => { p.style.display = "none"; p.style.height = ""; p.style.opacity = ""; });
@@ -57,6 +59,7 @@ const { faqs } = Astro.props;
         if (isOpen) {
           trigger.setAttribute("aria-expanded", "false");
           if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+            // @ts-ignore — motion supports height at runtime
             animate(panel, { height: [panel.scrollHeight + "px", "0px"], opacity: [1, 0] }, {
               duration: 0.28, easing: [0.4, 0, 0.2, 1],
             }).finished.then(() => { panel.style.display = "none"; panel.style.height = ""; panel.style.opacity = ""; });
@@ -69,6 +72,7 @@ const { faqs } = Astro.props;
           panel.style.height = "0px";
           panel.style.opacity = "0";
           if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+            // @ts-ignore — motion supports height at runtime
             animate(panel, { height: ["0px", panel.scrollHeight + "px"], opacity: [0, 1] }, {
               duration: 0.32, easing: [0.22, 1, 0.36, 1],
             }).finished.then(() => { panel.style.height = ""; panel.style.opacity = ""; });
@@ -87,8 +91,8 @@ const { faqs } = Astro.props;
     inView(".faq", () => {
       const title = document.querySelector(".faq .section-title");
       const items = document.querySelectorAll(".faq .faq-item");
-      if (title) animate(title, { opacity: [0, 1], y: [20, 0] }, { duration: 0.5, easing: "ease-out" });
-      if (items.length) animate(items, { opacity: [0, 1], y: [20, 0] }, { duration: 0.4, delay: stagger(0.07), easing: [0.22, 1, 0.36, 1] });
+      if (title) (animate as any)(title, { clipPath: ["inset(0 0 100% 0)", "inset(0 0 0% 0)"], y: [20, 0] }, { duration: 0.65, easing: [0.22, 1, 0.36, 1] });
+      if (items.length) (animate as any)(".faq .faq-item", { opacity: [0, 1], y: [20, 0] }, { duration: 0.4, delay: stagger(0.07), easing: [0.22, 1, 0.36, 1] });
     });
   }
 </script>

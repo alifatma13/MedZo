@@ -1,22 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import logoImg from "../../res/logo.png";
-
-const services = [
-  "Virtual Practice Management",
-  "Onsite Practice Management",
-  "Medical Billing Services",
-  "HR and Recruitment",
-  "Healthcare Finance",
-  "Compliance & Risk",
-];
-
-const company = [
-  { label: "Why MedZo", href: "#why-medzo" },
-  { label: "Testimonials", href: "#testimonials" },
-  { label: "FAQ", href: "#faq" },
-  { label: "Book a Consult", href: "#contact" },
-];
+import { footerContent } from "../../lib/content/footer";
 
 const year = new Date().getFullYear();
 ---
@@ -37,28 +22,28 @@ const year = new Date().getFullYear();
         />
         MedZo
       </a>
-      <p class="tagline">End-to-end medical practice management across Australia. Operational excellence so you can focus on care.</p>
+      <p class="tagline">{footerContent.tagline}</p>
     </div>
 
     <div class="links-col">
       <h4 class="col-heading">Services</h4>
       <ul class="link-list">
-        {services.map((s) => <li><a href="#services" class="footer-link">{s}</a></li>)}
+        {footerContent.services.map((s) => <li><a href="#services" class="footer-link">{s}</a></li>)}
       </ul>
     </div>
 
     <div class="links-col">
       <h4 class="col-heading">Company</h4>
       <ul class="link-list">
-        {company.map((c) => <li><a href={c.href} class="footer-link">{c.label}</a></li>)}
+        {footerContent.company.map((c) => <li><a href={c.href} class="footer-link">{c.label}</a></li>)}
       </ul>
     </div>
 
     <div class="links-col">
       <h4 class="col-heading">Contact</h4>
       <ul class="link-list">
-        <li><a href="mailto:hello@medzo.com.au" class="footer-link">hello@medzo.com.au</a></li>
-        <li><span class="footer-text">Australia-wide</span></li>
+        <li><a href={`mailto:${footerContent.contact.email}`} class="footer-link">{footerContent.contact.email}</a></li>
+        <li><span class="footer-text">{footerContent.contact.location}</span></li>
       </ul>
     </div>
   </div>

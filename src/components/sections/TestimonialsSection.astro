@@ -2,14 +2,15 @@
 import TestimonialCard from "../ui/TestimonialCard.astro";
 import type { TestimonialCard as TestimonialCardType } from "../../types/TestimonialCard";
 interface Props {
+  heading: string;
   testimonials: TestimonialCardType[];
 }
-const { testimonials } = Astro.props;
+const { heading, testimonials } = Astro.props;
 ---
 
 <section class="testimonials" id="testimonials">
   <div class="container">
-    <h2 class="section-title">Trusted by Australian GPs and Specialists</h2>
+    <h2 class="section-title">{heading}</h2>
     <div class="grid">
       {testimonials.map((t) => <TestimonialCard {...t} />)}
     </div>
@@ -17,7 +18,7 @@ const { testimonials } = Astro.props;
 </section>
 
 <style>
-  .testimonials { background: var(--color-bg-hero); padding: 6rem 1.5rem; }
+  .testimonials { background: #fff; padding: 6rem 1.5rem; }
   .container { max-width: 1280px; margin: 0 auto; padding: 0 2rem; display: flex; flex-direction: column; gap: 4rem; }
   .section-title { font-size: var(--text-4xl); font-weight: var(--weight-semibold); color: var(--color-primary); letter-spacing: var(--tracking-tight); text-align: center; margin: 0; }
   .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
@@ -31,8 +32,8 @@ const { testimonials } = Astro.props;
     inView(".testimonials", () => {
       const title = document.querySelector(".testimonials .section-title");
       const cards = document.querySelectorAll(".testimonials .card");
-      if (title) animate(title, { opacity: [0, 1], y: [20, 0] }, { duration: 0.5, easing: "ease-out" });
-      if (cards.length) animate(cards, { opacity: [0, 1], y: [32, 0] }, { duration: 0.5, delay: stagger(0.1), easing: [0.22, 1, 0.36, 1] });
+      if (title) (animate as any)(title, { clipPath: ["inset(0 0 100% 0)", "inset(0 0 0% 0)"], y: [20, 0] }, { duration: 0.65, easing: [0.22, 1, 0.36, 1] });
+      if (cards.length) (animate as any)(cards, { opacity: [0, 1], y: [32, 0] }, { duration: 0.5, delay: stagger(0.1), easing: [0.22, 1, 0.36, 1] });
     });
   }
 </script>

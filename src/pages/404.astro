@@ -1,0 +1,64 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+  title="Page Not Found — MedZo"
+  description="The page you're looking for doesn't exist."
+>
+  <section class="not-found">
+    <div class="container">
+      <p class="code">404</p>
+      <h1 class="heading">Page not found</h1>
+      <p class="body">The page you're looking for doesn't exist or has been moved.</p>
+      <a href="/" class="back-link">Go back home</a>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .not-found {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6rem 1.5rem;
+    text-align: center;
+  }
+  .container {
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .code {
+    font-size: 5rem;
+    font-weight: var(--weight-bold);
+    color: var(--color-primary);
+    line-height: 1;
+    margin: 0 0 1rem;
+  }
+  .heading {
+    font-size: var(--text-3xl);
+    font-weight: var(--weight-bold);
+    color: var(--color-text-heading);
+    margin: 0 0 1rem;
+  }
+  .body {
+    font-size: var(--text-base);
+    color: var(--color-text-body);
+    margin: 0 0 2rem;
+    line-height: var(--leading-relaxed);
+  }
+  .back-link {
+    display: inline-block;
+    background: var(--color-primary);
+    color: #fff;
+    padding: 0.75rem 2rem;
+    border-radius: var(--radius-pill);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    text-decoration: none;
+    transition: opacity 0.15s;
+  }
+  .back-link:hover { opacity: 0.88; }
+  .back-link:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; }
+</style>

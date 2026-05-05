@@ -1,12 +1,13 @@
 ---
+import { icons } from "../../lib/utils/icons";
 import type { ServiceCard } from "../../types/ServiceCard";
 interface Props extends ServiceCard {}
-const { icon, iconBg, iconColor, title, description } = Astro.props;
+const { iconName, title, description } = Astro.props;
 ---
 
 <div class="card">
-  <div class="icon-wrap" style={`--icon-bg: ${iconBg}; color: ${iconColor}`}>
-    <Fragment set:html={icon} />
+  <div class="icon-wrap">
+    <Fragment set:html={icons[iconName] ?? ""} />
   </div>
   <h3 class="card-title">{title}</h3>
   <p class="card-desc">{description}</p>
@@ -21,16 +22,52 @@ const { icon, iconBg, iconColor, title, description } = Astro.props;
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
+    position: relative;
+    overflow: hidden;
+    transition:
+      transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.35s ease;
+  }
+  .card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      105deg,
+      transparent 35%,
+      rgba(255, 255, 255, 0.55) 50%,
+      transparent 65%
+    );
+    transform: translateX(-100%);
+    transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+  }
+  .card:hover {
+    transform: translateY(-6px);
+    border-color: var(--color-accent);
+    box-shadow:
+      0 20px 40px rgba(0, 193, 253, 0.12),
+      0 8px 16px rgba(0, 50, 125, 0.08);
+  }
+  .card:hover::after {
+    transform: translateX(100%);
   }
   .icon-wrap {
     width: 48px;
     height: 48px;
     border-radius: 0.5rem;
-    background: var(--icon-bg);
+    padding: 10px;
+    background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-primary) 100%);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    color: #fff;
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .card:hover .icon-wrap {
+    transform: scale(1.12);
   }
   .icon-wrap svg {
     width: 22px;
@@ -49,5 +86,8 @@ const { icon, iconBg, iconColor, title, description } = Astro.props;
     color: var(--color-text-body);
     margin: 0;
     line-height: var(--leading-normal);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .card, .card::after, .icon-wrap { transition: none; }
   }
 </style>

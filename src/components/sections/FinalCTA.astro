@@ -1,17 +1,15 @@
 ---
 import Button from "../ui/Button.astro";
-const cta = {
-  heading: "Looking for expert medical practice management in Australia?",
-  buttonLabel: "Book a free consult",
-  buttonHref: "#contact",
-};
+import type { FinalCta } from "../../types/FinalCta";
+interface Props extends FinalCta {}
+const { heading, buttonLabel, buttonHref } = Astro.props;
 ---
 
 <section class="final-cta" id="contact">
   <div class="gradient-overlay"></div>
   <div class="container">
-    <h2 class="cta-heading">{cta.heading}</h2>
-    <Button label={cta.buttonLabel} href={cta.buttonHref} variant="accent" />
+    <h2 class="cta-heading">{heading}</h2>
+    <Button label={buttonLabel} href={buttonHref} variant="accent" />
   </div>
 </section>
 
@@ -55,10 +53,10 @@ const cta = {
   import { animate, inView } from "motion";
   if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     inView(".final-cta", () => {
-      const heading = document.querySelector(".final-cta .cta-heading");
-      const btn = document.querySelector(".final-cta .btn");
-      if (heading) animate(heading, { opacity: [0, 1], y: [24, 0] }, { duration: 0.6, easing: [0.22, 1, 0.36, 1] });
-      if (btn) animate(btn, { opacity: [0, 1], y: [16, 0] }, { duration: 0.5, delay: 0.25, easing: [0.22, 1, 0.36, 1] });
+      // @ts-ignore — motion v12 types don't reflect runtime CSS property support
+      animate(".final-cta .cta-heading", { opacity: [0, 1], y: [24, 0] }, { duration: 0.6, easing: [0.22, 1, 0.36, 1] });
+      // @ts-ignore
+      animate(".final-cta .btn", { opacity: [0, 1], y: [16, 0] }, { duration: 0.5, delay: 0.25, easing: [0.22, 1, 0.36, 1] });
     });
   }
 </script>

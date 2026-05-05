@@ -10,8 +10,8 @@
    ============================================================ */
 :root {
   /* --- Font Families --- */
-  --font-base: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-nav: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-base: 'Inter Variable', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-nav: 'Plus Jakarta Sans Variable', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   --font-wordmark: 'Podkova', Georgia, serif;
 
   /* --- Font Sizes (fluid-friendly rem scale) --- */
@@ -48,7 +48,7 @@
   --color-primary:     #00327d;
   --color-accent:      #00c1fd;
   --color-bg-hero:     #f8f9ff;
-  --color-bg-ticker:   #eff4ff;
+  --color-bg-ticker:   #e6efff;
   --color-bg-why:      #eef4ff;
   --color-text-heading: #0b1c30;
   --color-text-body:   #434653;

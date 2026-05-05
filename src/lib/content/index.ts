@@ -1,5 +1,10 @@
 export { hero } from "./hero";
-export { services } from "./services";
-export { whyItems } from "./whyChooseUs";
-export { testimonials } from "./testimonials";
-export { faqs } from "./faq";
+export { servicesHeading, services } from "./services";
+export { whyHeading, whyItems } from "./whyChooseUs";
+export { testimonialsHeading, testimonials } from "./testimonials";
+export { faqHeading, faqs } from "./faq";
+export { metrics } from "./metrics";
+export { finalCta } from "./finalCta";
+export { ticker } from "./ticker";
+export { navLinks, navCta } from "./nav";
+export { footerContent } from "./footer";

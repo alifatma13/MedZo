@@ -1,5 +1,7 @@
 import type { FAQItem } from "../../types/FAQItem";
 
+export const faqHeading = "Frequently Asked Questions";
+
 export const faqs: FAQItem[] = [
   {
     question: "How does MedZo handle practice management?",

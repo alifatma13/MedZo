@@ -1,5 +1,5 @@
 export interface WhyItem {
-  icon: string;
+  iconName: string;
   title: string;
   description: string;
 }

@@ -1,11 +1,12 @@
 ---
 import ServiceCard from "../ui/ServiceCard.astro";
 import type { ServiceCard as ServiceCardType } from "../../types/ServiceCard";
+import type { SectionHeading } from "../../types/SectionHeading";
 interface Props {
+  heading: SectionHeading;
   services: ServiceCardType[];
 }
-const { services } = Astro.props;
-const heading = { title: "What does MedZo do?", body: "We offer tailored support that scales with your practice, ensuring clinical precision and administrative ease." };
+const { heading, services } = Astro.props;
 ---
 
 <section class="services" id="services">
@@ -23,7 +24,7 @@ const heading = { title: "What does MedZo do?", body: "We offer tailored support
 <style>
   .services { background: #fff; padding: 6rem 1.5rem; }
   .container { max-width: 1280px; margin: 0 auto; padding: 0 2rem; display: flex; flex-direction: column; gap: 4rem; }
-  .section-header { display: flex; flex-direction: column; gap: 1rem; }
+  .section-header { display: flex; flex-direction: column; align-items: center; gap: 1rem; text-align: center; }
   .section-title { font-size: var(--text-4xl); font-weight: var(--weight-semibold); color: var(--color-primary); letter-spacing: var(--tracking-tight); margin: 0; }
   .section-body { font-size: var(--text-base); color: var(--color-text-body); margin: 0; max-width: 42rem; }
   .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
@@ -35,10 +36,8 @@ const heading = { title: "What does MedZo do?", body: "We offer tailored support
   import { animate, inView, stagger } from "motion";
   if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     inView(".services", () => {
-      const title = document.querySelector(".services .section-title");
-      const cards = document.querySelectorAll(".services .card");
-      if (title) animate(title, { opacity: [0, 1], y: [20, 0] }, { duration: 0.5, easing: "ease-out" });
-      if (cards.length) animate(cards, { opacity: [0, 1], y: [32, 0] }, { duration: 0.5, delay: stagger(0.08), easing: [0.22, 1, 0.36, 1] });
+      (animate as any)(".services .section-title", { clipPath: ["inset(0 0 100% 0)", "inset(0 0 0% 0)"], y: [20, 0] }, { duration: 0.65, easing: [0.22, 1, 0.36, 1] });
+      (animate as any)(".services .card", { opacity: [0, 1], y: [32, 0] }, { duration: 0.5, delay: stagger(0.08), easing: [0.22, 1, 0.36, 1] });
     });
   }
 </script>
