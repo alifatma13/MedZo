@@ -126,7 +126,7 @@ const headingWords = heading.split(" ");
 	.hero {
 		background: var(--color-bg-hero);
 		padding: 5.5rem 1.5rem 6rem;
-		overflow: hidden;
+		overflow: visible;
 	}
 	.container {
 		max-width: 1280px;
@@ -312,7 +312,7 @@ const headingWords = heading.split(" ");
 		--float-delay: -2.5s;
 		top: 10%;
 		left: auto;
-		right: -5%;
+		right: -8%;
 	}
 	.action-card:nth-child(3) {
 		--float-x: 0.24rem;
@@ -322,7 +322,7 @@ const headingWords = heading.split(" ");
 		--float-delay: -1.7s;
 		top: 30%;
 		left: auto;
-		right: -5%;
+		right: -8%;
 	}
 	.action-card:nth-child(4) {
 		--float-x: -0.18rem;
@@ -332,7 +332,7 @@ const headingWords = heading.split(" ");
 		--float-delay: -3.1s;
 		top: 52%;
 		left: auto;
-		right: -5%;
+		right: -8%;
 	}
 	.action-card svg {
 		width: 1.25rem;
@@ -429,7 +429,7 @@ const headingWords = heading.split(" ");
 		--float-duration: 8.2s;
 		--float-delay: -1.4s;
 		left: auto;
-		right: -5%;
+		right: -8%;
 		bottom: 5%;
 		width: min(20rem, 52%);
 		display: flex;
@@ -516,13 +516,45 @@ const headingWords = heading.split(" ");
 			transform: none;
 		}
 	}
-	@media (max-width: 768px) {
+	/* ── iPad landscape (1025px–1280px) — 2-col, pull cards in ── */
+	@media (min-width: 1025px) and (max-width: 1280px) {
+		.hero-visual {
+			width: min(100%, 28rem);
+		}
+		/* Left-side cards: pull off the bleed */
+		.metric-card {
+			left: -1%;
+		}
+		.revenue-card {
+			left: -1%;
+		}
+		/* Right-side action cards: overlap right edge of image */
+		.action-card:nth-child(1) {
+			left: calc(-1% + 7rem);
+		}
+		.action-card:nth-child(2) {
+			right: -4%;
+			top: 8%;
+		}
+		.action-card:nth-child(3) {
+			right: -4%;
+			top: 32%;
+		}
+		.action-card:nth-child(4) {
+			right: -4%;
+			top: 56%;
+		}
+		.profile-card {
+			right: -4%;
+		}
+	}
+	@media (max-width: 1024px) {
 		.hero {
-			padding: 2rem 1.25rem 5rem;
+			padding: 3rem 2rem 5rem;
 		}
 		.container {
 			grid-template-columns: 1fr;
-			padding: 0;
+			padding: 0 1rem;
 			gap: 2.5rem;
 		}
 		.visual-col {
@@ -559,17 +591,17 @@ const headingWords = heading.split(" ");
 			right: auto;
 		}
 		.action-card:nth-child(2) {
-			top: 8%;
+			top: 6%;
 			left: auto;
 			right: -3%;
 		}
 		.action-card:nth-child(3) {
-			top: 27%;
+			top: 30%;
 			left: auto;
 			right: -3%;
 		}
 		.action-card:nth-child(4) {
-			top: 46%;
+			top: 54%;
 			left: auto;
 			right: -3%;
 		}
@@ -647,14 +679,12 @@ const headingWords = heading.split(" ");
 		]);
 
 		fontsReady.then(() => {
-			// @ts-ignore
-			animate(
+			(animate as any)(
 				".hero .word-inner",
 				{ y: ["105%", "0%"], opacity: [0, 1] },
 				{ duration: 0.55, delay: stagger(0.07), easing: [0.22, 1, 0.36, 1] },
 			);
-			// @ts-ignore
-			animate(
+			(animate as any)(
 				".hero .body-first, .hero .body-second",
 				{ opacity: [0, 1], y: [16, 0] },
 				{
@@ -663,14 +693,12 @@ const headingWords = heading.split(" ");
 					easing: "ease-out",
 				},
 			);
-			// @ts-ignore
-			animate(
+			(animate as any)(
 				".hero .cta-row",
 				{ opacity: [0, 1], y: [16, 0] },
 				{ duration: 0.5, delay: 0.75, easing: "ease-out" },
 			);
-			// @ts-ignore
-			animate(
+			(animate as any)(
 				".hero .visual-col",
 				{ opacity: [0, 1], x: [32, 0] },
 				{ duration: 0.7, delay: 0.2, easing: [0.22, 1, 0.36, 1] },
