@@ -670,39 +670,40 @@ const headingWords = heading.split(" ");
 <script>
 	import { animate, stagger } from "motion";
 
-	if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-		// Wait for fonts before animating — prevents system-font → web-font snap mid-animation.
-		// Race against 900ms so a slow font CDN never stalls the entrance indefinitely.
-		const fontsReady = Promise.race([
-			document.fonts.ready,
-			new Promise<void>((resolve) => setTimeout(resolve, 900)),
-		]);
+	document.addEventListener("astro:page-load", () => {
+		if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+			// Race fonts against 900ms so a slow CDN never stalls the entrance indefinitely.
+			const fontsReady = Promise.race([
+				document.fonts.ready,
+				new Promise<void>((resolve) => setTimeout(resolve, 900)),
+			]);
 
-		fontsReady.then(() => {
-			(animate as any)(
-				".hero .word-inner",
-				{ y: ["105%", "0%"], opacity: [0, 1] },
-				{ duration: 0.55, delay: stagger(0.07), easing: [0.22, 1, 0.36, 1] },
-			);
-			(animate as any)(
-				".hero .body-first, .hero .body-second",
-				{ opacity: [0, 1], y: [16, 0] },
-				{
-					duration: 0.5,
-					delay: stagger(0.15, { startDelay: 0.45 }),
-					easing: "ease-out",
-				},
-			);
-			(animate as any)(
-				".hero .cta-row",
-				{ opacity: [0, 1], y: [16, 0] },
-				{ duration: 0.5, delay: 0.75, easing: "ease-out" },
-			);
-			(animate as any)(
-				".hero .visual-col",
-				{ opacity: [0, 1], x: [32, 0] },
-				{ duration: 0.7, delay: 0.2, easing: [0.22, 1, 0.36, 1] },
-			);
-		});
-	}
+			fontsReady.then(() => {
+				(animate as any)(
+					".hero .word-inner",
+					{ y: ["105%", "0%"], opacity: [0, 1] },
+					{ duration: 0.55, delay: stagger(0.07), easing: [0.22, 1, 0.36, 1] },
+				);
+				(animate as any)(
+					".hero .body-first, .hero .body-second",
+					{ opacity: [0, 1], y: [16, 0] },
+					{
+						duration: 0.5,
+						delay: stagger(0.15, { startDelay: 0.45 }),
+						easing: "ease-out",
+					},
+				);
+				(animate as any)(
+					".hero .cta-row",
+					{ opacity: [0, 1], y: [16, 0] },
+					{ duration: 0.5, delay: 0.75, easing: "ease-out" },
+				);
+				(animate as any)(
+					".hero .visual-col",
+					{ opacity: [0, 1], x: [32, 0] },
+					{ duration: 0.7, delay: 0.2, easing: [0.22, 1, 0.36, 1] },
+				);
+			});
+		}
+	});
 </script>

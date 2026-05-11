@@ -56,7 +56,8 @@ const { heading, faqs } = Astro.props;
 <script>
 	import { animate, inView, stagger } from "motion";
 
-	function initAccordion() {
+	document.addEventListener("astro:page-load", () => {
+		// ── Accordion ────────────────────────────────────
 		const items = document.querySelectorAll<HTMLElement>(".faq .faq-item");
 
 		items.forEach((item) => {
@@ -67,7 +68,6 @@ const { heading, faqs } = Astro.props;
 			trigger.addEventListener("click", () => {
 				const isOpen = trigger.getAttribute("aria-expanded") === "true";
 
-				// Close all others
 				items.forEach((other) => {
 					const t = other.querySelector<HTMLButtonElement>(".faq-trigger");
 					const p = other.querySelector<HTMLElement>(".faq-panel");
@@ -80,10 +80,7 @@ const { heading, faqs } = Astro.props;
 							(animate as any)(
 								p,
 								{ height: [p.scrollHeight + "px", "0px"], opacity: [1, 0] },
-								{
-									duration: 0.28,
-									easing: [0.4, 0, 0.2, 1],
-								},
+								{ duration: 0.28, easing: [0.4, 0, 0.2, 1] },
 							).finished.then(() => {
 								p.style.display = "none";
 								p.style.height = "";
@@ -101,10 +98,7 @@ const { heading, faqs } = Astro.props;
 						(animate as any)(
 							panel,
 							{ height: [panel.scrollHeight + "px", "0px"], opacity: [1, 0] },
-							{
-								duration: 0.28,
-								easing: [0.4, 0, 0.2, 1],
-							},
+							{ duration: 0.28, easing: [0.4, 0, 0.2, 1] },
 						).finished.then(() => {
 							panel.style.display = "none";
 							panel.style.height = "";
@@ -122,10 +116,7 @@ const { heading, faqs } = Astro.props;
 						(animate as any)(
 							panel,
 							{ height: ["0px", panel.scrollHeight + "px"], opacity: [0, 1] },
-							{
-								duration: 0.32,
-								easing: [0.22, 1, 0.36, 1],
-							},
+							{ duration: 0.32, easing: [0.22, 1, 0.36, 1] },
 						).finished.then(() => {
 							panel.style.height = "";
 							panel.style.opacity = "";
@@ -137,26 +128,25 @@ const { heading, faqs } = Astro.props;
 				}
 			});
 		});
-	}
 
-	initAccordion();
-
-	if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-		inView(".faq", () => {
-			const title = document.querySelector(".faq .section-title");
-			const items = document.querySelectorAll(".faq .faq-item");
-			if (title)
-				(animate as any)(
-					title,
-					{ clipPath: ["inset(0 0 100% 0)", "inset(0 0 0% 0)"], y: [20, 0] },
-					{ duration: 0.65, easing: [0.22, 1, 0.36, 1] },
-				);
-			if (items.length)
-				(animate as any)(
-					".faq .faq-item",
-					{ opacity: [0, 1], y: [20, 0] },
-					{ duration: 0.4, delay: stagger(0.07), easing: [0.22, 1, 0.36, 1] },
-				);
-		});
-	}
+		// ── Scroll-reveal ────────────────────────────────
+		if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+			inView(".faq", () => {
+				const title = document.querySelector(".faq .section-title");
+				const faqItems = document.querySelectorAll(".faq .faq-item");
+				if (title)
+					(animate as any)(
+						title,
+						{ clipPath: ["inset(0 0 100% 0)", "inset(0 0 0% 0)"], y: [20, 0] },
+						{ duration: 0.65, easing: [0.22, 1, 0.36, 1] },
+					);
+				if (faqItems.length)
+					(animate as any)(
+						".faq .faq-item",
+						{ opacity: [0, 1], y: [20, 0] },
+						{ duration: 0.4, delay: stagger(0.07), easing: [0.22, 1, 0.36, 1] },
+					);
+			});
+		}
+	});
 </script>

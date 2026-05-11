@@ -177,29 +177,31 @@ const { heading, items, imageAlt } = Astro.props;
 <script>
 	import { animate, inView, stagger } from "motion";
 
-	if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-		inView(".why", () => {
-			const imageCol = document.querySelector(".why .image-col");
-			const title = document.querySelector(".why .section-title");
-			const items = document.querySelectorAll(".why .items-list li");
-			if (imageCol)
-				(animate as any)(
-					imageCol,
-					{ opacity: [0, 1], x: [-32, 0] },
-					{ duration: 0.6, easing: [0.22, 1, 0.36, 1] },
-				);
-			if (title)
-				(animate as any)(
-					title,
-					{ clipPath: ["inset(0 0 100% 0)", "inset(0 0 0% 0)"], y: [20, 0] },
-					{ duration: 0.65, delay: 0.1, easing: [0.22, 1, 0.36, 1] },
-				);
-			if (items.length)
-				(animate as any)(
-					items,
-					{ opacity: [0, 1], x: [20, 0] },
-					{ duration: 0.45, delay: stagger(0.1), easing: [0.22, 1, 0.36, 1] },
-				);
-		});
-	}
+	document.addEventListener("astro:page-load", () => {
+		if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+			inView(".why", () => {
+				const imageCol = document.querySelector(".why .image-col");
+				const title = document.querySelector(".why .section-title");
+				const items = document.querySelectorAll(".why .items-list li");
+				if (imageCol)
+					(animate as any)(
+						imageCol,
+						{ opacity: [0, 1], x: [-32, 0] },
+						{ duration: 0.6, easing: [0.22, 1, 0.36, 1] },
+					);
+				if (title)
+					(animate as any)(
+						title,
+						{ clipPath: ["inset(0 0 100% 0)", "inset(0 0 0% 0)"], y: [20, 0] },
+						{ duration: 0.65, delay: 0.1, easing: [0.22, 1, 0.36, 1] },
+					);
+				if (items.length)
+					(animate as any)(
+						items,
+						{ opacity: [0, 1], x: [20, 0] },
+						{ duration: 0.45, delay: stagger(0.1), easing: [0.22, 1, 0.36, 1] },
+					);
+			});
+		}
+	});
 </script>

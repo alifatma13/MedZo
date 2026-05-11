@@ -56,18 +56,21 @@ const { heading, buttonLabel, buttonHref } = Astro.props;
 
 <script>
 	import { animate, inView } from "motion";
-	if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-		inView(".final-cta", () => {
-			(animate as any)(
-				".final-cta .cta-heading",
-				{ opacity: [0, 1], y: [24, 0] },
-				{ duration: 0.6, easing: [0.22, 1, 0.36, 1] },
-			);
-			(animate as any)(
-				".final-cta .btn",
-				{ opacity: [0, 1], y: [16, 0] },
-				{ duration: 0.5, delay: 0.25, easing: [0.22, 1, 0.36, 1] },
-			);
-		});
-	}
+
+	document.addEventListener("astro:page-load", () => {
+		if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+			inView(".final-cta", () => {
+				(animate as any)(
+					".final-cta .cta-heading",
+					{ opacity: [0, 1], y: [24, 0] },
+					{ duration: 0.6, easing: [0.22, 1, 0.36, 1] },
+				);
+				(animate as any)(
+					".final-cta .btn",
+					{ opacity: [0, 1], y: [16, 0] },
+					{ duration: 0.5, delay: 0.25, easing: [0.22, 1, 0.36, 1] },
+				);
+			});
+		}
+	});
 </script>

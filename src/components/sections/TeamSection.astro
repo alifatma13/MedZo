@@ -1,0 +1,164 @@
+---
+import { Image } from "astro:assets";
+import type { TeamMember } from "../../types/ContactContent";
+
+interface Props {
+	heading: string;
+	body: string;
+	members: TeamMember[];
+}
+const { heading, body, members } = Astro.props;
+---
+
+<section class="team" id="team">
+	<div class="container">
+		<div class="section-header">
+			<h2 class="section-title">{heading}</h2>
+			<p class="section-body">{body}</p>
+		</div>
+		<div class="grid">
+			{
+				members.map((member) => (
+					<div class="member-card">
+						<div class="photo-wrap">
+							<Image
+								src={member.imageUrl}
+								alt={member.name}
+								width={280}
+								height={280}
+								class="photo"
+							/>
+						</div>
+						<h3 class="member-name">{member.name}</h3>
+						<p class="member-role">{member.role}</p>
+						<p class="member-bio">{member.bio}</p>
+					</div>
+				))
+			}
+		</div>
+	</div>
+</section>
+
+<style>
+	.team {
+		background: var(--color-bg-hero);
+		padding: 5rem 2rem;
+	}
+	.container {
+		max-width: 1280px;
+		margin: 0 auto;
+		display: flex;
+		flex-direction: column;
+		gap: 4rem;
+	}
+	.section-header {
+		text-align: center;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.75rem;
+	}
+	.section-title {
+		font-size: var(--text-4xl);
+		font-weight: var(--weight-semibold);
+		color: var(--color-primary);
+		letter-spacing: var(--tracking-tight);
+		margin: 0;
+	}
+	.section-body {
+		font-size: var(--text-base);
+		color: var(--color-text-body);
+		margin: 0;
+		max-width: 42rem;
+	}
+	.grid {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: 2rem;
+	}
+	.member-card {
+		background: #fff;
+		border-radius: 1rem;
+		padding: 2rem 1.5rem;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		gap: 0.75rem;
+		box-shadow: 0 1px 4px rgba(0, 50, 125, 0.06);
+		transition: box-shadow 0.2s, transform 0.2s;
+	}
+	.member-card:hover {
+		box-shadow: 0 6px 24px rgba(0, 50, 125, 0.1);
+		transform: translateY(-2px);
+	}
+	.photo-wrap {
+		width: 6rem;
+		height: 6rem;
+		border-radius: 50%;
+		overflow: hidden;
+		flex-shrink: 0;
+		border: 3px solid var(--color-bg-why);
+	}
+	.photo {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+	}
+	.member-name {
+		font-size: var(--text-lg);
+		font-weight: var(--weight-semibold);
+		color: var(--color-text-heading);
+		margin: 0;
+	}
+	.member-role {
+		font-size: var(--text-sm);
+		font-weight: var(--weight-medium);
+		color: var(--color-accent);
+		margin: 0;
+	}
+	.member-bio {
+		font-size: var(--text-sm);
+		color: var(--color-text-body);
+		line-height: var(--leading-normal);
+		margin: 0;
+	}
+	@media (max-width: 1024px) {
+		.grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+	@media (max-width: 640px) {
+		.team {
+			padding: 3.5rem 1.25rem;
+		}
+		.grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>
+
+<script>
+	import { animate, inView, stagger } from "motion";
+	document.addEventListener("astro:page-load", () => {
+		if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+			inView(".team", () => {
+				(animate as any)(
+					".team .section-title, .team .section-body",
+					{ opacity: [0, 1], y: [16, 0] },
+					{ duration: 0.5, easing: [0.22, 1, 0.36, 1] },
+				);
+				(animate as any)(
+					".team .member-card",
+					{ opacity: [0, 1], y: [32, 0] },
+					{
+						duration: 0.5,
+						delay: stagger(0.09),
+						easing: [0.22, 1, 0.36, 1],
+					},
+				);
+			});
+		}
+	});
+</script>

@@ -21,115 +21,120 @@ const { intro, specialties } = Astro.props;
 
 	let rafId: number | null = null;
 
-	// ── Entrance animation ───────────────────────────
-	if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-		inView(".ticker", () => {
-			const text = document.querySelector(".ticker .ticker-text");
-			if (text)
-				(animate as any)(
-					text,
-					{ opacity: [0, 1], y: [24, 0] },
-					{ duration: 0.6, easing: [0.22, 1, 0.36, 1] },
-				);
-		});
-	}
-
-	// ── Dot wave ─────────────────────────────────────
-	const canvas = document.querySelector<HTMLCanvasElement>(".ticker .dot-wave");
-	const ctx = canvas?.getContext("2d");
-
-	if (
-		canvas &&
-		ctx &&
-		!window.matchMedia("(prefers-reduced-motion: reduce)").matches
-	) {
-		let w = 0,
-			h = 0;
-
-		function resize() {
-			const dpr = window.devicePixelRatio || 1;
-			const rect = canvas!.getBoundingClientRect();
-			w = rect.width;
-			h = rect.height;
-			canvas!.width = w * dpr;
-			canvas!.height = h * dpr;
-			ctx!.scale(dpr, dpr);
+	document.addEventListener("astro:page-load", () => {
+		if (rafId !== null) {
+			cancelAnimationFrame(rafId);
+			rafId = null;
 		}
-		resize();
-		window.addEventListener("resize", resize, { passive: true });
 
-		// Two wave bands — navy back, cyan front
-		const bands = [
-			{
-				cy: 0.5, // center Y as fraction of height
-				amp: 0.2, // amplitude as fraction of height
-				cycles: 2,
-				phase: 0,
-				speed: 0.38,
-				rows: 11,
-				rowGap: 7,
-				dotGap: 13,
-				dotR: 2.6,
-				rgb: "0,60,160",
-			},
-			{
-				cy: 0.55,
-				amp: 0.15,
-				cycles: 2,
-				phase: Math.PI * 0.55,
-				speed: 0.52,
-				rows: 9,
-				rowGap: 6,
-				dotGap: 15,
-				dotR: 2.1,
-				rgb: "0,60,160",
-			},
-		];
+		// ── Entrance animation ───────────────────────────
+		if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+			inView(".ticker", () => {
+				const text = document.querySelector(".ticker .ticker-text");
+				if (text)
+					(animate as any)(
+						text,
+						{ opacity: [0, 1], y: [24, 0] },
+						{ duration: 0.6, easing: [0.22, 1, 0.36, 1] },
+					);
+			});
+		}
 
-		let start: number | null = null;
+		// ── Dot wave ─────────────────────────────────────
+		const canvas =
+			document.querySelector<HTMLCanvasElement>(".ticker .dot-wave");
+		const ctx = canvas?.getContext("2d");
 
-		function draw(ts: number) {
-			if (!start) start = ts;
-			const t = (ts - start) / 1000;
+		if (
+			canvas &&
+			ctx &&
+			!window.matchMedia("(prefers-reduced-motion: reduce)").matches
+		) {
+			let w = 0,
+				h = 0;
 
-			ctx!.clearRect(0, 0, w, h);
+			function resize() {
+				const dpr = window.devicePixelRatio || 1;
+				const rect = canvas!.getBoundingClientRect();
+				w = rect.width;
+				h = rect.height;
+				canvas!.width = w * dpr;
+				canvas!.height = h * dpr;
+				ctx!.scale(dpr, dpr);
+			}
+			resize();
+			window.addEventListener("resize", resize, { passive: true });
 
-			for (const band of bands) {
-				const baseY = h * band.cy;
-				const amp = h * band.amp;
-				const halfRows = (band.rows - 1) / 2;
+			const bands = [
+				{
+					cy: 0.5,
+					amp: 0.2,
+					cycles: 2,
+					phase: 0,
+					speed: 0.38,
+					rows: 11,
+					rowGap: 7,
+					dotGap: 13,
+					dotR: 2.6,
+					rgb: "0,60,160",
+				},
+				{
+					cy: 0.55,
+					amp: 0.15,
+					cycles: 2,
+					phase: Math.PI * 0.55,
+					speed: 0.52,
+					rows: 9,
+					rowGap: 6,
+					dotGap: 15,
+					dotR: 2.1,
+					rgb: "0,60,160",
+				},
+			];
 
-				for (let row = 0; row < band.rows; row++) {
-					// Bell-curve opacity: full at centre row, fades to ~8% at edges
-					const dist = Math.abs(row - halfRows) / halfRows;
-					const opacity = (1 - dist * dist) * 0.72 + 0.08;
-					const radius = band.dotR * (0.55 + (1 - dist) * 0.45);
-					const rowY = baseY + (row - halfRows) * band.rowGap;
-					// Slight phase stagger per row → diagonal flow inside band
-					const rowPhase = band.phase + row * 0.18;
+			let start: number | null = null;
 
-					for (let x = 0; x <= w + band.dotGap; x += band.dotGap) {
-						const y =
-							rowY +
-							amp *
-								Math.sin(
-									(x / w) * band.cycles * Math.PI * 2 +
-										rowPhase +
-										t * band.speed,
-								);
-						ctx!.beginPath();
-						ctx!.arc(x, y, radius, 0, Math.PI * 2);
-						ctx!.fillStyle = `rgba(${band.rgb},${opacity.toFixed(3)})`;
-						ctx!.fill();
+			function draw(ts: number) {
+				if (!start) start = ts;
+				const t = (ts - start) / 1000;
+
+				ctx!.clearRect(0, 0, w, h);
+
+				for (const band of bands) {
+					const baseY = h * band.cy;
+					const amp = h * band.amp;
+					const halfRows = (band.rows - 1) / 2;
+
+					for (let row = 0; row < band.rows; row++) {
+						const dist = Math.abs(row - halfRows) / halfRows;
+						const opacity = (1 - dist * dist) * 0.72 + 0.08;
+						const radius = band.dotR * (0.55 + (1 - dist) * 0.45);
+						const rowY = baseY + (row - halfRows) * band.rowGap;
+						const rowPhase = band.phase + row * 0.18;
+
+						for (let x = 0; x <= w + band.dotGap; x += band.dotGap) {
+							const y =
+								rowY +
+								amp *
+									Math.sin(
+										(x / w) * band.cycles * Math.PI * 2 +
+											rowPhase +
+											t * band.speed,
+									);
+							ctx!.beginPath();
+							ctx!.arc(x, y, radius, 0, Math.PI * 2);
+							ctx!.fillStyle = `rgba(${band.rgb},${opacity.toFixed(3)})`;
+							ctx!.fill();
+						}
 					}
 				}
+
+				rafId = requestAnimationFrame(draw);
 			}
 
 			rafId = requestAnimationFrame(draw);
 		}
-
-		rafId = requestAnimationFrame(draw);
-	}
+	});
 </script>
 
 <style>

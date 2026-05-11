@@ -4,6 +4,7 @@ import "@fontsource-variable/inter";
 import "@fontsource-variable/plus-jakarta-sans";
 import "@fontsource/podkova/400.css";
 import "@fontsource/podkova/700.css";
+import { ClientRouter } from "astro:transitions";
 import Nav from "../components/layout/Nav.astro";
 import Footer from "../components/layout/Footer.astro";
 import { layoutContent } from "../lib/content/layout";
@@ -32,6 +33,7 @@ const jsonLd = {
 
 <html lang="en">
 	<head>
+		<ClientRouter />
 		<slot name="head" />
 		<meta charset="utf-8" />
 		<link rel="icon" href="/favicon.ico" sizes="32x32" />
@@ -78,3 +80,17 @@ const jsonLd = {
 		<Footer />
 	</body>
 </html>
+
+<script>
+	document.addEventListener("astro:page-load", () => {
+		if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+			import("motion").then(({ animate }) => {
+				(animate as any)(
+					"main",
+					{ opacity: [0, 1] },
+					{ duration: 0.3, easing: [0.22, 1, 0.36, 1] },
+				);
+			}).catch(() => {});
+		}
+	});
+</script>

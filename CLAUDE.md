@@ -289,11 +289,13 @@ Import inside a `<script>` block in `.astro` files (Astro handles bundling autom
 - Never block interactivity — animations run alongside, not before, content being usable.
 - Do not animate layout properties (`width`, `height`, `top`, `left`); animate `transform` and `opacity` only for GPU-composited performance.
 
-### ClientRouter compatibility — mandatory rule
+### ClientRouter compatibility — mandatory rule for every new script
 
-This project uses Astro's `ClientRouter` for page transitions. **`<script>` blocks only execute once** across navigations — they do not re-run when the user navigates between pages. Any animation code that runs at the top level of a `<script>` block will break on the second visit.
+**Why ClientRouter is in this project:** `ClientRouter` (from `astro:transitions`) was added to eliminate the full-page flash when navigating between routes (e.g. `/` → `/contact`). It intercepts link clicks, fetches the next page in the background, and swaps only the `<body>` content — giving smooth, app-like transitions without a reload.
 
-**Every animation script must be wrapped in `astro:page-load`:**
+**The consequence for scripts:** because the browser treats each module `<script>` as an ES module, it only executes it once and caches it. When ClientRouter navigates to a new page, the old script does not re-run. Any `animate(...)`, `inView(...)`, or `requestAnimationFrame(...)` call at the top level of a `<script>` block fires on the first load only — animations are invisible on every subsequent navigation.
+
+**Rule: every `<script>` block added to this project must wrap all its code in `astro:page-load`** — no exceptions, including new pages, new section components, and new UI components:
 
 ```ts
 document.addEventListener("astro:page-load", () => {
@@ -303,7 +305,7 @@ document.addEventListener("astro:page-load", () => {
 });
 ```
 
-`astro:page-load` fires on both the initial page load and after every View Transition — so animations always replay correctly.
+`astro:page-load` fires on both the initial page load and after every ClientRouter navigation — so animations always replay correctly on every route.
 
 **Additional rules for `requestAnimationFrame` loops** (e.g. canvas animations):
 
@@ -323,7 +325,11 @@ document.addEventListener("astro:page-load", () => {
 });
 ```
 
-**Violation to catch:** any `animate(...)`, `inView(...)`, or `requestAnimationFrame(...)` call at the top level of a `<script>` block (outside `astro:page-load`) — it will not work after the first navigation.
+**Violations to catch before committing:**
+
+- Any `animate(...)`, `inView(...)`, or `requestAnimationFrame(...)` at the top level of a `<script>` block.
+- Any event listener (e.g. accordion `click`) attached outside `astro:page-load` — the elements are replaced on each navigation, so listeners attached once are lost.
+- Any script that calls an init function directly (e.g. `initAccordion()`) without going through `astro:page-load`.
 
 ### motion type errors
 

@@ -11,10 +11,10 @@ export const navBrand: NavBrand = {
 };
 
 export const navLinks: NavLink[] = [
-  { label: "Services", href: "#services" },
-  { label: "Why MedZo", href: "#why-medzo" },
-  { label: "Testimonials", href: "#testimonials" },
-  { label: "FAQ", href: "#faq" },
+  { label: "Services", href: "/#services" },
+  { label: "Why MedZo", href: "/#why-medzo" },
+  { label: "Testimonials", href: "/#testimonials" },
+  { label: "FAQ", href: "/#faq" },
 ];
 
-export const navCta: NavLink = { label: "Book a consult", href: "#contact" };
+export const navCta: NavLink = { label: "Book a consult", href: "/contact" };

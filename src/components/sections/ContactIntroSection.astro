@@ -1,0 +1,605 @@
+---
+import { icons } from "../../lib/utils/icons";
+import type { ContactFormFields } from "../../types/ContactContent";
+
+interface Props {
+	hero: { heading: string; body: string; trust: string[] };
+	form: { heading: string; body: string; fields: ContactFormFields };
+}
+const { hero, form } = Astro.props;
+const f = form.fields;
+const e = f.errors;
+---
+
+<section class="contact-intro" id="contact">
+	<div class="container">
+
+		<!-- ── Left: intro ── -->
+		<div class="intro-col">
+			<div class="accent-bar" aria-hidden="true"></div>
+			<h1 class="heading">{hero.heading}</h1>
+			<p class="body-text">{hero.body}</p>
+			<ul class="trust-list" aria-label={hero.trustAriaLabel}>
+				{
+					hero.trust.map((item) => (
+						<li class="trust-item">
+							<span class="trust-icon" aria-hidden="true">
+								<Fragment set:html={icons["check-circle"]} />
+							</span>
+							<span class="trust-text">{item}</span>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+
+		<!-- ── Right: form ── -->
+		<div class="form-card">
+
+			<!-- Success state (hidden until submit) -->
+			<div class="success-msg" hidden aria-live="polite">
+				<span class="success-icon" aria-hidden="true">
+					<Fragment set:html={icons["check-circle"]} />
+				</span>
+				<p class="success-heading">{f.successHeading}</p>
+				<p class="success-body">{f.successBody}</p>
+			</div>
+
+			<!-- Form — data-* carry error strings into the script safely -->
+			<form
+				class="form"
+				action="https://api.web3forms.com/submit"
+				method="POST"
+				novalidate
+				data-err-name-required={e.nameRequired}
+				data-err-name-min={e.nameMin}
+				data-err-email-required={e.emailRequired}
+				data-err-email-invalid={e.emailInvalid}
+				data-err-phone-required={e.phoneRequired}
+				data-err-phone-invalid={e.phoneInvalid}
+				data-err-message-required={e.messageRequired}
+				data-err-message-min={e.messageMin}
+				data-err-suspicious={e.suspicious}
+				data-err-submit-failed={e.submitFailed}
+			>
+				<input type="hidden" name="access_key" value={import.meta.env.PUBLIC_WEB3FORMS_KEY} />
+				<input type="hidden" name="redirect" value={`${Astro.url.origin}/contact?success=1`} />
+				<input type="checkbox" name="botcheck" style="display:none" tabindex="-1" aria-hidden="true" />
+				<div class="field">
+					<label for="cf-name" class="field-label">
+						{f.name.label}<span class="required" aria-hidden="true">*</span>
+					</label>
+					<input
+						id="cf-name"
+						name="name"
+						type="text"
+						class="input"
+						placeholder={f.name.placeholder}
+						required
+						aria-required="true"
+						aria-describedby="cf-name-error"
+						maxlength="100"
+						autocomplete="name"
+					/>
+					<span id="cf-name-error" class="field-error" role="alert"></span>
+				</div>
+
+				<div class="form-row">
+					<div class="field">
+						<label for="cf-email" class="field-label">
+							{f.email.label}<span class="required" aria-hidden="true">*</span>
+						</label>
+						<input
+							id="cf-email"
+							name="email"
+							type="email"
+							class="input"
+							placeholder={f.email.placeholder}
+							required
+							aria-required="true"
+							aria-describedby="cf-email-error"
+							maxlength="254"
+							autocomplete="email"
+						/>
+						<span id="cf-email-error" class="field-error" role="alert"></span>
+					</div>
+					<div class="field">
+						<label for="cf-phone" class="field-label">
+							{f.phone.label}<span class="required" aria-hidden="true">*</span>
+						</label>
+						<input
+							id="cf-phone"
+							name="phone"
+							type="tel"
+							class="input"
+							placeholder={f.phone.placeholder}
+							required
+							aria-required="true"
+							aria-describedby="cf-phone-error"
+							maxlength="20"
+							autocomplete="tel"
+						/>
+						<span id="cf-phone-error" class="field-error" role="alert"></span>
+					</div>
+				</div>
+
+				<input type="hidden" name="subject" value={f.defaultSubject} />
+
+				<div class="field">
+					<label for="cf-message" class="field-label">
+						{f.message.label}<span class="required" aria-hidden="true">*</span>
+					</label>
+					<textarea
+						id="cf-message"
+						name="message"
+						class="textarea"
+						placeholder={f.message.placeholder}
+						rows={3}
+						required
+						aria-required="true"
+						aria-describedby="cf-message-error"
+						maxlength="2000"></textarea>
+					<span id="cf-message-error" class="field-error" role="alert"></span>
+				</div>
+
+				<p class="submit-error" role="alert" hidden>{e.submitFailed}</p>
+				<button type="submit" class="submit-btn">{f.submit}</button>
+			</form>
+		</div>
+
+	</div>
+</section>
+
+<style>
+	/* ── Section ── */
+	.contact-intro {
+		position: relative;
+		background: var(--color-bg-hero);
+		min-height: calc(100dvh - 76px);
+		padding: 3rem 2rem;
+		display: flex;
+		align-items: center;
+		overflow: hidden;
+	}
+	.contact-intro::before {
+		content: "";
+		position: absolute;
+		right: -4rem;
+		top: 50%;
+		transform: translateY(-50%);
+		width: 52rem;
+		height: 52rem;
+		border-radius: 50%;
+		border: 1px solid rgba(0, 193, 253, 0.08);
+		pointer-events: none;
+		z-index: 0;
+	}
+	.contact-intro::after {
+		content: "";
+		position: absolute;
+		right: -4rem;
+		top: 50%;
+		transform: translateY(-50%);
+		width: 32rem;
+		height: 32rem;
+		border-radius: 50%;
+		border: 1.5px solid rgba(0, 193, 253, 0.14);
+		background: radial-gradient(
+			circle at 65% 50%,
+			rgba(0, 193, 253, 0.07) 0%,
+			transparent 70%
+		);
+		pointer-events: none;
+		z-index: 0;
+	}
+	.container {
+		position: relative;
+		max-width: 1200px;
+		width: 100%;
+		margin: 0 auto;
+		display: grid;
+		grid-template-columns: 1fr 1.15fr;
+		gap: 5rem;
+		align-items: center;
+		z-index: 1;
+	}
+	/* ── Left col ── */
+	.intro-col {
+		display: flex;
+		flex-direction: column;
+		gap: 0;
+	}
+	.accent-bar {
+		width: 2.5rem;
+		height: 3px;
+		background: linear-gradient(90deg, var(--color-accent) 0%, var(--color-primary) 100%);
+		border-radius: 2px;
+		margin-bottom: 0.875rem;
+	}
+	.heading {
+		font-size: var(--text-5xl);
+		font-weight: var(--weight-extrabold);
+		color: var(--color-primary);
+		letter-spacing: var(--tracking-tight);
+		line-height: var(--leading-tight);
+		margin: 0 0 1rem;
+	}
+	.body-text {
+		font-size: var(--text-base);
+		color: var(--color-text-body);
+		line-height: 1.7;
+		margin: 0 0 2rem;
+	}
+	.trust-list {
+		list-style: none;
+		margin: 0;
+		padding: 1.5rem 0 0;
+		border-top: 1px solid rgba(0, 50, 125, 0.08);
+		display: flex;
+		flex-direction: column;
+		gap: 0.875rem;
+	}
+	.trust-item {
+		display: flex;
+		align-items: center;
+		gap: 0.625rem;
+	}
+	.trust-icon {
+		width: 1.1rem;
+		height: 1.1rem;
+		color: var(--color-accent);
+		flex-shrink: 0;
+	}
+	.trust-icon :global(svg) {
+		width: 100%;
+		height: 100%;
+	}
+	.trust-text {
+		font-size: var(--text-sm);
+		font-weight: var(--weight-medium);
+		color: var(--color-text-body);
+	}
+	/* ── Form card ── */
+	.form-card {
+		background: #fff;
+		border-radius: 1.25rem;
+		padding: 1.75rem 2rem;
+		box-shadow:
+			0 2px 12px rgba(0, 50, 125, 0.06),
+			0 16px 48px rgba(0, 50, 125, 0.1);
+	}
+	/* ── Success state ── */
+	.success-msg[hidden],
+	.form[hidden] {
+		display: none;
+	}
+	.success-msg {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		gap: 0.75rem;
+		padding: 2rem 1rem;
+	}
+	.success-icon {
+		width: 3rem;
+		height: 3rem;
+		color: var(--color-accent);
+	}
+	.success-icon :global(svg) {
+		width: 100%;
+		height: 100%;
+	}
+	.success-heading {
+		font-size: var(--text-xl);
+		font-weight: var(--weight-semibold);
+		color: var(--color-primary);
+		margin: 0;
+	}
+	.success-body {
+		font-size: var(--text-sm);
+		color: var(--color-text-body);
+		margin: 0;
+	}
+	/* ── Form ── */
+	.form {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+	.form-row {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 0.65rem;
+	}
+	.field {
+		display: flex;
+		flex-direction: column;
+		gap: 0.3rem;
+	}
+	.field-label {
+		font-size: var(--text-sm);
+		font-weight: var(--weight-medium);
+		color: var(--color-text-heading);
+	}
+	.required {
+		color: var(--color-accent);
+		margin-left: 0.15em;
+	}
+	.input,
+	.textarea {
+		font-family: var(--font-base);
+		font-size: var(--text-sm);
+		color: var(--color-text-heading);
+		background: #f8f9ff;
+		border: 1.5px solid var(--color-border);
+		border-radius: 0.5rem;
+		padding: 0.4rem 0.75rem;
+		width: 100%;
+		transition: border-color 0.15s, box-shadow 0.15s;
+	}
+	.input::placeholder,
+	.textarea::placeholder {
+		color: #9ca3af;
+	}
+	.input:focus,
+	.textarea:focus {
+		outline: none;
+		border-color: var(--color-accent);
+		box-shadow: 0 0 0 3px rgba(0, 193, 253, 0.18);
+	}
+	.input.invalid,
+	.textarea.invalid {
+		border-color: #e53e3e;
+		box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.12);
+	}
+	.input.valid,
+	.textarea.valid {
+		border-color: #38a169;
+	}
+	.textarea {
+		resize: vertical;
+		min-height: 3.5rem;
+	}
+	.field-error {
+		font-size: var(--text-xs);
+		color: #e53e3e;
+		min-height: 0.75rem;
+		display: block;
+	}
+	.submit-error {
+		font-size: var(--text-sm);
+		color: #e53e3e;
+		background: #fff5f5;
+		border: 1px solid #fed7d7;
+		border-radius: 0.5rem;
+		padding: 0.6rem 0.875rem;
+		margin: 0;
+	}
+	.submit-btn {
+		align-self: flex-end;
+		background: linear-gradient(90deg, var(--color-accent) 0%, var(--color-primary) 100%);
+		color: #fff;
+		font-family: var(--font-nav);
+		font-size: var(--text-base);
+		font-weight: var(--weight-semibold);
+		padding: 0.75rem 2rem;
+		border: none;
+		border-radius: 0.5rem;
+		cursor: pointer;
+		transition: opacity 0.15s, transform 0.12s;
+	}
+	.submit-btn:hover {
+		opacity: 0.9;
+	}
+	.submit-btn:focus-visible {
+		outline: 2px solid var(--color-accent);
+		outline-offset: 3px;
+	}
+	.submit-btn:active {
+		transform: scale(0.98);
+	}
+	@media (max-width: 1024px) {
+		.contact-intro {
+			min-height: unset;
+			padding: 3.5rem 1.5rem;
+			align-items: flex-start;
+		}
+		.contact-intro::after {
+			display: none;
+		}
+		.container {
+			grid-template-columns: 1fr;
+			gap: 2rem;
+		}
+		.body-text {
+			max-width: unset;
+		}
+	}
+	@media (max-width: 640px) {
+		.contact-intro {
+			padding: 2.5rem 1.25rem;
+		}
+		.heading {
+			font-size: var(--text-4xl);
+		}
+		.form-card {
+			padding: 1.25rem;
+		}
+		.form-row {
+			grid-template-columns: 1fr;
+		}
+		.submit-btn {
+			width: 100%;
+			text-align: center;
+		}
+	}
+</style>
+
+<script is:inline>
+	(() => {
+		const sanitise = (val) => val.replace(/[<>]/g, "").trim();
+
+		const isSuspicious = (val) =>
+			[
+				/'\s*(OR|AND)\s+['"\d]/i,
+				/;\s*(DROP|DELETE|INSERT|UPDATE|SELECT|CREATE|ALTER)\b/i,
+				/\bUNION\b.+\bSELECT\b/i,
+				/--\s/,
+				/\/\*/,
+				/javascript\s*:/i,
+				/on\w+\s*=/i,
+				/data:[^,]*base64/i,
+			].some((p) => p.test(val));
+
+		const validate = (name, value, err) => {
+			const v = sanitise(value);
+			if (isSuspicious(v)) return err.suspicious;
+			if (name === "name") {
+				if (!v) return err.nameRequired;
+				if (v.length < 2) return err.nameMin;
+			} else if (name === "email") {
+				if (!v) return err.emailRequired;
+				if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) return err.emailInvalid;
+			} else if (name === "phone") {
+				if (!v) return err.phoneRequired;
+				const digits = v.replace(/\D/g, "");
+				if (!/^[+\d\s\-()]+$/.test(v) || digits.length < 7 || digits.length > 15) return err.phoneInvalid;
+			} else if (name === "message") {
+				if (!v) return err.messageRequired;
+				if (v.length < 10) return err.messageMin;
+			}
+			return "";
+		};
+
+		const setError = (input, msg) => {
+			const errorEl = document.getElementById(input.id + "-error");
+			if (errorEl) errorEl.textContent = msg;
+			input.classList.toggle("invalid", !!msg);
+			input.classList.toggle("valid", !msg && input.value.trim() !== "");
+		};
+
+		const initContactForm = () => {
+			const formEl = document.querySelector(".contact-intro .form");
+			const successEl = document.querySelector(".contact-intro .success-msg");
+			if (!formEl || !successEl || formEl.dataset.jsInit) return;
+			formEl.dataset.jsInit = "1";
+
+			// Show success state when redirected back from Web3Forms
+			if (new URLSearchParams(window.location.search).get("success") === "1") {
+				formEl.hidden = true;
+				successEl.hidden = false;
+				window.history.replaceState({}, "", window.location.pathname);
+				return;
+			}
+
+			const d = formEl.dataset;
+			const err = {
+				nameRequired: d.errNameRequired || "",
+				nameMin: d.errNameMin || "",
+				emailRequired: d.errEmailRequired || "",
+				emailInvalid: d.errEmailInvalid || "",
+				phoneRequired: d.errPhoneRequired || "",
+			phoneInvalid: d.errPhoneInvalid || "",
+			messageRequired: d.errMessageRequired || "",
+				messageMin: d.errMessageMin || "",
+				suspicious: d.errSuspicious || "",
+			};
+
+			const fields = Array.from(formEl.querySelectorAll(".input, .textarea"));
+			fields.forEach((field) => {
+				field.addEventListener("blur", () =>
+					setError(field, validate(field.name, field.value, err)),
+				);
+				field.addEventListener("input", () => {
+					if (field.classList.contains("invalid"))
+						setError(field, validate(field.name, field.value, err));
+				});
+			});
+
+			const submitBtn = formEl.querySelector(".submit-btn");
+			const submitErrorEl = formEl.querySelector(".submit-error");
+			const originalLabel = submitBtn ? submitBtn.textContent : "";
+
+			formEl.addEventListener("submit", async (e) => {
+				e.preventDefault();
+				let hasError = false;
+				fields.forEach((field) => {
+					const msg = validate(field.name, field.value, err);
+					setError(field, msg);
+					if (msg) hasError = true;
+				});
+				if (hasError) return;
+
+				if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = "Sending…"; }
+				if (submitErrorEl) submitErrorEl.hidden = true;
+
+				try {
+					const payload = Object.fromEntries(new FormData(formEl));
+					const res = await fetch("https://api.web3forms.com/submit", {
+						method: "POST",
+						headers: { "Content-Type": "application/json", Accept: "application/json" },
+						body: JSON.stringify(payload),
+					});
+					const result = await res.json();
+					if (!result.success) throw new Error(result.message || "Submit failed");
+					formEl.hidden = true;
+					successEl.hidden = false;
+				} catch (_) {
+					if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = originalLabel; }
+					if (submitErrorEl) submitErrorEl.hidden = false;
+				}
+			});
+		};
+
+		document.addEventListener("astro:page-load", initContactForm);
+		if (document.readyState !== "loading") {
+			initContactForm();
+		} else {
+			document.addEventListener("DOMContentLoaded", initContactForm);
+		}
+	})();
+</script>
+
+<script>
+	/* ── Animations only — isolated so form always works ── */
+	document.addEventListener("astro:page-load", () => {
+		if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+			import("motion")
+				.then(({ animate, stagger }) => {
+					(animate as any)(
+						".contact-intro .accent-bar",
+						{ scaleX: [0, 1], opacity: [0, 1] },
+						{ duration: 0.45, easing: [0.22, 1, 0.36, 1] },
+					);
+					(animate as any)(
+						".contact-intro .heading, .contact-intro .body-text",
+						{ opacity: [0, 1], y: [20, 0] },
+						{ duration: 0.55, delay: 0.1, easing: [0.22, 1, 0.36, 1] },
+					);
+					(animate as any)(
+						".contact-intro .trust-item",
+						{ opacity: [0, 1], x: [-12, 0] },
+						{ duration: 0.4, delay: stagger(0.08), easing: [0.22, 1, 0.36, 1] },
+					);
+					(animate as any)(
+						".contact-intro .form-card",
+						{ opacity: [0, 1], y: [24, 0] },
+						{ duration: 0.6, delay: 0.15, easing: [0.22, 1, 0.36, 1] },
+					);
+					const btn = document.querySelector<HTMLElement>(".submit-btn");
+					if (btn) {
+						btn.addEventListener("mouseenter", () =>
+							(animate as any)(btn, { scale: 1.03 }, { duration: 0.15 }),
+						);
+						btn.addEventListener("mouseleave", () =>
+							(animate as any)(btn, { scale: 1 }, { duration: 0.15 }),
+						);
+					}
+				})
+				.catch(() => {});
+		}
+	});
+
+</script>
+

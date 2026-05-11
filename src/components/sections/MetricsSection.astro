@@ -90,45 +90,49 @@ const { metrics } = Astro.props;
 <script>
 	import { inView, animate } from "motion";
 
-	inView(".metrics", () => {
-		const items = document.querySelectorAll<HTMLElement>(
-			".metrics .metric-item",
-		);
-		if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-			(animate as any)(
-				items,
-				{ opacity: [0, 1], y: [24, 0] },
-				{
-					duration: 0.5,
-					delay: (i: number) => i * 0.12,
-					easing: [0.22, 1, 0.36, 1],
-				},
+	document.addEventListener("astro:page-load", () => {
+		inView(".metrics", () => {
+			const items = document.querySelectorAll<HTMLElement>(
+				".metrics .metric-item",
 			);
-		}
-
-		document.querySelectorAll<HTMLElement>(".metrics .count").forEach((el) => {
-			const target = parseFloat(el.dataset.target ?? "0");
-			const suffix = el.dataset.suffix ?? "";
-			const isLarge = target >= 1000;
-
-			const format = (v: number) =>
-				isLarge
-					? Math.round(v).toLocaleString("en-AU")
-					: Math.round(v).toString();
-
-			if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-				el.textContent = format(target);
-				return;
+			if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+				(animate as any)(
+					items,
+					{ opacity: [0, 1], y: [24, 0] },
+					{
+						duration: 0.5,
+						delay: (i: number) => i * 0.12,
+						easing: [0.22, 1, 0.36, 1],
+					},
+				);
 			}
 
-			el.textContent = format(0) + suffix;
-			(animate as any)(0, target, {
-				duration: isLarge ? 2.2 : 1.4,
-				easing: [0.22, 1, 0.36, 1],
-				onUpdate: (v: number) => {
-					el.textContent = format(v) + suffix;
-				},
-			});
+			document
+				.querySelectorAll<HTMLElement>(".metrics .count")
+				.forEach((el) => {
+					const target = parseFloat(el.dataset.target ?? "0");
+					const suffix = el.dataset.suffix ?? "";
+					const isLarge = target >= 1000;
+
+					const format = (v: number) =>
+						isLarge
+							? Math.round(v).toLocaleString("en-AU")
+							: Math.round(v).toString();
+
+					if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+						el.textContent = format(target);
+						return;
+					}
+
+					el.textContent = format(0) + suffix;
+					(animate as any)(0, target, {
+						duration: isLarge ? 2.2 : 1.4,
+						easing: [0.22, 1, 0.36, 1],
+						onUpdate: (v: number) => {
+							el.textContent = format(v) + suffix;
+						},
+					});
+				});
 		});
 	});
 </script>

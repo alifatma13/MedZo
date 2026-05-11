@@ -15,7 +15,7 @@ export const footerContent: FooterContent = {
     { label: "Why MedZo", href: "#why-medzo" },
     { label: "Testimonials", href: "#testimonials" },
     { label: "FAQ", href: "#faq" },
-    { label: "Book a Consult", href: "#contact" },
+    { label: "Book a Consult", href: "/contact" },
   ],
   contact: {
     email: "hello@medzo.com.au",

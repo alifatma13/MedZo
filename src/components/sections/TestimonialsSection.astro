@@ -205,29 +205,32 @@ const soloInitials = solo.name
 
 <script>
 	import { animate, inView, stagger } from "motion";
-	if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-		inView(".testimonials", () => {
-			const title = document.querySelector(".testimonials .section-title");
-			const solo = document.querySelector(".testimonials .solo-quote");
-			const cards = document.querySelectorAll(".testimonials .card");
-			if (title)
-				(animate as any)(
-					title,
-					{ clipPath: ["inset(0 0 100% 0)", "inset(0 0 0% 0)"], y: [20, 0] },
-					{ duration: 0.65, easing: [0.22, 1, 0.36, 1] },
-				);
-			if (solo)
-				(animate as any)(
-					solo,
-					{ opacity: [0, 1], y: [24, 0] },
-					{ duration: 0.6, easing: [0.22, 1, 0.36, 1] },
-				);
-			if (cards.length)
-				(animate as any)(
-					cards,
-					{ opacity: [0, 1], y: [32, 0] },
-					{ duration: 0.5, delay: stagger(0.1), easing: [0.22, 1, 0.36, 1] },
-				);
-		});
-	}
+
+	document.addEventListener("astro:page-load", () => {
+		if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+			inView(".testimonials", () => {
+				const title = document.querySelector(".testimonials .section-title");
+				const solo = document.querySelector(".testimonials .solo-quote");
+				const cards = document.querySelectorAll(".testimonials .card");
+				if (title)
+					(animate as any)(
+						title,
+						{ clipPath: ["inset(0 0 100% 0)", "inset(0 0 0% 0)"], y: [20, 0] },
+						{ duration: 0.65, easing: [0.22, 1, 0.36, 1] },
+					);
+				if (solo)
+					(animate as any)(
+						solo,
+						{ opacity: [0, 1], y: [24, 0] },
+						{ duration: 0.6, easing: [0.22, 1, 0.36, 1] },
+					);
+				if (cards.length)
+					(animate as any)(
+						cards,
+						{ opacity: [0, 1], y: [32, 0] },
+						{ duration: 0.5, delay: stagger(0.1), easing: [0.22, 1, 0.36, 1] },
+					);
+			});
+		}
+	});
 </script>
