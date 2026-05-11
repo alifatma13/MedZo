@@ -99,5 +99,10 @@ export const contact: ContactContent = {
 				email: "nsw@medzo.com.au",
 			},
 		],
+		comingSoon: {
+			badge: "Coming Soon",
+			heading: "Expanding Soon",
+			body: "We are growing across Australia. New locations are on the way - stay tuned.",
+		},
 	},
 };

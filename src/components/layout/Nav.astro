@@ -470,81 +470,86 @@ import { icons } from "../../lib/utils/icons";
 </style>
 
 <script>
-	const header = document.querySelector(".nav-header");
-	const hamburger = document.getElementById("hamburger-btn");
-	const backdrop = document.getElementById("drawer-backdrop");
-	const drawer = document.getElementById("mobile-drawer");
-	const closeBtn = document.getElementById("drawer-close-btn");
-	const drawerLinks = drawer?.querySelectorAll(".drawer-link, .drawer-cta");
+	let _scrollHandler: (() => void) | null = null;
+	let _keydownHandler: ((e: KeyboardEvent) => void) | null = null;
 
-	// Scroll shadow on desktop nav
-	window.addEventListener(
-		"scroll",
-		() => {
+	document.addEventListener("astro:page-load", () => {
+		const header = document.querySelector(".nav-header");
+		const hamburger = document.getElementById("hamburger-btn");
+		const backdrop = document.getElementById("drawer-backdrop");
+		const drawer = document.getElementById("mobile-drawer");
+		const closeBtn = document.getElementById("drawer-close-btn");
+		const drawerLinks = drawer?.querySelectorAll(".drawer-link, .drawer-cta");
+
+		// Replace scroll listener so it targets the current header element
+		if (_scrollHandler) window.removeEventListener("scroll", _scrollHandler);
+		_scrollHandler = () => {
 			header?.classList.toggle("scrolled", window.scrollY > 10);
-		},
-		{ passive: true },
-	);
+		};
+		window.addEventListener("scroll", _scrollHandler, { passive: true });
 
-	function openDrawer() {
-		drawer?.classList.add("is-open");
-		backdrop?.classList.add("is-open");
-		drawer?.removeAttribute("aria-hidden");
-		hamburger?.setAttribute("aria-expanded", "true");
-		hamburger?.classList.add("is-open");
-		document.body.style.overflow = "hidden";
-		// Focus first interactive element inside drawer
-		setTimeout(() => {
-			(drawer?.querySelector(".drawer-link") as HTMLElement | null)?.focus();
-		}, 50);
-	}
-
-	function closeDrawer() {
-		drawer?.classList.remove("is-open");
-		backdrop?.classList.remove("is-open");
-		drawer?.setAttribute("aria-hidden", "true");
-		hamburger?.setAttribute("aria-expanded", "false");
-		hamburger?.classList.remove("is-open");
-		document.body.style.overflow = "";
-		hamburger?.focus();
-	}
-
-	hamburger?.addEventListener("click", () => {
-		drawer?.classList.contains("is-open") ? closeDrawer() : openDrawer();
-	});
-
-	closeBtn?.addEventListener("click", closeDrawer);
-	backdrop?.addEventListener("click", closeDrawer);
-
-	drawerLinks?.forEach((link) => {
-		link.addEventListener("click", closeDrawer);
-	});
-
-	document.addEventListener("keydown", (e) => {
-		if (!drawer?.classList.contains("is-open")) return;
-		if (e.key === "Escape") {
-			closeDrawer();
-			return;
+		function openDrawer() {
+			drawer?.classList.add("is-open");
+			backdrop?.classList.add("is-open");
+			drawer?.removeAttribute("aria-hidden");
+			hamburger?.setAttribute("aria-expanded", "true");
+			hamburger?.classList.add("is-open");
+			document.body.style.overflow = "hidden";
+			setTimeout(() => {
+				(drawer?.querySelector(".drawer-link") as HTMLElement | null)?.focus();
+			}, 50);
 		}
-		if (e.key !== "Tab") return;
 
-		const focusable = Array.from(
-			drawer.querySelectorAll<HTMLElement>("a[href], button:not([disabled])"),
-		);
-		if (!focusable.length) return;
-		const first = focusable[0];
-		const last = focusable[focusable.length - 1];
-
-		if (e.shiftKey) {
-			if (document.activeElement === first) {
-				e.preventDefault();
-				last.focus();
-			}
-		} else {
-			if (document.activeElement === last) {
-				e.preventDefault();
-				first.focus();
-			}
+		function closeDrawer() {
+			drawer?.classList.remove("is-open");
+			backdrop?.classList.remove("is-open");
+			drawer?.setAttribute("aria-hidden", "true");
+			hamburger?.setAttribute("aria-expanded", "false");
+			hamburger?.classList.remove("is-open");
+			document.body.style.overflow = "";
+			hamburger?.focus();
 		}
+
+		hamburger?.addEventListener("click", () => {
+			drawer?.classList.contains("is-open") ? closeDrawer() : openDrawer();
+		});
+
+		closeBtn?.addEventListener("click", closeDrawer);
+		backdrop?.addEventListener("click", closeDrawer);
+
+		drawerLinks?.forEach((link) => {
+			link.addEventListener("click", closeDrawer);
+		});
+
+		// Replace keydown listener to close over the fresh drawer reference
+		if (_keydownHandler) document.removeEventListener("keydown", _keydownHandler);
+		_keydownHandler = (e: KeyboardEvent) => {
+			if (!drawer?.classList.contains("is-open")) return;
+			if (e.key === "Escape") {
+				closeDrawer();
+				return;
+			}
+			if (e.key !== "Tab") return;
+
+			const focusable = Array.from(
+				drawer.querySelectorAll<HTMLElement>("a[href], button:not([disabled])"),
+			);
+			if (!focusable.length) return;
+			const first = focusable[0];
+			const last = focusable[focusable.length - 1];
+
+			if (e.shiftKey) {
+				if (document.activeElement === first) {
+					e.preventDefault();
+					last.focus();
+				}
+			} else {
+				if (document.activeElement === last) {
+					e.preventDefault();
+					first.focus();
+				}
+			}
+		};
+		document.addEventListener("keydown", _keydownHandler);
 	});
 </script>
