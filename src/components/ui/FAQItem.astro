@@ -1,7 +1,8 @@
 ---
 import type { FAQItem } from "../../types/FAQItem";
+import { icons } from "../../lib/utils/icons";
 interface Props extends FAQItem {
-  index: number;
+	index: number;
 }
 const { question, answer, index } = Astro.props;
 const panelId = `faq-panel-${index}`;
@@ -9,86 +10,84 @@ const triggerId = `faq-trigger-${index}`;
 ---
 
 <div class="faq-item">
-  <button
-    class="faq-trigger"
-    id={triggerId}
-    aria-expanded={index === 0 ? "true" : "false"}
-    aria-controls={panelId}
-  >
-    <span class="question-text">{question}</span>
-    <span class="chevron" aria-hidden="true">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="6 9 12 15 18 9"/>
-      </svg>
-    </span>
-  </button>
-  <div
-    class="faq-panel"
-    id={panelId}
-    role="region"
-    aria-labelledby={triggerId}
-    style={index === 0 ? "" : "display:none"}
-  >
-    <p class="answer">{answer}</p>
-  </div>
+	<button
+		class="faq-trigger"
+		id={triggerId}
+		aria-expanded={index === 0 ? "true" : "false"}
+		aria-controls={panelId}
+	>
+		<span class="question-text">{question}</span>
+		<span class="chevron" aria-hidden="true">
+			<Fragment set:html={icons["faq-chevron"]} />
+		</span>
+	</button>
+	<div
+		class="faq-panel"
+		id={panelId}
+		role="region"
+		aria-labelledby={triggerId}
+		style={index === 0 ? "" : "display:none"}
+	>
+		<p class="answer">{answer}</p>
+	</div>
 </div>
 
 <style>
-  .faq-item {
-    border: 1px solid #e5e7eb;
-    border-radius: 0.75rem;
-    background: #fff;
-    overflow: hidden;
-  }
-  .faq-trigger {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 1.25rem 1.5rem;
-    background: none;
-    border: none;
-    cursor: pointer;
-    text-align: left;
-  }
-  .faq-trigger:focus-visible {
-    outline: 2px solid var(--color-accent);
-    outline-offset: -2px;
-    border-radius: 0.75rem;
-  }
-  .question-text {
-    font-size: var(--text-base);
-    font-weight: var(--weight-semibold);
-    color: var(--color-primary);
-    line-height: 1.5;
-    flex: 1;
-  }
-  .chevron {
-    flex-shrink: 0;
-    width: 2rem;
-    height: 2rem;
-    border-radius: 50%;
-    background: #f3f4f6;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #6b7280;
-    transition: transform 0.3s ease;
-  }
-  .faq-trigger[aria-expanded="true"] .chevron {
-    transform: rotate(180deg);
-    background: #f3f4f6;
-    color: #6b7280;
-  }
-  .faq-panel {
-    overflow: hidden;
-  }
-  .answer {
-    margin: 0;
-    padding: 0 1.5rem 1.25rem;
-    font-size: var(--text-base);
-    color: var(--color-text-body);
-    line-height: var(--leading-normal);
-  }
+	.faq-item {
+		border: 1px solid #e5e7eb;
+		border-radius: 0.75rem;
+		background: #fff;
+		overflow: hidden;
+	}
+	.faq-trigger {
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		padding: 1.25rem 1.5rem;
+		background: none;
+		border: none;
+		cursor: pointer;
+		text-align: left;
+	}
+	.faq-trigger:focus-visible {
+		outline: 2px solid var(--color-accent);
+		outline-offset: -2px;
+		border-radius: 0.75rem;
+	}
+	.question-text {
+		font-size: var(--text-base);
+		font-weight: var(--weight-semibold);
+		color: var(--color-primary);
+		line-height: 1.5;
+		flex: 1;
+	}
+	.chevron {
+		flex-shrink: 0;
+		width: 2rem;
+		height: 2rem;
+		border-radius: 50%;
+		background: #f3f4f6;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: #6b7280;
+		transition: transform 0.3s ease;
+	}
+	.faq-trigger[aria-expanded="true"] .chevron {
+		transform: rotate(180deg);
+		background: #f3f4f6;
+		color: #6b7280;
+	}
+	.faq-panel {
+		overflow: hidden;
+	}
+	.answer {
+		margin: 0;
+		padding: 0 1.5rem 1.25rem;
+		font-size: var(--text-base);
+		color: var(--color-text-body);
+		line-height: var(--leading-normal);
+	}
 </style>

@@ -6,16 +6,20 @@ interface Props {
 const { metrics } = Astro.props;
 ---
 
-<section class="metrics">
+<section class="metrics" aria-label="Key statistics">
   <div class="container">
     {metrics.map((m) => (
-      <div class="metric-item">
-        <p class="metric-value">
+      <div
+        class="metric-item"
+        role="img"
+        aria-label={`${m.value >= 1000 ? m.value.toLocaleString("en-AU") : m.value}${m.suffix} — ${m.label}`}
+      >
+        <p class="metric-value" aria-hidden="true">
           <span class="count" data-target={m.value} data-suffix={m.suffix}>
             {m.value >= 1000 ? m.value.toLocaleString("en-AU") : m.value}{m.suffix}
           </span>
         </p>
-        <p class="metric-label">{m.label}</p>
+        <p class="metric-label" aria-hidden="true">{m.label}</p>
       </div>
     ))}
   </div>
@@ -63,7 +67,8 @@ const { metrics } = Astro.props;
   }
   @media (max-width: 640px) {
     .container { grid-template-columns: 1fr; }
-    .metric-item { padding: 1.5rem 0; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.12); }
+    .metric-item { padding: 1.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.12); }
+    .metric-item:not(:last-child) { border-right: none; }
     .metric-item:last-child { border-bottom: none; }
   }
 </style>

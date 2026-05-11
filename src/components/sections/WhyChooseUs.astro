@@ -4,107 +4,204 @@ import whyImage from "../../res/why_us.png";
 import WhyItem from "../ui/WhyItem.astro";
 import type { WhyItem as WhyItemType } from "../../types/WhyItem";
 interface Props {
-  heading: string;
-  items: WhyItemType[];
+	heading: string;
+	items: WhyItemType[];
+	imageAlt: string;
 }
-const { heading, items } = Astro.props;
+const { heading, items, imageAlt } = Astro.props;
 ---
 
 <section class="why" id="why-medzo">
-  <div class="blob blob--a" aria-hidden="true"></div>
-  <div class="blob blob--b" aria-hidden="true"></div>
-  <div class="container">
-    <div class="image-col">
-      <Image
-        src={whyImage}
-        alt="MedZo team working with a medical practice"
-        class="section-img"
-        widths={[480, 640, 900, 1200, 1600]}
-        sizes="(max-width: 768px) 100vw, 50vw"
-        format="webp"
-        quality={90}
-        loading="lazy"
-      />
-    </div>
-    <div class="content-col">
-      <h2 class="section-title">{heading}</h2>
-      <ul class="items-list">
-        {items.map((item) => <li><WhyItem {...item} /></li>)}
-      </ul>
-    </div>
-  </div>
+	<div class="blob blob--a" aria-hidden="true"></div>
+	<div class="blob blob--b" aria-hidden="true"></div>
+	<div class="container">
+		<div class="image-col">
+			<Image
+				src={whyImage}
+				alt={imageAlt}
+				class="section-img"
+				widths={[480, 640, 900, 1200, 1600]}
+				sizes="(max-width: 768px) 100vw, 50vw"
+				format="webp"
+				quality={90}
+				loading="lazy"
+			/>
+		</div>
+		<div class="content-col">
+			<h2 class="section-title">{heading}</h2>
+			<ul class="items-list">
+				{
+					items.map((item) => (
+						<li>
+							<WhyItem {...item} />
+						</li>
+					))
+				}
+			</ul>
+		</div>
+	</div>
 </section>
 
 <style>
-  .why { background: #f0f6ff; padding: 6rem 1.5rem; position: relative; overflow: hidden; }
-  .container { max-width: 1280px; margin: 0 auto; padding: 0 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; position: relative; z-index: 1; }
+	.why {
+		background: #f0f6ff;
+		padding: 6rem 1.5rem;
+		position: relative;
+		overflow: hidden;
+	}
+	.container {
+		max-width: 1280px;
+		margin: 0 auto;
+		padding: 0 2rem;
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 4rem;
+		align-items: center;
+		position: relative;
+		z-index: 1;
+	}
 
-  /* Blobs */
-  .blob {
-    position: absolute;
-    pointer-events: none;
-    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
-    animation: why-blob-morph 14s ease-in-out infinite;
-  }
-  .blob--a {
-    width: clamp(280px, 36vw, 500px);
-    aspect-ratio: 1;
-    top: -10%;
-    right: -8%;
-    background: radial-gradient(
-      ellipse at 50% 50%,
-      rgba(0, 150, 230, 0.13) 0%,
-      rgba(0, 100, 200, 0.07) 45%,
-      transparent 80%
-    );
-    animation-duration: 16s;
-  }
-  .blob--b {
-    width: clamp(260px, 36vw, 500px);
-    aspect-ratio: 1;
-    bottom: -10%;
-    left: -8%;
-    background: radial-gradient(
-      ellipse at 45% 55%,
-      rgba(0, 80, 180, 0.20) 0%,
-      rgba(0, 193, 253, 0.11) 45%,
-      rgba(0, 50, 125, 0.04) 65%,
-      transparent 85%
-    );
-    animation-duration: 20s;
-    animation-delay: -7s;
-    border-radius: 40% 60% 70% 30% / 50% 40% 60% 50%;
-  }
-  @keyframes why-blob-morph {
-    0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
-    25%       { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
-    50%       { border-radius: 50% 40% 60% 30% / 30% 60% 70% 40%; }
-    75%       { border-radius: 40% 60% 40% 60% / 70% 30% 60% 40%; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .blob { animation: none; }
-  }
-  .image-col { border-radius: 1rem; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0,0,0,.1), 0 8px 10px -6px rgba(0,0,0,.1); }
-  .section-img { width: 100%; height: 100%; object-fit: cover; display: block; aspect-ratio: 1407/768; }
-  .content-col { display: flex; flex-direction: column; gap: 2rem; }
-  .section-title { font-size: var(--text-4xl); font-weight: var(--weight-semibold); color: var(--color-primary); letter-spacing: var(--tracking-tight); margin: 0; }
-  .items-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2rem; }
-  @media (max-width: 768px) { .container { grid-template-columns: 1fr; } .image-col { display: none; } }
+	/* Blobs */
+	.blob {
+		position: absolute;
+		pointer-events: none;
+		border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+		animation: why-blob-morph 14s ease-in-out infinite;
+	}
+	.blob--a {
+		width: clamp(280px, 36vw, 500px);
+		aspect-ratio: 1;
+		top: 50%;
+		right: -12%;
+		transform: translateY(-50%);
+		background: radial-gradient(
+			ellipse at 50% 50%,
+			rgba(0, 150, 230, 0.13) 0%,
+			rgba(0, 100, 200, 0.07) 45%,
+			transparent 80%
+		);
+		animation-duration: 16s;
+	}
+	.blob--b {
+		width: clamp(280px, 36vw, 500px);
+		aspect-ratio: 1;
+		top: 50%;
+		left: -12%;
+		transform: translateY(-50%);
+		background: radial-gradient(
+			ellipse at 50% 50%,
+			rgba(0, 150, 230, 0.13) 0%,
+			rgba(0, 100, 200, 0.07) 45%,
+			transparent 80%
+		);
+		animation-duration: 16s;
+		animation-delay: -7s;
+	}
+	@keyframes why-blob-morph {
+		0%,
+		100% {
+			border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+		}
+		25% {
+			border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+		}
+		50% {
+			border-radius: 50% 40% 60% 30% / 30% 60% 70% 40%;
+		}
+		75% {
+			border-radius: 40% 60% 40% 60% / 70% 30% 60% 40%;
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.blob {
+			animation: none;
+		}
+	}
+	.image-col {
+		border-radius: 1rem;
+		overflow: hidden;
+		box-shadow:
+			0 20px 25px -5px rgba(0, 0, 0, 0.1),
+			0 8px 10px -6px rgba(0, 0, 0, 0.1);
+	}
+	.section-img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+		aspect-ratio: 1407/768;
+	}
+	.content-col {
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
+	}
+	.section-title {
+		font-size: var(--text-4xl);
+		font-weight: var(--weight-semibold);
+		color: var(--color-primary);
+		letter-spacing: var(--tracking-tight);
+		margin: 0;
+	}
+	.items-list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
+	}
+	@media (max-width: 768px) {
+		.container {
+			grid-template-columns: 1fr;
+		}
+		.image-col {
+			display: none;
+		}
+		.blob--a {
+			width: clamp(220px, 65vw, 320px);
+			top: -8%;
+			right: -15%;
+			transform: none;
+		}
+		.blob--b {
+			width: clamp(220px, 65vw, 320px);
+			top: auto;
+			bottom: -8%;
+			left: -15%;
+			transform: none;
+		}
+	}
 </style>
 
 <script>
-  import { animate, inView, stagger } from "motion";
-  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    inView(".why", () => {
-      const imageCol = document.querySelector(".why .image-col");
-      const title = document.querySelector(".why .section-title");
-      const items = document.querySelectorAll(".why .items-list li");
-      // @ts-ignore – motion overloads don't accept opacity/clipPath/transform shorthands on Element references
-      if (imageCol) animate(imageCol, { opacity: [0, 1], x: [-32, 0] }, { duration: 0.6, easing: [0.22, 1, 0.36, 1] });
-      // @ts-ignore
-      if (title) animate(title, { clipPath: ["inset(0 0 100% 0)", "inset(0 0 0% 0)"], y: [20, 0] }, { duration: 0.65, delay: 0.1, easing: [0.22, 1, 0.36, 1] });
-      // @ts-ignore
-      if (items.length) animate(items, { opacity: [0, 1], x: [20, 0] }, { duration: 0.45, delay: stagger(0.1), easing: [0.22, 1, 0.36, 1] });
-    });
-  }
+	import { animate, inView, stagger } from "motion";
+	if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+		inView(".why", () => {
+			const imageCol = document.querySelector(".why .image-col");
+			const title = document.querySelector(".why .section-title");
+			const items = document.querySelectorAll(".why .items-list li");
+			// @ts-ignore – motion overloads don't accept opacity/clipPath/transform shorthands on Element references
+			if (imageCol)
+				animate(
+					imageCol,
+					{ opacity: [0, 1], x: [-32, 0] },
+					{ duration: 0.6, easing: [0.22, 1, 0.36, 1] },
+				);
+			// @ts-ignore
+			if (title)
+				animate(
+					title,
+					{ clipPath: ["inset(0 0 100% 0)", "inset(0 0 0% 0)"], y: [20, 0] },
+					{ duration: 0.65, delay: 0.1, easing: [0.22, 1, 0.36, 1] },
+				);
+			// @ts-ignore
+			if (items.length)
+				animate(
+					items,
+					{ opacity: [0, 1], x: [20, 0] },
+					{ duration: 0.45, delay: stagger(0.1), easing: [0.22, 1, 0.36, 1] },
+				);
+		});
+	}
 </script>

@@ -6,7 +6,7 @@ const { iconName, title, description } = Astro.props;
 ---
 
 <div class="card">
-  <div class="icon-wrap">
+  <div class="icon-wrap" aria-hidden="true">
     <Fragment set:html={icons[iconName] ?? ""} />
   </div>
   <h3 class="card-title">{title}</h3>
@@ -70,8 +70,8 @@ const { iconName, title, description } = Astro.props;
     transform: scale(1.12);
   }
   .icon-wrap svg {
-    width: 22px;
-    height: 22px;
+    width: 100%;
+    height: 100%;
     display: block;
   }
   .card-title {

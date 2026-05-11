@@ -21,4 +21,13 @@ export const footerContent: FooterContent = {
     email: "hello@medzo.com.au",
     location: "Australia-wide",
   },
+  acknowledgement:
+    "We acknowledge the Traditional Owners and Custodians of Country throughout Australia. We recognise their continuing connection to land, waters and community and acknowledge their ongoing contribution to the health system and community. We pay our respects to Elders past, present and emerging.",
+  copyright: "MedZo. All rights reserved.",
+  legalLinks: [
+    { label: "Privacy Policy", href: "/privacy" },
+    { label: "Terms of Service", href: "/terms" },
+  ],
+  logoAlt: "MedZo logo",
+  wordmark: "MedZo",
 };

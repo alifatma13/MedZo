@@ -4,7 +4,7 @@ interface Props extends TickerContent {}
 const { intro, specialties } = Astro.props;
 ---
 
-<section class="ticker">
+<section class="ticker" aria-label="Specialties we support">
   <canvas class="dot-wave" aria-hidden="true"></canvas>
 
   <div class="container">
@@ -53,7 +53,7 @@ const { intro, specialties } = Astro.props;
       {
         cy: 0.50,   // center Y as fraction of height
         amp: 0.20,  // amplitude as fraction of height
-        cycles: 2.2,
+        cycles: 2,
         phase: 0,
         speed: 0.38,
         rows: 11,
@@ -65,7 +65,7 @@ const { intro, specialties } = Astro.props;
       {
         cy: 0.55,
         amp: 0.15,
-        cycles: 1.8,
+        cycles: 2,
         phase: Math.PI * 0.55,
         speed: 0.52,
         rows: 9,

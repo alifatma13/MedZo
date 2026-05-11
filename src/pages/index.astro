@@ -1,4 +1,6 @@
 ---
+import { getImage } from "astro:assets";
+import heroImageSrc from "../res/hero_image.png";
 import Layout from "../layouts/Layout.astro";
 import HeroSection from "../components/sections/HeroSection.astro";
 import SpecialtyTicker from "../components/sections/SpecialtyTicker.astro";
@@ -8,6 +10,14 @@ import TestimonialsSection from "../components/sections/TestimonialsSection.astr
 import FAQSection from "../components/sections/FAQSection.astro";
 import FinalCTA from "../components/sections/FinalCTA.astro";
 import MetricsSection from "../components/sections/MetricsSection.astro";
+
+const heroImageOptimized = await getImage({
+	src: heroImageSrc,
+	width: 960,
+	format: "webp",
+	quality: 82,
+});
+
 import {
 	hero,
 	servicesHeading,
@@ -16,23 +26,33 @@ import {
 	whyItems,
 	testimonialsHeading,
 	testimonials,
+	testimonialsViewMore,
 	faqHeading,
 	faqs,
 	metrics,
 	finalCta,
 	ticker,
+	whyImageAlt,
 } from "../lib/content/index";
 ---
 
-<Layout title="MedZo - Medical Practice Management for Australian Clinics">
+<Layout>
+	<link
+		slot="head"
+		rel="preload"
+		as="image"
+		href={heroImageOptimized.src}
+		type="image/webp"
+	/>
 	<HeroSection {...hero} />
 	<SpecialtyTicker {...ticker} />
 	<MetricsSection metrics={metrics} />
 	<ServicesSection heading={servicesHeading} services={services} />
-	<WhyChooseUs heading={whyHeading} items={whyItems} />
+	<WhyChooseUs heading={whyHeading} items={whyItems} imageAlt={whyImageAlt} />
 	<TestimonialsSection
 		heading={testimonialsHeading}
 		testimonials={testimonials}
+		viewMore={testimonialsViewMore}
 	/>
 	<FAQSection heading={faqHeading} faqs={faqs} />
 	<FinalCTA {...finalCta} />

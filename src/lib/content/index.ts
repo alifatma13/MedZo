@@ -1,7 +1,7 @@
 export { hero } from "./hero";
 export { servicesHeading, services } from "./services";
-export { whyHeading, whyItems } from "./whyChooseUs";
-export { testimonialsHeading, testimonials } from "./testimonials";
+export { whyHeading, whyItems, whyImageAlt } from "./whyChooseUs";
+export { testimonialsHeading, testimonials, testimonialsViewMore } from "./testimonials";
 export { faqHeading, faqs } from "./faq";
 export { metrics } from "./metrics";
 export { finalCta } from "./finalCta";

@@ -6,13 +6,27 @@
 
 
 /* ============================================================
+   FONT FALLBACK METRICS
+   Approximate Georgia's metrics to Podkova's so the layout
+   barely shifts when the web font swaps in.
+   ============================================================ */
+@font-face {
+  font-family: 'FallbackPodkova';
+  src: local('Georgia'), local('Times New Roman');
+  size-adjust: 96%;
+  ascent-override: 87%;
+  descent-override: 22%;
+  line-gap-override: 0%;
+}
+
+/* ============================================================
    TOKENS
    ============================================================ */
 :root {
   /* --- Font Families --- */
   --font-base: 'Inter Variable', 'Inter', system-ui, -apple-system, sans-serif;
   --font-nav: 'Plus Jakarta Sans Variable', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  --font-wordmark: 'Podkova', Georgia, serif;
+  --font-wordmark: 'Podkova', 'FallbackPodkova', Georgia, serif;
 
   /* --- Font Sizes (fluid-friendly rem scale) --- */
   --text-xs:   0.75rem;   /* 12px — fine print, badges */
@@ -53,6 +67,51 @@
   --color-text-heading: #0b1c30;
   --color-text-body:   #434653;
   --color-border:      #c3c6d5;
+}
+
+/* ============================================================
+   SKIP LINK
+   ============================================================ */
+.skip-link {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  z-index: 9999;
+}
+.skip-link:focus {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  width: auto;
+  height: auto;
+  padding: 0.75rem 1.5rem;
+  background: #00327d;
+  color: #fff;
+  border-radius: 0.5rem;
+  font-family: var(--font-base);
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  text-decoration: none;
+  outline: 3px solid #00c1fd;
+  outline-offset: 2px;
+}
+
+/* ============================================================
+   VISUALLY HIDDEN (accessible but not visible)
+   ============================================================ */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 /* ============================================================

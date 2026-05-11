@@ -8,4 +8,9 @@ export interface FooterContent {
   services: string[];
   company: FooterLink[];
   contact: { email: string; location: string };
+  acknowledgement: string;
+  copyright: string;
+  legalLinks: FooterLink[];
+  logoAlt: string;
+  wordmark: string;
 }

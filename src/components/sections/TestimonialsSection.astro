@@ -1,39 +1,233 @@
 ---
 import TestimonialCard from "../ui/TestimonialCard.astro";
 import type { TestimonialCard as TestimonialCardType } from "../../types/TestimonialCard";
+import { icons } from "../../lib/utils/icons";
 interface Props {
-  heading: string;
-  testimonials: TestimonialCardType[];
+	heading: string;
+	testimonials: TestimonialCardType[];
+	viewMore: { label: string; href: string };
 }
-const { heading, testimonials } = Astro.props;
+const { heading, testimonials, viewMore } = Astro.props;
+const count = testimonials.length;
+const gridClass = count === 2 ? "grid--2" : "grid--3plus";
+
+// Initials for the single-quote avatar
+const solo = testimonials[0];
+const soloInitials = solo.name
+	.split(" ")
+	.filter((w) => !["Dr.", "Mr.", "Ms.", "Mrs."].includes(w))
+	.map((w) => w[0].toUpperCase())
+	.slice(0, 2)
+	.join("");
 ---
 
 <section class="testimonials" id="testimonials">
-  <div class="container">
-    <h2 class="section-title">{heading}</h2>
-    <div class="grid">
-      {testimonials.map((t) => <TestimonialCard {...t} />)}
-    </div>
-  </div>
+	<div class="container">
+		<h2 class="section-title">{heading}</h2>
+
+		{
+			count === 1 ? (
+				<blockquote class="solo-quote">
+					<Fragment set:html={icons["quote-mark"]} />
+					<p class="solo-text">{solo.quote}</p>
+					<footer class="solo-author">
+						<div class="solo-avatar" aria-hidden="true">
+							{soloInitials}
+						</div>
+						<div class="solo-meta">
+							<cite class="solo-name">{solo.name}</cite>
+							<span class="solo-role">{solo.role}</span>
+						</div>
+					</footer>
+				</blockquote>
+			) : (
+				<div class={`grid ${gridClass}`}>
+					{testimonials.map((t) => (
+						<TestimonialCard {...t} />
+					))}
+				</div>
+			)
+		}
+
+		{
+			count > 3 && (
+				<div class="footer-row">
+					<a href={viewMore.href} class="view-more">
+						{viewMore.label}
+						<Fragment set:html={icons["testimonials-arrow"]} />
+					</a>
+				</div>
+			)
+		}
+	</div>
 </section>
 
 <style>
-  .testimonials { background: #fff; padding: 6rem 1.5rem; }
-  .container { max-width: 1280px; margin: 0 auto; padding: 0 2rem; display: flex; flex-direction: column; gap: 4rem; }
-  .section-title { font-size: var(--text-4xl); font-weight: var(--weight-semibold); color: var(--color-primary); letter-spacing: var(--tracking-tight); text-align: center; margin: 0; }
-  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
-  @media (max-width: 1024px) { .grid { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
+	.testimonials {
+		background: #fff;
+		padding: 6rem 1.5rem;
+	}
+	.container {
+		max-width: 1280px;
+		margin: 0 auto;
+		padding: 0 2rem;
+		display: flex;
+		flex-direction: column;
+		gap: 4rem;
+	}
+	.section-title {
+		font-size: var(--text-4xl);
+		font-weight: var(--weight-semibold);
+		color: var(--color-primary);
+		letter-spacing: var(--tracking-tight);
+		text-align: center;
+		margin: 0;
+	}
+
+	/* ── Single open quote ──────────────────────────────── */
+	.solo-quote {
+		margin: 0 auto;
+		max-width: 720px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		gap: 2rem;
+	}
+	.quote-mark {
+		width: 3rem;
+		height: 3rem;
+		fill: var(--color-accent);
+		opacity: 0.5;
+		flex-shrink: 0;
+	}
+	.solo-text {
+		font-size: clamp(var(--text-lg), 2.2vw, var(--text-2xl));
+		font-style: italic;
+		color: var(--color-text-heading);
+		line-height: var(--leading-loose);
+		margin: 0;
+	}
+	.solo-author {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		font-style: normal;
+	}
+	.solo-avatar {
+		width: 52px;
+		height: 52px;
+		border-radius: 9999px;
+		background: linear-gradient(
+			135deg,
+			var(--color-accent),
+			var(--color-primary)
+		);
+		flex-shrink: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: #fff;
+		font-size: 0.8rem;
+		font-weight: var(--weight-bold);
+		letter-spacing: 0.04em;
+	}
+	.solo-meta {
+		display: flex;
+		flex-direction: column;
+		text-align: left;
+	}
+	.solo-name {
+		font-size: var(--text-base);
+		font-weight: var(--weight-semibold);
+		color: var(--color-primary);
+		font-style: normal;
+	}
+	.solo-role {
+		font-size: var(--text-sm);
+		color: var(--color-text-body);
+	}
+
+	/* ── Card grid (2+) ────────────────────────────────── */
+	.grid {
+		display: grid;
+		gap: 2rem;
+	}
+	.grid--2 {
+		grid-template-columns: repeat(2, 1fr);
+		max-width: 900px;
+	}
+	.grid--3plus {
+		grid-template-columns: repeat(3, 1fr);
+	}
+
+	@media (max-width: 1024px) {
+		.grid--3plus {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+	@media (max-width: 640px) {
+		.grid--2,
+		.grid--3plus {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	/* ── View more ──────────────────────────────────────── */
+	.footer-row {
+		display: flex;
+		justify-content: flex-end;
+	}
+	.view-more {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		font-size: var(--text-sm);
+		font-weight: var(--weight-semibold);
+		color: var(--color-primary);
+		text-decoration: none;
+		border-bottom: 2px solid transparent;
+		padding-bottom: 0.1rem;
+		transition:
+			border-color 0.2s,
+			gap 0.2s;
+	}
+	.view-more:hover {
+		border-color: var(--color-accent);
+		gap: 0.75rem;
+	}
+	.view-more:focus-visible {
+		outline: 2px solid var(--color-accent);
+		outline-offset: 3px;
+		border-radius: 2px;
+	}
 </style>
 
 <script>
-  import { animate, inView, stagger } from "motion";
-  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    inView(".testimonials", () => {
-      const title = document.querySelector(".testimonials .section-title");
-      const cards = document.querySelectorAll(".testimonials .card");
-      if (title) (animate as any)(title, { clipPath: ["inset(0 0 100% 0)", "inset(0 0 0% 0)"], y: [20, 0] }, { duration: 0.65, easing: [0.22, 1, 0.36, 1] });
-      if (cards.length) (animate as any)(cards, { opacity: [0, 1], y: [32, 0] }, { duration: 0.5, delay: stagger(0.1), easing: [0.22, 1, 0.36, 1] });
-    });
-  }
+	import { animate, inView, stagger } from "motion";
+	if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+		inView(".testimonials", () => {
+			const title = document.querySelector(".testimonials .section-title");
+			const solo = document.querySelector(".testimonials .solo-quote");
+			const cards = document.querySelectorAll(".testimonials .card");
+			if (title)
+				(animate as any)(
+					title,
+					{ clipPath: ["inset(0 0 100% 0)", "inset(0 0 0% 0)"], y: [20, 0] },
+					{ duration: 0.65, easing: [0.22, 1, 0.36, 1] },
+				);
+			if (solo)
+				(animate as any)(
+					solo,
+					{ opacity: [0, 1], y: [24, 0] },
+					{ duration: 0.6, easing: [0.22, 1, 0.36, 1] },
+				);
+			if (cards.length)
+				(animate as any)(
+					cards,
+					{ opacity: [0, 1], y: [32, 0] },
+					{ duration: 0.5, delay: stagger(0.1), easing: [0.22, 1, 0.36, 1] },
+				);
+		});
+	}
 </script>

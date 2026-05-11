@@ -1,6 +1,7 @@
 import type { WhyItem } from "../../types/WhyItem";
 
 export const whyHeading = "Why doctors choose MedZo";
+export const whyImageAlt = "MedZo team working with a medical practice";
 
 export const whyItems: WhyItem[] = [
   {

@@ -20,5 +20,15 @@ pnpm-debug.log*
 # macOS-specific files
 .DS_Store
 
-# jetbrains setting folder
+# Windows-specific files
+Thumbs.db
+desktop.ini
+
+# VS Code
+.vscode/
+
+# JetBrains
 .idea/
+
+# Netlify
+.netlify/
