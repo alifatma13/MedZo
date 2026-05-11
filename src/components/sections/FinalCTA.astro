@@ -6,57 +6,68 @@ const { heading, buttonLabel, buttonHref } = Astro.props;
 ---
 
 <section class="final-cta" id="contact">
-  <div class="gradient-overlay"></div>
-  <div class="container">
-    <h2 class="cta-heading">{heading}</h2>
-    <Button label={buttonLabel} href={buttonHref} variant="accent" />
-  </div>
+	<div class="gradient-overlay"></div>
+	<div class="container">
+		<h2 class="cta-heading">{heading}</h2>
+		<Button label={buttonLabel} href={buttonHref} variant="accent" />
+	</div>
 </section>
 
 <style>
-  .final-cta {
-    background: var(--color-primary);
-    padding: 6rem 1.5rem;
-    position: relative;
-    overflow: hidden;
-    text-align: center;
-  }
-  .gradient-overlay {
-    position: absolute;
-    inset: 0;
-    opacity: 0.1;
-    background: radial-gradient(ellipse at center, #fff 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .container {
-    position: relative;
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 0 2rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2rem;
-  }
-  .cta-heading {
-    font-size: clamp(1.75rem, 3.5vw, 3rem);
-    font-weight: var(--weight-bold);
-    color: #fff;
-    letter-spacing: var(--tracking-tight);
-    margin: 0;
-    max-width: 72rem;
-    line-height: 1.2;
-  }
+	.final-cta {
+		background: var(--color-primary);
+		padding: 6rem 1.5rem;
+		position: relative;
+		overflow: hidden;
+		text-align: center;
+	}
+	.gradient-overlay {
+		position: absolute;
+		inset: 0;
+		opacity: 0.1;
+		background: radial-gradient(ellipse at center, #fff 0%, transparent 70%);
+		pointer-events: none;
+	}
+	.container {
+		position: relative;
+		max-width: 1280px;
+		margin: 0 auto;
+		padding: 0 2rem;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 2rem;
+	}
+	.cta-heading {
+		font-size: clamp(1.75rem, 3.5vw, 3rem);
+		font-weight: var(--weight-bold);
+		color: #fff;
+		letter-spacing: var(--tracking-tight);
+		margin: 0;
+		max-width: 72rem;
+		line-height: 1.2;
+	}
+	@media (max-width: 640px) {
+		.final-cta {
+			padding: 4rem 1.25rem;
+		}
+	}
 </style>
 
 <script>
-  import { animate, inView } from "motion";
-  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    inView(".final-cta", () => {
-      // @ts-ignore — motion v12 types don't reflect runtime CSS property support
-      animate(".final-cta .cta-heading", { opacity: [0, 1], y: [24, 0] }, { duration: 0.6, easing: [0.22, 1, 0.36, 1] });
-      // @ts-ignore
-      animate(".final-cta .btn", { opacity: [0, 1], y: [16, 0] }, { duration: 0.5, delay: 0.25, easing: [0.22, 1, 0.36, 1] });
-    });
-  }
+	import { animate, inView } from "motion";
+	if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+		inView(".final-cta", () => {
+			(animate as any)(
+				".final-cta .cta-heading",
+				{ opacity: [0, 1], y: [24, 0] },
+				{ duration: 0.6, easing: [0.22, 1, 0.36, 1] },
+			);
+			(animate as any)(
+				".final-cta .btn",
+				{ opacity: [0, 1], y: [16, 0] },
+				{ duration: 0.5, delay: 0.25, easing: [0.22, 1, 0.36, 1] },
+			);
+		});
+	}
 </script>

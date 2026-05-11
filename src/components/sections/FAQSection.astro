@@ -2,97 +2,161 @@
 import FAQItem from "../ui/FAQItem.astro";
 import type { FAQItem as FAQItemType } from "../../types/FAQItem";
 interface Props {
-  heading: string;
-  faqs: FAQItemType[];
+	heading: string;
+	faqs: FAQItemType[];
 }
 const { heading, faqs } = Astro.props;
 ---
 
 <section class="faq" id="faq">
-  <div class="container">
-    <h2 class="section-title">{heading}</h2>
-    <div class="faq-list">
-      {faqs.map((item, i) => <FAQItem {...item} index={i} />)}
-    </div>
-  </div>
+	<div class="container">
+		<h2 class="section-title">{heading}</h2>
+		<div class="faq-list">
+			{faqs.map((item, i) => <FAQItem {...item} index={i} />)}
+		</div>
+	</div>
 </section>
 
 <style>
-  .faq { background: var(--color-bg-hero); padding: 6rem 1.5rem; }
-  .container { max-width: 760px; margin: 0 auto; padding: 0 2rem; display: flex; flex-direction: column; gap: 3rem; }
-  .section-title { font-size: var(--text-4xl); font-weight: var(--weight-semibold); color: var(--color-primary); letter-spacing: var(--tracking-tight); text-align: center; margin: 0; }
-  .faq-list { display: flex; flex-direction: column; gap: 0.75rem; }
+	.faq {
+		background: var(--color-bg-hero);
+		padding: 6rem 1.5rem;
+	}
+	.container {
+		max-width: 760px;
+		margin: 0 auto;
+		padding: 0 2rem;
+		display: flex;
+		flex-direction: column;
+		gap: 3rem;
+	}
+	.section-title {
+		font-size: var(--text-4xl);
+		font-weight: var(--weight-semibold);
+		color: var(--color-primary);
+		letter-spacing: var(--tracking-tight);
+		text-align: center;
+		margin: 0;
+	}
+	.faq-list {
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+	}
+	@media (max-width: 640px) {
+		.faq {
+			padding: 4rem 1.25rem;
+		}
+		.section-title {
+			font-size: var(--text-2xl);
+		}
+	}
 </style>
 
 <script>
-  import { animate, inView, stagger } from "motion";
+	import { animate, inView, stagger } from "motion";
 
-  function initAccordion() {
-    const items = document.querySelectorAll<HTMLElement>(".faq .faq-item");
+	function initAccordion() {
+		const items = document.querySelectorAll<HTMLElement>(".faq .faq-item");
 
-    items.forEach((item) => {
-      const trigger = item.querySelector<HTMLButtonElement>(".faq-trigger");
-      const panel = item.querySelector<HTMLElement>(".faq-panel");
-      if (!trigger || !panel) return;
+		items.forEach((item) => {
+			const trigger = item.querySelector<HTMLButtonElement>(".faq-trigger");
+			const panel = item.querySelector<HTMLElement>(".faq-panel");
+			if (!trigger || !panel) return;
 
-      trigger.addEventListener("click", () => {
-        const isOpen = trigger.getAttribute("aria-expanded") === "true";
+			trigger.addEventListener("click", () => {
+				const isOpen = trigger.getAttribute("aria-expanded") === "true";
 
-        // Close all others
-        items.forEach((other) => {
-          const t = other.querySelector<HTMLButtonElement>(".faq-trigger");
-          const p = other.querySelector<HTMLElement>(".faq-panel");
-          if (!t || !p || t === trigger) return;
-          if (t.getAttribute("aria-expanded") === "true") {
-            t.setAttribute("aria-expanded", "false");
-            if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-              // @ts-ignore — motion supports height at runtime
-              animate(p, { height: [p.scrollHeight + "px", "0px"], opacity: [1, 0] }, {
-                duration: 0.28, easing: [0.4, 0, 0.2, 1],
-              }).finished.then(() => { p.style.display = "none"; p.style.height = ""; p.style.opacity = ""; });
-            } else {
-              p.style.display = "none";
-            }
-          }
-        });
+				// Close all others
+				items.forEach((other) => {
+					const t = other.querySelector<HTMLButtonElement>(".faq-trigger");
+					const p = other.querySelector<HTMLElement>(".faq-panel");
+					if (!t || !p || t === trigger) return;
+					if (t.getAttribute("aria-expanded") === "true") {
+						t.setAttribute("aria-expanded", "false");
+						if (
+							!window.matchMedia("(prefers-reduced-motion: reduce)").matches
+						) {
+							(animate as any)(
+								p,
+								{ height: [p.scrollHeight + "px", "0px"], opacity: [1, 0] },
+								{
+									duration: 0.28,
+									easing: [0.4, 0, 0.2, 1],
+								},
+							).finished.then(() => {
+								p.style.display = "none";
+								p.style.height = "";
+								p.style.opacity = "";
+							});
+						} else {
+							p.style.display = "none";
+						}
+					}
+				});
 
-        if (isOpen) {
-          trigger.setAttribute("aria-expanded", "false");
-          if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-            // @ts-ignore — motion supports height at runtime
-            animate(panel, { height: [panel.scrollHeight + "px", "0px"], opacity: [1, 0] }, {
-              duration: 0.28, easing: [0.4, 0, 0.2, 1],
-            }).finished.then(() => { panel.style.display = "none"; panel.style.height = ""; panel.style.opacity = ""; });
-          } else {
-            panel.style.display = "none";
-          }
-        } else {
-          trigger.setAttribute("aria-expanded", "true");
-          panel.style.display = "block";
-          panel.style.height = "0px";
-          panel.style.opacity = "0";
-          if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-            // @ts-ignore — motion supports height at runtime
-            animate(panel, { height: ["0px", panel.scrollHeight + "px"], opacity: [0, 1] }, {
-              duration: 0.32, easing: [0.22, 1, 0.36, 1],
-            }).finished.then(() => { panel.style.height = ""; panel.style.opacity = ""; });
-          } else {
-            panel.style.height = "";
-            panel.style.opacity = "";
-          }
-        }
-      });
-    });
-  }
+				if (isOpen) {
+					trigger.setAttribute("aria-expanded", "false");
+					if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+						(animate as any)(
+							panel,
+							{ height: [panel.scrollHeight + "px", "0px"], opacity: [1, 0] },
+							{
+								duration: 0.28,
+								easing: [0.4, 0, 0.2, 1],
+							},
+						).finished.then(() => {
+							panel.style.display = "none";
+							panel.style.height = "";
+							panel.style.opacity = "";
+						});
+					} else {
+						panel.style.display = "none";
+					}
+				} else {
+					trigger.setAttribute("aria-expanded", "true");
+					panel.style.display = "block";
+					panel.style.height = "0px";
+					panel.style.opacity = "0";
+					if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+						(animate as any)(
+							panel,
+							{ height: ["0px", panel.scrollHeight + "px"], opacity: [0, 1] },
+							{
+								duration: 0.32,
+								easing: [0.22, 1, 0.36, 1],
+							},
+						).finished.then(() => {
+							panel.style.height = "";
+							panel.style.opacity = "";
+						});
+					} else {
+						panel.style.height = "";
+						panel.style.opacity = "";
+					}
+				}
+			});
+		});
+	}
 
-  initAccordion();
+	initAccordion();
 
-  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    inView(".faq", () => {
-      const title = document.querySelector(".faq .section-title");
-      const items = document.querySelectorAll(".faq .faq-item");
-      if (title) (animate as any)(title, { clipPath: ["inset(0 0 100% 0)", "inset(0 0 0% 0)"], y: [20, 0] }, { duration: 0.65, easing: [0.22, 1, 0.36, 1] });
-      if (items.length) (animate as any)(".faq .faq-item", { opacity: [0, 1], y: [20, 0] }, { duration: 0.4, delay: stagger(0.07), easing: [0.22, 1, 0.36, 1] });
-    });
-  }
+	if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+		inView(".faq", () => {
+			const title = document.querySelector(".faq .section-title");
+			const items = document.querySelectorAll(".faq .faq-item");
+			if (title)
+				(animate as any)(
+					title,
+					{ clipPath: ["inset(0 0 100% 0)", "inset(0 0 0% 0)"], y: [20, 0] },
+					{ duration: 0.65, easing: [0.22, 1, 0.36, 1] },
+				);
+			if (items.length)
+				(animate as any)(
+					".faq .faq-item",
+					{ opacity: [0, 1], y: [20, 0] },
+					{ duration: 0.4, delay: stagger(0.07), easing: [0.22, 1, 0.36, 1] },
+				);
+		});
+	}
 </script>

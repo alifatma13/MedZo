@@ -288,3 +288,56 @@ Import inside a `<script>` block in `.astro` files (Astro handles bundling autom
   ```
 - Never block interactivity — animations run alongside, not before, content being usable.
 - Do not animate layout properties (`width`, `height`, `top`, `left`); animate `transform` and `opacity` only for GPU-composited performance.
+
+### ClientRouter compatibility — mandatory rule
+
+This project uses Astro's `ClientRouter` for page transitions. **`<script>` blocks only execute once** across navigations — they do not re-run when the user navigates between pages. Any animation code that runs at the top level of a `<script>` block will break on the second visit.
+
+**Every animation script must be wrapped in `astro:page-load`:**
+
+```ts
+document.addEventListener("astro:page-load", () => {
+	if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+		// your animate / inView calls here
+	}
+});
+```
+
+`astro:page-load` fires on both the initial page load and after every View Transition — so animations always replay correctly.
+
+**Additional rules for `requestAnimationFrame` loops** (e.g. canvas animations):
+
+- Store the RAF id in a variable outside the listener.
+- Cancel the previous loop at the start of each `astro:page-load` to prevent duplicate loops stacking up across navigations:
+
+```ts
+let rafId: number | null = null;
+
+document.addEventListener("astro:page-load", () => {
+	if (rafId !== null) {
+		cancelAnimationFrame(rafId);
+		rafId = null;
+	}
+	// start new loop, assign to rafId
+	rafId = requestAnimationFrame(draw);
+});
+```
+
+**Violation to catch:** any `animate(...)`, `inView(...)`, or `requestAnimationFrame(...)` call at the top level of a `<script>` block (outside `astro:page-load`) — it will not work after the first navigation.
+
+### motion type errors
+
+The `motion` package's TypeScript overloads do not cover all valid runtime arguments (e.g. CSS selector strings with comma-separated selectors, `clipPath`, `x`, `y` shorthands on `Element` references). When the correct runtime call produces a TS error, cast `animate` to `any` rather than using `@ts-ignore`:
+
+```ts
+// ✅ correct — suppresses overload error on the full call
+(animate as any)(
+	".selector",
+	{ opacity: [0, 1], y: [24, 0] },
+	{ duration: 0.5 },
+);
+
+// ❌ wrong — @ts-ignore only suppresses the line it's on; the error shifts to the next line
+// @ts-ignore
+animate(".selector", { opacity: [0, 1] }, { duration: 0.5 });
+```
