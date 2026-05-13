@@ -1,3 +1,4 @@
+// HeroContent.ts — types for the home page hero: heading, CTAs, and the floating dashboard visual data.
 export interface HeroActionCard {
   icon: string;
   label: string;
@@ -37,5 +38,5 @@ export interface HeroContent {
   body: string;
   ctaPrimary: { label: string; href: string };
   ctaSecondary: { label: string; href: string };
-  visual: HeroVisual;
+  // visual is decorative UI mock data — see src/lib/content/heroVisual.ts
 }

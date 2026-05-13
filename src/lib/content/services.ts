@@ -1,10 +1,5 @@
+// services.ts — service card collection (icon, title, description). Section heading lives in home.ts.
 import type { ServiceCard } from "../../types/ServiceCard";
-import type { SectionHeading } from "../../types/SectionHeading";
-
-export const servicesHeading: SectionHeading = {
-  title: "What does MedZo do?",
-  body: "We offer tailored support that scales with your practice, ensuring clinical precision and administrative ease.",
-};
 
 export const services: ServiceCard[] = [
   {

@@ -1,11 +1,4 @@
-export interface TeamMember {
-	initials: string;
-	name: string;
-	role: string;
-	bio: string;
-	imageUrl: string;
-}
-
+// ContactContent.ts — type definitions for all content on the /contact page (hero, form, offices).
 export interface Office {
 	state: string;
 	suburb: string;
@@ -49,6 +42,5 @@ export interface ContactContent {
 	meta: { title: string; description: string };
 	hero: { heading: string; body: string; trust: string[]; trustAriaLabel: string };
 	form: { heading: string; body: string; fields: ContactFormFields };
-	team: { heading: string; body: string; members: TeamMember[] };
 	offices: { heading: string; body: string; locations: Office[]; comingSoon: ComingSoonCard };
 }

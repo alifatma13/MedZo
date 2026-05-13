@@ -1,12 +1,14 @@
+// terms.ts — full Terms of Service content: meta tags, intro, and all policy sections.
 import type { PolicyContent } from "../../types/PolicyContent";
+import { BACK_TO_HOME, SITE_DOMAIN } from "./site";
 
 export const terms: PolicyContent = {
-  metaTitle: "Terms of Service — MedZo",
-  metaDescription: "MedZo's terms of service — your rights and responsibilities when using our platform.",
+  metaTitle: "Terms of Service | MedZo",
+  metaDescription: "MedZo's terms of service: your rights and responsibilities when using our platform.",
   title: "Terms of Service",
   lastUpdated: "May 2025",
   intro: "By using MedZo's services, you agree to these terms. Please read them carefully.",
-  backLink: { label: "← Back to home", href: "/" },
+  backLink: BACK_TO_HOME,
   sections: [
     {
       heading: "Services",
@@ -34,7 +36,7 @@ export const terms: PolicyContent = {
     },
     {
       heading: "Contact",
-      body: "Questions about these terms? Email hello@medzoweb.com.au.",
+      body: `Questions about these terms? Email hello@${SITE_DOMAIN}.`,
     },
   ],
 };

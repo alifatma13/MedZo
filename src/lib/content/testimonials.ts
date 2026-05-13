@@ -1,11 +1,5 @@
+// testimonials.ts — client testimonial collection. Section heading lives in home.ts.
 import type { TestimonialCard } from "../../types/TestimonialCard";
-
-export const testimonialsHeading = "Trusted by Australian GPs and Specialists";
-
-export const testimonialsViewMore = {
-  label: "View more stories",
-  href: "#contact",
-};
 
 export const testimonials: TestimonialCard[] = [
   {

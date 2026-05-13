@@ -1,4 +1,5 @@
 ---
+// Layout.astro — base page shell used by every route: sets <head> metadata, loads fonts, wraps content in Nav + Footer.
 import "../styles/global.css";
 import "../styles/fonts-inter.css";
 import "../styles/fonts-jakarta.css";
@@ -9,6 +10,7 @@ import Nav from "../components/layout/Nav.astro";
 import Footer from "../components/layout/Footer.astro";
 import { layoutContent } from "../lib/content/layout";
 import { siteSchema } from "../lib/content/schema";
+import { SITE_NAME, defaultMeta } from "../lib/content/site";
 
 interface Props {
 	title?: string;
@@ -17,8 +19,8 @@ interface Props {
 }
 
 const {
-	title = "MedZo - Medical Practice Management for Australian Clinics",
-	description = "MedZo provides end-to-end medical practice management across Australia. Billing, scheduling and operations — so you can focus on care.",
+	title = defaultMeta.title,
+	description = defaultMeta.description,
 	ogImage = "/og-image.png",
 } = Astro.props;
 
@@ -56,7 +58,7 @@ const jsonLd = {
 		<meta property="og:image:width" content="1080" />
 		<meta property="og:image:height" content="1080" />
 		<meta property="og:locale" content="en_AU" />
-		<meta property="og:site_name" content="MedZo" />
+		<meta property="og:site_name" content={SITE_NAME} />
 
 		<!-- Twitter Card -->
 		<meta name="twitter:card" content="summary_large_image" />

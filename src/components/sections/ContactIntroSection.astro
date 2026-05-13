@@ -1,4 +1,5 @@
 ---
+// ContactIntroSection.astro — contact page hero with trust badges on the left and an enquiry form on the right.
 import { icons } from "../../lib/utils/icons";
 import type { ContactFormFields } from "../../types/ContactContent";
 
@@ -16,7 +17,6 @@ const e = f.errors;
 
 		<!-- ── Left: intro ── -->
 		<div class="intro-col">
-			<div class="accent-bar" aria-hidden="true"></div>
 			<h1 class="heading">{hero.heading}</h1>
 			<p class="body-text">{hero.body}</p>
 			<ul class="trust-list" aria-label={hero.trustAriaLabel}>
@@ -156,7 +156,7 @@ const e = f.errors;
 		position: relative;
 		background: var(--color-bg-hero);
 		min-height: calc(100dvh - 76px);
-		padding: 3rem 2rem;
+		padding: 3rem 5rem;
 		display: flex;
 		align-items: center;
 		overflow: hidden;
@@ -402,7 +402,7 @@ const e = f.errors;
 	@media (max-width: 1024px) {
 		.contact-intro {
 			min-height: unset;
-			padding: 3.5rem 1.5rem;
+			padding: 3.5rem 3rem;
 			align-items: flex-start;
 		}
 		.contact-intro::after {

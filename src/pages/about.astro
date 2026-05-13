@@ -1,0 +1,34 @@
+---
+// about.astro — About Us page: hero, founder, mission, values, team, credentials, and CTA.
+import Layout from "../layouts/Layout.astro";
+import AboutHeroSection from "../components/sections/AboutHeroSection.astro";
+import FounderSection from "../components/sections/FounderSection.astro";
+import MissionSection from "../components/sections/MissionSection.astro";
+import ValuesSection from "../components/sections/ValuesSection.astro";
+import TeamSection from "../components/sections/TeamSection.astro";
+import CredentialsSection from "../components/sections/CredentialsSection.astro";
+import { about } from "../lib/content/about";
+---
+
+<Layout title={about.metaTitle} description={about.metaDescription}>
+	<AboutHeroSection
+		title={about.hero.title}
+		heading={about.hero.heading}
+		paragraphs={about.hero.paragraphs}
+	/>
+	<FounderSection founder={about.founder} />
+	<MissionSection heading={about.mission.heading} body={about.mission.body} />
+	<ValuesSection heading={about.values.heading} items={about.values.items} />
+	<TeamSection
+		heading={about.team.heading}
+		body={about.team.body}
+		members={about.team.members}
+	/>
+	<CredentialsSection
+		credentialsHeading={about.credentials.heading}
+		credentialItems={about.credentials.items}
+		ctaBody={about.cta.body}
+		ctaButtonLabel={about.cta.buttonLabel}
+		ctaButtonHref={about.cta.buttonHref}
+	/>
+</Layout>

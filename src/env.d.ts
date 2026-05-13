@@ -1,3 +1,4 @@
+// env.d.ts — TypeScript ambient declarations: Astro client types and CSS-only package stubs.
 /// <reference types="astro/client" />
 
 // @fontsource packages are CSS-only and ship no type declarations.

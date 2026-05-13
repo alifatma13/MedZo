@@ -1,6 +1,5 @@
+// faq.ts — FAQ item collection. Section heading lives in home.ts.
 import type { FAQItem } from "../../types/FAQItem";
-
-export const faqHeading = "Frequently Asked Questions";
 
 export const faqs: FAQItem[] = [
   {

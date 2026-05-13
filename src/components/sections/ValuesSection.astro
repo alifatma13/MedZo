@@ -1,0 +1,153 @@
+---
+// ValuesSection.astro — company values displayed as a staggered card grid.
+import type { AboutValue } from "../../types/AboutContent";
+import { icons } from "../../lib/utils/icons";
+interface Props {
+	heading: string;
+	items: AboutValue[];
+}
+const { heading, items } = Astro.props;
+---
+
+<section class="values">
+	<div class="container">
+		<h2 class="heading">{heading}</h2>
+		<ul class="grid" role="list">
+			{
+				items.map((item) => (
+					<li class="card">
+						<div class="card-accent" aria-hidden="true" />
+						<div class="card-header">
+						{item.icon && (
+							<span class="card-icon" aria-hidden="true">
+								<Fragment set:html={icons[item.icon]} />
+							</span>
+						)}
+						<h3 class="card-title">{item.title}</h3>
+					</div>
+						<p class="card-body">{item.body}</p>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</section>
+
+<style>
+	.values {
+		background: #fff;
+		padding: 6rem 5rem;
+	}
+	.container {
+		max-width: 1100px;
+		margin: 0 auto;
+	}
+	.heading {
+		font-size: clamp(1.5rem, 3vw, var(--text-4xl));
+		font-weight: var(--weight-bold);
+		color: var(--color-primary);
+		letter-spacing: var(--tracking-tight);
+		line-height: var(--leading-tight);
+		margin: 0 0 3rem;
+		text-align: center;
+	}
+	.grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+		gap: 1.5rem;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	.card {
+		background: var(--color-bg-hero);
+		border: 1px solid rgba(0, 50, 125, 0.07);
+		border-radius: 1rem;
+		padding: 2rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+		position: relative;
+		overflow: hidden;
+	}
+	.card-accent {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 3px;
+		background: linear-gradient(90deg, var(--color-accent) 0%, var(--color-primary) 100%);
+		border-radius: 1rem 1rem 0 0;
+	}
+	.card-header {
+		display: flex;
+		align-items: center;
+		gap: 0.6rem;
+	}
+	.card-icon {
+		display: flex;
+		align-items: center;
+		flex-shrink: 0;
+		color: var(--color-accent);
+		width: 1.25rem;
+		height: 1.25rem;
+	}
+	.card-title {
+		font-size: var(--text-base);
+		font-weight: var(--weight-semibold);
+		color: var(--color-primary);
+		margin: 0;
+		line-height: var(--leading-tight);
+	}
+	.card-body {
+		font-size: var(--text-sm);
+		color: var(--color-text-body);
+		line-height: var(--leading-loose);
+		margin: 0;
+	}
+
+	@media (max-width: 960px) {
+		.values {
+			padding: 4rem 3rem;
+		}
+		.grid {
+			grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+		}
+	}
+	@media (max-width: 640px) {
+		.values {
+			padding: 3.5rem 1.25rem;
+		}
+		.heading {
+			text-align: left;
+			font-size: clamp(1.4rem, 5vw, 1.875rem);
+		}
+		.grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>
+
+<script>
+	import { animate, inView, stagger } from "motion";
+
+	document.addEventListener("astro:page-load", () => {
+		if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+		inView(".values .heading", ({ target }) => {
+			(animate as any)(
+				target,
+				{ opacity: [0, 1], y: [16, 0] },
+				{ duration: 0.5, easing: [0.22, 1, 0.36, 1] },
+			);
+		});
+
+		inView(".values .grid", () => {
+			(animate as any)(
+				".values .card",
+				{ opacity: [0, 1], y: [24, 0] },
+				{ duration: 0.5, delay: stagger(0.07), easing: [0.22, 1, 0.36, 1] },
+			);
+		});
+	});
+</script>

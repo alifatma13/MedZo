@@ -1,86 +1,428 @@
 ---
+// terms.astro — Terms of Service page with sticky sidebar navigation and active-section highlighting.
 import Layout from "../layouts/Layout.astro";
 import { terms } from "../lib/content/terms";
+
+function toId(heading: string) {
+	return heading
+		.replace(/^\d+\.\s*/, "")
+		.toLowerCase()
+		.replace(/[^a-z0-9]+/g, "-")
+		.replace(/^-|-$/g, "");
+}
+
+function toLabel(heading: string) {
+	return heading.replace(/^\d+\.\s*/, "");
+}
 ---
 
 <Layout title={terms.metaTitle} description={terms.metaDescription}>
 	<section class="policy">
-		<div class="container">
-			<p class="updated">Last updated: {terms.lastUpdated}</p>
-			<h1 class="page-title">{terms.title}</h1>
-			<p class="intro">{terms.intro}</p>
+		<div class="outer">
 
-			{
-				terms.sections.map((s) => (
-					<div class="section">
-						<h2 class="section-heading">{s.heading}</h2>
-						<p class="section-body">{s.body}</p>
-					</div>
-				))
-			}
+			<!-- Header -->
+			<div class="card-header">
+				<div class="accent-bar" aria-hidden="true"></div>
+				<p class="updated">Last updated: {terms.lastUpdated}</p>
+				<h1 class="page-title">{terms.title}</h1>
+				<p class="intro">{terms.intro}</p>
+			</div>
 
-			<a href={terms.backLink.href} class="back-link">{terms.backLink.label}</a>
+			<!-- Two-column body -->
+			<div class="card-body">
+
+				<nav class="sidebar" aria-label="Terms sections">
+					<ul class="sidebar-links">
+						{
+							terms.sections.map((s) => (
+								<li>
+									<a href={`#${toId(s.heading)}`} class="sidebar-link">
+										{toLabel(s.heading)}
+									</a>
+								</li>
+							))
+						}
+					</ul>
+				</nav>
+
+				<div class="content">
+					{
+						terms.sections.map((s) => (
+							<div class="section" id={toId(s.heading)}>
+								<h2 class="section-heading">{s.heading}</h2>
+								<p class="section-body">{s.body}</p>
+							</div>
+						))
+					}
+				</div>
+			</div>
+
+<a href={terms.backLink.href} class="back-link">
+				{terms.backLink.label}
+			</a>
 		</div>
 	</section>
 </Layout>
 
 <style>
-	.policy {
-		padding: 5rem 1.5rem 6rem;
-		background: #fff;
+	/* ── Page background with decorative rings ─────────── */
+	@keyframes ring-pulse {
+		0%, 100% { transform: scale(1);    opacity: 1; }
+		50%       { transform: scale(1.08); opacity: 0.3; }
 	}
-	.container {
-		max-width: 720px;
+	.policy {
+		background: var(--color-bg-hero);
+		min-height: 100vh;
+		padding: 6rem 5rem 8rem;
+		position: relative;
+		overflow: hidden;
+	}
+	.policy::before {
+		content: "";
+		position: absolute;
+		right: -8rem;
+		top: -6rem;
+		width: 48rem;
+		height: 48rem;
+		border-radius: 50%;
+		border: 1px solid rgba(0, 193, 253, 0.08);
+		pointer-events: none;
+		animation: ring-pulse 6s ease-in-out infinite;
+	}
+	.policy::after {
+		content: "";
+		position: absolute;
+		right: -8rem;
+		top: -6rem;
+		width: 30rem;
+		height: 30rem;
+		border-radius: 50%;
+		border: 1.5px solid rgba(0, 193, 253, 0.14);
+		pointer-events: none;
+		animation: ring-pulse 6s ease-in-out infinite;
+		animation-delay: -3s;
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.policy::before,
+		.policy::after { animation: none; }
+	}
+
+	/* ── Outer wrapper ───────────────────────────────────── */
+	.outer {
+		max-width: 1100px;
 		margin: 0 auto;
+		position: relative;
+		z-index: 1;
+	}
+
+	/* ── Header ──────────────────────────────────────────── */
+	.card-header {
+		padding: 2.75rem 0 2.25rem;
+	}
+	.accent-bar {
+		width: 2.5rem;
+		height: 3px;
+		background: linear-gradient(
+			90deg,
+			var(--color-accent) 0%,
+			var(--color-primary) 100%
+		);
+		border-radius: 2px;
+		margin-bottom: 1rem;
 	}
 	.updated {
 		font-size: var(--text-sm);
-		color: var(--color-text-muted);
-		margin: 0 0 0.5rem;
+		color: #8b95a5;
+		margin: 0 0 0.4rem;
 	}
 	.page-title {
-		font-size: var(--text-4xl);
+		font-size: clamp(1.75rem, 3vw, var(--text-4xl));
 		font-weight: var(--weight-bold);
-		color: var(--color-text-heading);
-		margin: 0 0 1.5rem;
+		color: var(--color-primary);
+		letter-spacing: var(--tracking-tight);
 		line-height: var(--leading-tight);
+		margin: 0 0 1rem;
 	}
 	.intro {
 		font-size: var(--text-base);
 		color: var(--color-text-body);
-		line-height: var(--leading-relaxed);
-		margin: 0 0 3rem;
-		border-bottom: 1px solid var(--color-border);
-		padding-bottom: 2rem;
+		line-height: var(--leading-normal);
+		margin: 0;
+		max-width: 72ch;
+	}
+
+	/* ── Two-column body ─────────────────────────────────── */
+	.card-body {
+		display: grid;
+		grid-template-columns: 280px 1fr;
+		align-items: start;
+	}
+
+	/* ── Sidebar ─────────────────────────────────────────── */
+	.sidebar {
+		position: sticky;
+		top: 80px;
+		padding: 2.5rem 2rem 2.5rem 0;
+		border-right: 1px solid rgba(0, 50, 125, 0.07);
+		max-height: calc(100vh - 100px);
+		overflow-y: hidden;
+	}
+	.sidebar-links {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-direction: column;
+	}
+	.sidebar-link {
+		display: block;
+		font-size: var(--text-sm);
+		font-family: var(--font-nav);
+		font-weight: var(--weight-medium);
+		color: #8b95a5;
+		text-decoration: none;
+		padding: 0.55rem 0.75rem;
+		border-left: 2px solid transparent;
+		line-height: var(--leading-snug);
+		transition:
+			color 0.15s,
+			border-color 0.15s;
+	}
+	.sidebar-link:hover {
+		color: var(--color-primary);
+	}
+	.sidebar-link.is-active {
+		color: var(--color-primary);
+		border-left-color: var(--color-accent);
+		font-weight: var(--weight-semibold);
+	}
+	.sidebar-link:focus-visible {
+		outline: 2px solid var(--color-accent);
+		border-radius: 2px;
+	}
+
+	/* ── Content ─────────────────────────────────────────── */
+	.content {
+		padding: 2.75rem 0 2rem 3rem;
 	}
 	.section {
-		margin-bottom: 2.5rem;
+		margin-bottom: 2.75rem;
+		padding-bottom: 2.75rem;
+		border-bottom: 1px solid rgba(0, 50, 125, 0.06);
+		scroll-margin-top: 100px;
+	}
+	.section:last-of-type {
+		border-bottom: none;
 	}
 	.section-heading {
 		font-size: var(--text-xl);
 		font-weight: var(--weight-semibold);
-		color: var(--color-text-heading);
+		color: var(--color-primary);
 		margin: 0 0 0.75rem;
+		line-height: var(--leading-snug);
 	}
 	.section-body {
 		font-size: var(--text-base);
 		color: var(--color-text-body);
-		line-height: var(--leading-relaxed);
+		line-height: var(--leading-loose);
 		margin: 0;
 	}
+
+	/* ── FAQ block — centered below two-column layout ───── */
+	.faq-block {
+		max-width: 720px;
+		margin: 3.5rem auto 0;
+		padding-top: 2.5rem;
+		scroll-margin-top: 100px;
+	}
+	.faq-title {
+		font-size: var(--text-2xl);
+		font-weight: var(--weight-semibold);
+		color: var(--color-primary);
+		margin: 0 0 2rem;
+		text-align: center;
+	}
+	.faq-list {
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+	}
+
+	/* ── Back link ───────────────────────────────────────── */
 	.back-link {
-		display: inline-block;
-		margin-top: 2rem;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+		margin-top: 2.5rem;
 		font-size: var(--text-sm);
+		font-family: var(--font-nav);
+		font-weight: var(--weight-medium);
 		color: var(--color-primary);
 		text-decoration: none;
-		font-weight: var(--weight-medium);
+		transition: gap 0.15s;
 	}
 	.back-link:hover {
+		gap: 0.55rem;
 		text-decoration: underline;
 	}
 	.back-link:focus-visible {
-		outline: 2px solid var(--color-primary);
+		outline: 2px solid var(--color-accent);
 		border-radius: 2px;
 	}
+
+	/* ── Responsive ──────────────────────────────────────── */
+	@media (max-width: 860px) {
+		.card-body {
+			grid-template-columns: 1fr;
+		}
+		.sidebar {
+			position: static;
+			border-right: none;
+			border-bottom: 1px solid rgba(0, 50, 125, 0.07);
+			padding: 1.5rem 0;
+			max-height: none;
+			overflow-y: visible;
+		}
+		.sidebar-links {
+			flex-direction: row;
+			flex-wrap: wrap;
+			gap: 0.15rem 0.5rem;
+		}
+		.sidebar-link {
+			border-left: none;
+			border-bottom: 2px solid transparent;
+			padding: 0.35rem 0.25rem;
+			font-size: var(--text-xs);
+		}
+		.sidebar-link.is-active {
+			border-left-color: transparent;
+			border-bottom-color: var(--color-accent);
+		}
+	}
+	@media (max-width: 640px) {
+		.policy {
+			padding: 3rem 1.5rem 5rem;
+		}
+		.card-header {
+			padding: 2rem 0 1.75rem;
+		}
+		.content {
+			padding: 2rem 0 2.5rem;
+		}
+		.policy::before,
+		.policy::after {
+			display: none;
+		}
+	}
 </style>
+
+<script>
+	document.addEventListener("astro:page-load", () => {
+		// Active sidebar link on scroll
+		const links = document.querySelectorAll<HTMLAnchorElement>(".policy .sidebar-link");
+		const sections = document.querySelectorAll<HTMLElement>(".policy .section, .faq-block");
+
+		if (links.length && sections.length) {
+			const observer = new IntersectionObserver(
+				(entries) => {
+					entries.forEach((entry) => {
+						if (entry.isIntersecting) {
+							links.forEach((l) => l.classList.remove("is-active"));
+							document
+								.querySelector(`.sidebar-link[href="#${entry.target.id}"]`)
+								?.classList.add("is-active");
+						}
+					});
+				},
+				{ rootMargin: "-15% 0px -75% 0px" },
+			);
+			sections.forEach((s) => observer.observe(s));
+		}
+
+		// Smooth scroll for sidebar links
+		document.querySelectorAll<HTMLAnchorElement>(".policy .sidebar-link").forEach((link) => {
+			link.addEventListener("click", (e) => {
+				e.preventDefault();
+				const id = link.getAttribute("href")?.slice(1);
+				if (!id) return;
+				document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+			});
+		});
+
+		// FAQ accordion
+		const policyFaqItems = document.querySelectorAll<HTMLElement>(".policy .faq-item");
+		policyFaqItems.forEach((item) => {
+			const trigger = item.querySelector<HTMLButtonElement>(".faq-trigger");
+			const panel = item.querySelector<HTMLElement>(".faq-panel");
+			if (!trigger || !panel) return;
+
+			trigger.addEventListener("click", () => {
+				const isOpen = trigger.getAttribute("aria-expanded") === "true";
+
+				policyFaqItems.forEach((other) => {
+					const t = other.querySelector<HTMLButtonElement>(".faq-trigger");
+					const p = other.querySelector<HTMLElement>(".faq-panel");
+					if (!t || !p || t === trigger || t.getAttribute("aria-expanded") !== "true") return;
+					t.setAttribute("aria-expanded", "false");
+					if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+						import("motion").then(({ animate }) => {
+							(animate as any)(p, { height: [p.scrollHeight + "px", "0px"], opacity: [1, 0] }, { duration: 0.28, easing: [0.4, 0, 0.2, 1] })
+								.finished.then(() => { p.style.display = "none"; p.style.height = ""; p.style.opacity = ""; });
+						});
+					} else {
+						p.style.display = "none";
+					}
+				});
+
+				if (isOpen) {
+					trigger.setAttribute("aria-expanded", "false");
+					if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+						import("motion").then(({ animate }) => {
+							(animate as any)(panel, { height: [panel.scrollHeight + "px", "0px"], opacity: [1, 0] }, { duration: 0.28, easing: [0.4, 0, 0.2, 1] })
+								.finished.then(() => { panel.style.display = "none"; panel.style.height = ""; panel.style.opacity = ""; });
+						});
+					} else {
+						panel.style.display = "none";
+					}
+				} else {
+					trigger.setAttribute("aria-expanded", "true");
+					panel.style.display = "block";
+					panel.style.height = "0px";
+					panel.style.opacity = "0";
+					if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+						import("motion").then(({ animate }) => {
+							(animate as any)(panel, { height: ["0px", panel.scrollHeight + "px"], opacity: [0, 1] }, { duration: 0.32, easing: [0.22, 1, 0.36, 1] })
+								.finished.then(() => { panel.style.height = ""; panel.style.opacity = ""; });
+						});
+					} else {
+						panel.style.height = "";
+						panel.style.opacity = "";
+					}
+				}
+			});
+		});
+
+		// Entrance animations
+		if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+			import("motion")
+				.then(({ animate }) => {
+					(animate as any)(
+						".policy .accent-bar",
+						{ scaleX: [0, 1], opacity: [0, 1] },
+						{ duration: 0.45, easing: [0.22, 1, 0.36, 1] },
+					);
+					(animate as any)(
+						".policy .page-title, .policy .intro",
+						{ opacity: [0, 1], y: [16, 0] },
+						{ duration: 0.5, delay: 0.1, easing: [0.22, 1, 0.36, 1] },
+					);
+					(animate as any)(
+						".policy .card-body",
+						{ opacity: [0, 1], y: [20, 0] },
+						{ duration: 0.55, delay: 0.2, easing: [0.22, 1, 0.36, 1] },
+					);
+				})
+				.catch(() => {});
+		}
+	});
+</script>

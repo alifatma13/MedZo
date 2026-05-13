@@ -1,4 +1,5 @@
 ---
+// index.astro — home page: composes all homepage sections and preloads the hero image for LCP.
 import { getImage } from "astro:assets";
 import heroImageSrc from "../res/hero_image.png";
 import Layout from "../layouts/Layout.astro";
@@ -10,6 +11,10 @@ import TestimonialsSection from "../components/sections/TestimonialsSection.astr
 import FAQSection from "../components/sections/FAQSection.astro";
 import FinalCTA from "../components/sections/FinalCTA.astro";
 import MetricsSection from "../components/sections/MetricsSection.astro";
+import { home } from "../lib/content/home";
+import { services } from "../lib/content/services";
+import { testimonials } from "../lib/content/testimonials";
+import { faqs } from "../lib/content/faq";
 
 const heroImageOptimized = await getImage({
 	src: heroImageSrc,
@@ -17,23 +22,6 @@ const heroImageOptimized = await getImage({
 	format: "webp",
 	quality: 82,
 });
-
-import {
-	hero,
-	servicesHeading,
-	services,
-	whyHeading,
-	whyItems,
-	testimonialsHeading,
-	testimonials,
-	testimonialsViewMore,
-	faqHeading,
-	faqs,
-	metrics,
-	finalCta,
-	ticker,
-	whyImageAlt,
-} from "../lib/content/index";
 ---
 
 <Layout>
@@ -44,16 +32,16 @@ import {
 		href={heroImageOptimized.src}
 		type="image/webp"
 	/>
-	<HeroSection {...hero} />
-	<SpecialtyTicker {...ticker} />
-	<MetricsSection metrics={metrics} />
-	<ServicesSection heading={servicesHeading} services={services} />
-	<WhyChooseUs heading={whyHeading} items={whyItems} imageAlt={whyImageAlt} />
+	<HeroSection {...home.hero} />
+	<SpecialtyTicker {...home.ticker} />
+	<MetricsSection metrics={home.metrics} />
+	<ServicesSection heading={home.servicesSection} services={services} />
+	<WhyChooseUs heading={home.whySection.heading} items={home.whySection.items} imageAlt={home.whySection.imageAlt} />
 	<TestimonialsSection
-		heading={testimonialsHeading}
+		heading={home.testimonialsSection.heading}
 		testimonials={testimonials}
-		viewMore={testimonialsViewMore}
+		viewMore={home.testimonialsSection.viewMore}
 	/>
-	<FAQSection heading={faqHeading} faqs={faqs} />
-	<FinalCTA {...finalCta} />
+	<FAQSection heading={home.faqSection.heading} faqs={faqs} />
+	<FinalCTA {...home.finalCta} />
 </Layout>

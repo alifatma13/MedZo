@@ -1,13 +1,14 @@
 ---
+// HeroSection.astro — above-the-fold hero with animated heading, two CTAs, and a floating dashboard visual.
 import { Image } from "astro:assets";
 import Button from "../ui/Button.astro";
 import heroImage from "../../res/hero_image.png";
 import type { HeroContent } from "../../types/HeroContent";
 import { icons } from "../../lib/utils/icons";
+import { heroVisual as visual } from "../../lib/content/heroVisual";
 interface Props extends HeroContent {}
-const { heading, subheading, body, ctaPrimary, ctaSecondary, visual } =
-	Astro.props;
-const headingWords = heading.split(" ");
+const { heading, subheading, body, ctaPrimary, ctaSecondary } = Astro.props;
+const headingLines = heading.split("\n");
 ---
 
 <noscript>
@@ -27,9 +28,13 @@ const headingWords = heading.split(" ");
 		<div class="text-col">
 			<h1 class="heading">
 				{
-					headingWords.map((word) => (
-						<span class="word-mask">
-							<span class="word-inner">{word}</span>
+					headingLines.map((line) => (
+						<span class="heading-line">
+							{line.split(" ").map((word) => (
+								<span class="word-mask">
+									<span class="word-inner">{word}</span>
+								</span>
+							))}
 						</span>
 					))
 				}
@@ -125,7 +130,7 @@ const headingWords = heading.split(" ");
 <style>
 	.hero {
 		background: var(--color-bg-hero);
-		padding: 5.5rem 1.5rem 6rem;
+		padding: 3rem 1.5rem 6rem;
 		overflow: visible;
 	}
 	.container {
@@ -135,19 +140,22 @@ const headingWords = heading.split(" ");
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		gap: 3rem;
-		align-items: center;
+		align-items: start;
 	}
 	.text-col {
 		display: flex;
 		flex-direction: column;
 	}
 	.heading {
-		font-size: clamp(2rem, 4vw, 3rem);
+		font-size: clamp(1.75rem, 3.5vw, 2.5rem);
 		font-weight: var(--weight-bold);
 		color: var(--color-primary);
 		letter-spacing: var(--tracking-tight);
 		line-height: 1.2;
 		margin: 0 0 1.5rem;
+	}
+	.heading-line {
+		display: block;
 	}
 	.word-mask {
 		display: inline-block;
@@ -169,7 +177,7 @@ const headingWords = heading.split(" ");
 	}
 	.body-second {
 		color: var(--color-text-heading);
-		margin: 0 0 3.5rem;
+		margin: 0 0 2rem;
 		max-width: 32rem;
 	}
 	.cta-row {

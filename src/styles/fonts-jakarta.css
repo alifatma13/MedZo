@@ -1,4 +1,4 @@
-/* Plus Jakarta Sans Variable — latin-ext + latin only */
+/* fonts-jakarta.css — Plus Jakarta Sans Variable web font, latin + latin-ext subsets only; replaces the full @fontsource package import to exclude unused scripts. */
 
 @font-face {
   font-family: 'Plus Jakarta Sans Variable';

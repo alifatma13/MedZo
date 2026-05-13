@@ -1,19 +1,23 @@
 ---
+// FAQItem.astro — single accordion row: a trigger button that reveals/hides the answer panel with ARIA support.
 import type { FAQItem } from "../../types/FAQItem";
 import { icons } from "../../lib/utils/icons";
 interface Props extends FAQItem {
 	index: number;
+	defaultOpen?: boolean;
 }
-const { question, answer, index } = Astro.props;
+const { question, answer, index, defaultOpen = index === 0 } = Astro.props;
 const panelId = `faq-panel-${index}`;
 const triggerId = `faq-trigger-${index}`;
+const ariaExpanded = defaultOpen ? "true" : "false";
+const panelStyle = defaultOpen ? "" : "display:none";
 ---
 
 <div class="faq-item">
 	<button
 		class="faq-trigger"
 		id={triggerId}
-		aria-expanded={index === 0 ? "true" : "false"}
+		aria-expanded={ariaExpanded}
 		aria-controls={panelId}
 	>
 		<span class="question-text">{question}</span>
@@ -26,7 +30,7 @@ const triggerId = `faq-trigger-${index}`;
 		id={panelId}
 		role="region"
 		aria-labelledby={triggerId}
-		style={index === 0 ? "" : "display:none"}
+		style={panelStyle}
 	>
 		<p class="answer">{answer}</p>
 	</div>

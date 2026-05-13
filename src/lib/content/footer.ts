@@ -1,16 +1,12 @@
+// footer.ts — all text content for the site footer: tagline, link columns, contact info, and legal copy.
 import type { FooterContent } from "../../types/FooterContent";
+import { services } from "./services";
+import { SITE_NAME } from "./site";
 
 export const footerContent: FooterContent = {
   tagline:
     "End-to-end medical practice management across Australia. Operational excellence so you can focus on care.",
-  services: [
-    "Virtual Practice Management",
-    "Onsite Practice Management",
-    "Medical Billing Services",
-    "HR and Recruitment",
-    "Healthcare Finance",
-    "Compliance & Risk",
-  ],
+  services: services.map((s) => s.title),
   company: [
     { label: "Why MedZo", href: "#why-medzo" },
     { label: "Testimonials", href: "#testimonials" },
@@ -29,5 +25,5 @@ export const footerContent: FooterContent = {
     { label: "Terms of Service", href: "/terms" },
   ],
   logoAlt: "MedZo logo",
-  wordmark: "MedZo",
+  wordmark: SITE_NAME,
 };

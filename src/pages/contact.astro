@@ -1,18 +1,13 @@
 ---
+// contact.astro — contact page: enquiry form, team members, and office locations.
 import Layout from "../layouts/Layout.astro";
 import ContactIntroSection from "../components/sections/ContactIntroSection.astro";
-import TeamSection from "../components/sections/TeamSection.astro";
 import OfficesSection from "../components/sections/OfficesSection.astro";
 import { contact } from "../lib/content/contact";
 ---
 
 <Layout title={contact.meta.title} description={contact.meta.description}>
 	<ContactIntroSection hero={contact.hero} form={contact.form} />
-	<TeamSection
-		heading={contact.team.heading}
-		body={contact.team.body}
-		members={contact.team.members}
-	/>
 	<OfficesSection
 		heading={contact.offices.heading}
 		body={contact.offices.body}

@@ -1,0 +1,169 @@
+---
+// FounderSection.astro — founder spotlight: section heading, intro, image, and full bio.
+import type { AboutFounder } from "../../types/AboutContent";
+interface Props {
+	founder: AboutFounder;
+}
+const { founder } = Astro.props;
+---
+
+<section class="founder">
+	<div class="container">
+		<div class="layout">
+			<div class="image-col">
+				{founder.imageUrl ? (
+					<img
+						src={founder.imageUrl}
+						alt={`Portrait of ${founder.name}`}
+						class="photo"
+						loading="lazy"
+					/>
+				) : (
+					<div class="photo-placeholder" aria-hidden="true">
+						{founder.name.split(" ").map((w) => w[0]).join("")}
+					</div>
+				)}
+			</div>
+			<div class="text-col">
+				<p class="label">{founder.sectionHeading} · {founder.role}</p>
+				<h2 class="name">{founder.name}</h2>
+				<p class="intro">{founder.intro}</p>
+				{founder.bio.map((para) => <p class="bio">{para}</p>)}
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	.founder {
+		background: var(--color-bg-hero);
+		padding: 6rem 5rem;
+	}
+	.container {
+		max-width: 1100px;
+		margin: 0 auto;
+	}
+	.label {
+		font-size: var(--text-sm);
+		font-family: var(--font-nav);
+		font-weight: var(--weight-semibold);
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--color-accent);
+		margin: 0;
+	}
+	.layout {
+		display: grid;
+		grid-template-columns: 340px 1fr;
+		gap: 4rem;
+		align-items: start;
+	}
+
+	/* ── Image ───────────────────────────────────────────── */
+	.image-col {
+		border-radius: 1.25rem;
+		overflow: hidden;
+		box-shadow:
+			0 4px 20px rgba(0, 50, 125, 0.08),
+			0 20px 60px rgba(0, 50, 125, 0.12);
+	}
+	.photo-placeholder {
+		width: 100%;
+		aspect-ratio: 4 / 5;
+		background: rgba(0, 193, 253, 0.08);
+		border: 2px dashed rgba(0, 193, 253, 0.25);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 4rem;
+		font-weight: var(--weight-bold);
+		color: var(--color-accent);
+		letter-spacing: 0.05em;
+	}
+	.photo {
+		width: 100%;
+		height: auto;
+		object-fit: cover;
+		display: block;
+	}
+
+	/* ── Text ────────────────────────────────────────────── */
+	.text-col {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		padding-top: 0.5rem;
+	}
+	.name {
+		font-size: clamp(1.75rem, 2.5vw, var(--text-4xl));
+		font-weight: var(--weight-bold);
+		color: var(--color-primary);
+		letter-spacing: var(--tracking-tight);
+		line-height: var(--leading-tight);
+		margin: 0;
+	}
+	.intro {
+		font-size: var(--text-lg);
+		font-weight: var(--weight-semibold);
+		color: var(--color-primary);
+		line-height: var(--leading-loose);
+		margin: 0;
+	}
+	.bio {
+		font-size: var(--text-base);
+		color: var(--color-text-body);
+		line-height: var(--leading-loose);
+		margin: 0;
+	}
+
+	/* ── Responsive ──────────────────────────────────────── */
+	@media (max-width: 960px) {
+		.founder {
+			padding: 4rem 3rem;
+		}
+		.layout {
+			grid-template-columns: 1fr;
+			gap: 2.5rem;
+		}
+		.image-col {
+			max-width: 300px;
+			margin: 0 auto;
+		}
+		.text-col {
+			text-align: left;
+			align-items: flex-start;
+		}
+	}
+	@media (max-width: 640px) {
+		.founder {
+			padding: 3.5rem 1.25rem;
+		}
+		.image-col {
+			max-width: 220px;
+		}
+		.name {
+			font-size: clamp(1.5rem, 6vw, 1.875rem);
+		}
+	}
+</style>
+
+<script>
+	import { animate, inView } from "motion";
+
+	document.addEventListener("astro:page-load", () => {
+		if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+		inView(".founder", () => {
+			(animate as any)(
+				".founder .image-col",
+				{ opacity: [0, 1], x: [-30, 0] },
+				{ duration: 0.6, easing: [0.22, 1, 0.36, 1] },
+			);
+			(animate as any)(
+				".founder .text-col",
+				{ opacity: [0, 1], x: [30, 0] },
+				{ duration: 0.6, delay: 0.1, easing: [0.22, 1, 0.36, 1] },
+			);
+		});
+	});
+</script>

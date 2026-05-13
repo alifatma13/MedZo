@@ -1,0 +1,152 @@
+---
+// CEOSection.astro — founder spotlight: photo, role badge, name, and full bio for the CEO.
+import type { CEOContent } from "../../types/ContactContent";
+interface Props {
+	ceo: CEOContent;
+}
+const { ceo } = Astro.props;
+---
+
+<section class="ceo">
+	<div class="container">
+		<div class="image-col">
+			<img
+				src={ceo.imageUrl}
+				alt={`Portrait of ${ceo.name}`}
+				class="photo"
+				width="420"
+				height="520"
+				loading="lazy"
+				decoding="async"
+			/>
+		</div>
+		<div class="text-col">
+			<span class="role-badge">{ceo.role}</span>
+			<h2 class="name">{ceo.name}</h2>
+			<div class="accent-line" aria-hidden="true"></div>
+			<p class="bio">{ceo.bio}</p>
+		</div>
+	</div>
+</section>
+
+<style>
+	.ceo {
+		background: #fff;
+		padding: 6rem 5rem;
+	}
+	.container {
+		max-width: 1100px;
+		margin: 0 auto;
+		display: grid;
+		grid-template-columns: 380px 1fr;
+		gap: 5rem;
+		align-items: center;
+	}
+
+	/* ── Image ───────────────────────────────────────────── */
+	.image-col {
+		position: relative;
+	}
+	.photo {
+		width: 100%;
+		height: auto;
+		border-radius: 1.25rem;
+		object-fit: cover;
+		display: block;
+		box-shadow:
+			0 4px 20px rgba(0, 50, 125, 0.08),
+			0 20px 60px rgba(0, 50, 125, 0.12);
+	}
+
+	/* ── Text ────────────────────────────────────────────── */
+	.text-col {
+		display: flex;
+		flex-direction: column;
+		gap: 0;
+	}
+	.role-badge {
+		display: inline-block;
+		font-size: var(--text-xs);
+		font-family: var(--font-nav);
+		font-weight: var(--weight-semibold);
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--color-accent);
+		background: rgba(0, 193, 253, 0.08);
+		border: 1px solid rgba(0, 193, 253, 0.2);
+		border-radius: 2rem;
+		padding: 0.3rem 0.85rem;
+		margin-bottom: 1rem;
+		width: fit-content;
+	}
+	.name {
+		font-size: clamp(1.75rem, 2.5vw, var(--text-4xl));
+		font-weight: var(--weight-bold);
+		color: var(--color-primary);
+		letter-spacing: var(--tracking-tight);
+		line-height: var(--leading-tight);
+		margin: 0 0 1.1rem;
+	}
+	.accent-line {
+		width: 2.5rem;
+		height: 3px;
+		background: linear-gradient(90deg, var(--color-accent) 0%, var(--color-primary) 100%);
+		border-radius: 2px;
+		margin-bottom: 1.5rem;
+	}
+	.bio {
+		font-size: var(--text-base);
+		color: var(--color-text-body);
+		line-height: var(--leading-loose);
+		margin: 0;
+	}
+
+	/* ── Responsive ──────────────────────────────────────── */
+	@media (max-width: 900px) {
+		.ceo {
+			padding: 4rem 3rem;
+		}
+		.container {
+			grid-template-columns: 1fr;
+			gap: 2.5rem;
+		}
+		.image-col {
+			max-width: 320px;
+			margin: 0 auto;
+		}
+		.text-col {
+			text-align: center;
+			align-items: center;
+		}
+	}
+	@media (max-width: 640px) {
+		.ceo {
+			padding: 3.5rem 1.25rem;
+		}
+		.text-col {
+			text-align: left;
+			align-items: flex-start;
+		}
+	}
+</style>
+
+<script>
+	import { animate, inView } from "motion";
+
+	document.addEventListener("astro:page-load", () => {
+		if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+		inView(".ceo", () => {
+			(animate as any)(
+				".ceo .image-col",
+				{ opacity: [0, 1], x: [-30, 0] },
+				{ duration: 0.6, easing: [0.22, 1, 0.36, 1] },
+			);
+			(animate as any)(
+				".ceo .text-col",
+				{ opacity: [0, 1], x: [30, 0] },
+				{ duration: 0.6, delay: 0.1, easing: [0.22, 1, 0.36, 1] },
+			);
+		});
+	});
+</script>

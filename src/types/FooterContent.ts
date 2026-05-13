@@ -1,3 +1,4 @@
+// FooterContent.ts — types for the site footer: link columns, contact details, legal copy, and brand strings.
 export interface FooterLink {
   label: string;
   href: string;
