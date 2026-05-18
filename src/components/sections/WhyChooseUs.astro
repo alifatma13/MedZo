@@ -1,21 +1,41 @@
 ---
-// WhyChooseUs.astro — two-column section with a photo and a list of reasons to choose MedZo.
+// WhyChooseUs.astro — metrics bar + two-column section with a photo and a list of reasons to choose MedZo.
 import { Image } from "astro:assets";
 import whyImage from "../../res/why_us.png";
 import WhyItem from "../ui/WhyItem.astro";
 import type { WhyItem as WhyItemType } from "../../types/WhyItem";
+import type { Metric } from "../../types/Metric";
 interface Props {
 	heading: string;
 	items: WhyItemType[];
 	imageAlt: string;
+	metrics: Metric[];
 }
-const { heading, items, imageAlt } = Astro.props;
+const { heading, items, imageAlt, metrics } = Astro.props;
 ---
 
-<section class="why" id="why-medzo">
-	<div class="blob blob--a" aria-hidden="true"></div>
-	<div class="blob blob--b" aria-hidden="true"></div>
-	<div class="container">
+<section class="why">
+	<div class="metrics-bar">
+		<div class="metrics-inner">
+			{
+				metrics.map((m) => (
+					<div
+						class="metric-item"
+						role="img"
+						aria-label={`${m.value >= 1000 ? m.value.toLocaleString("en-AU") : m.value}${m.suffix} ${m.label}`}
+					>
+						<p class="metric-value" aria-hidden="true">
+							<span class="count" data-target={m.value} data-suffix={m.suffix}>
+								{m.value >= 1000 ? m.value.toLocaleString("en-AU") : m.value}{m.suffix}
+							</span>
+						</p>
+						<p class="metric-label" aria-hidden="true">{m.label}</p>
+					</div>
+				))
+			}
+		</div>
+	</div>
+	<div class="container" id="why-medzo">
 		<div class="image-col">
 			<Image
 				src={whyImage}
@@ -46,14 +66,55 @@ const { heading, items, imageAlt } = Astro.props;
 <style>
 	.why {
 		background: #f0f6ff;
-		padding: 6rem 1.5rem;
+		padding: 0 0 6rem;
 		position: relative;
-		overflow: hidden;
 	}
-	.container {
+
+	/* ── Metrics bar ── */
+	.metrics-bar {
+		background: var(--color-primary);
+		padding: 3.5rem 1.5rem;
+	}
+	.metrics-inner {
 		max-width: 1280px;
 		margin: 0 auto;
 		padding: 0 2rem;
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 2rem;
+		text-align: center;
+	}
+	.metric-item {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		padding: 1rem;
+	}
+	.metric-item:not(:last-child) {
+		border-right: 1px solid rgba(255, 255, 255, 0.12);
+	}
+	.metric-value {
+		font-size: clamp(2.5rem, 5vw, 3.75rem);
+		font-weight: var(--weight-extrabold);
+		color: #fff;
+		line-height: 1;
+		margin: 0;
+		letter-spacing: var(--tracking-tight);
+		text-shadow:
+			0 0 24px rgba(0, 193, 253, 0.55),
+			0 0 60px rgba(0, 193, 253, 0.25);
+	}
+	.metric-label {
+		font-size: var(--text-base);
+		color: rgba(255, 255, 255, 0.65);
+		margin: 0;
+		line-height: var(--leading-normal);
+	}
+
+	.container {
+		max-width: 1280px;
+		margin: 0 auto;
+		padding: 6rem 2rem 0;
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		gap: 4rem;
@@ -62,62 +123,6 @@ const { heading, items, imageAlt } = Astro.props;
 		z-index: 1;
 	}
 
-	/* Blobs */
-	.blob {
-		position: absolute;
-		pointer-events: none;
-		border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
-		animation: why-blob-morph 14s ease-in-out infinite;
-	}
-	.blob--a {
-		width: clamp(280px, 36vw, 500px);
-		aspect-ratio: 1;
-		top: 50%;
-		right: -12%;
-		transform: translateY(-50%);
-		background: radial-gradient(
-			ellipse at 50% 50%,
-			rgba(0, 150, 230, 0.13) 0%,
-			rgba(0, 100, 200, 0.07) 45%,
-			transparent 80%
-		);
-		animation-duration: 16s;
-	}
-	.blob--b {
-		width: clamp(280px, 36vw, 500px);
-		aspect-ratio: 1;
-		top: 50%;
-		left: -12%;
-		transform: translateY(-50%);
-		background: radial-gradient(
-			ellipse at 50% 50%,
-			rgba(0, 150, 230, 0.13) 0%,
-			rgba(0, 100, 200, 0.07) 45%,
-			transparent 80%
-		);
-		animation-duration: 16s;
-		animation-delay: -7s;
-	}
-	@keyframes why-blob-morph {
-		0%,
-		100% {
-			border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
-		}
-		25% {
-			border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
-		}
-		50% {
-			border-radius: 50% 40% 60% 30% / 30% 60% 70% 40%;
-		}
-		75% {
-			border-radius: 40% 60% 40% 60% / 70% 30% 60% 40%;
-		}
-	}
-	@media (prefers-reduced-motion: reduce) {
-		.blob {
-			animation: none;
-		}
-	}
 	.image-col {
 		border-radius: 1rem;
 		overflow: hidden;
@@ -143,6 +148,7 @@ const { heading, items, imageAlt } = Astro.props;
 		color: var(--color-primary);
 		letter-spacing: var(--tracking-tight);
 		margin: 0;
+		text-align: center;
 	}
 	.items-list {
 		list-style: none;
@@ -159,18 +165,13 @@ const { heading, items, imageAlt } = Astro.props;
 		.image-col {
 			display: none;
 		}
-		.blob--a {
-			width: clamp(220px, 65vw, 320px);
-			top: -8%;
-			right: -15%;
-			transform: none;
+		.metrics-inner {
+			grid-template-columns: 1fr;
 		}
-		.blob--b {
-			width: clamp(220px, 65vw, 320px);
-			top: auto;
-			bottom: -8%;
-			left: -15%;
-			transform: none;
+		.metric-item:not(:last-child) {
+			border-right: none;
+			border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+			padding-bottom: 1.5rem;
 		}
 	}
 </style>
@@ -179,6 +180,25 @@ const { heading, items, imageAlt } = Astro.props;
 	import { animate, inView, stagger } from "motion";
 
 	document.addEventListener("astro:page-load", () => {
+		// ── Count-up animation for metrics ──
+		inView(".why .metrics-bar", () => {
+			const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+			document.querySelectorAll<HTMLElement>(".why .count").forEach((el) => {
+				const target = parseFloat(el.dataset.target ?? "0");
+				const suffix = el.dataset.suffix ?? "";
+				const isLarge = target >= 1000;
+				const format = (v: number) =>
+					isLarge ? Math.round(v).toLocaleString("en-AU") : Math.round(v).toString();
+				if (reduced) { el.textContent = format(target) + suffix; return; }
+				el.textContent = format(0) + suffix;
+				(animate as any)(0, target, {
+					duration: isLarge ? 2.2 : 1.4,
+					easing: [0.22, 1, 0.36, 1],
+					onUpdate: (v: number) => { el.textContent = format(v) + suffix; },
+				});
+			});
+		});
+
 		if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
 			inView(".why", () => {
 				const imageCol = document.querySelector(".why .image-col");

@@ -22,4 +22,9 @@ export const faqs: FAQItem[] = [
     answer:
       "We support a wide range of healthcare providers, from standard General Practices to complex surgical specialists and allied health clinics.",
   },
+  {
+    question: "What practice management software do you work with?",
+    answer:
+      "Our team is most experienced with Gentu, one of Australia's leading specialist practice management platforms. We also support other systems. Get in touch and we'll confirm compatibility with your setup.",
+  },
 ];

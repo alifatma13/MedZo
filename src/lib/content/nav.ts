@@ -16,7 +16,7 @@ export const navLinks: NavLink[] = [
   { label: "Services", href: "/#services" },
   { label: "Why MedZo", href: "/#why-medzo" },
   { label: "Testimonials", href: "/#testimonials" },
-  { label: "FAQ", href: "/#faq" },
+  { label: "FAQ", href: "/faq" },
   { label: "About", href: "/about" },
 ];
 

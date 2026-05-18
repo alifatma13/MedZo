@@ -83,6 +83,13 @@ const { title, heading, paragraphs } = Astro.props;
 		margin: 0;
 		max-width: 72ch;
 	}
+	@media (prefers-reduced-motion: no-preference) {
+		.page-label,
+		.heading,
+		.body-text {
+			opacity: 0;
+		}
+	}
 	@media (max-width: 900px) {
 		.about-hero {
 			padding: 4rem 3rem 3.5rem;
@@ -94,10 +101,10 @@ const { title, heading, paragraphs } = Astro.props;
 	}
 	@media (max-width: 640px) {
 		.about-hero {
-			padding: 3.5rem 1.25rem 3rem;
+			padding: 4.5rem 1.5rem 4rem;
 		}
 		.heading {
-			text-align: left;
+			text-align: center;
 			font-size: clamp(1.6rem, 6vw, 2rem);
 		}
 		.body-text p {
@@ -107,24 +114,22 @@ const { title, heading, paragraphs } = Astro.props;
 </style>
 
 <script>
-	import { animate } from "motion";
-
 	document.addEventListener("astro:page-load", () => {
 		if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-		(animate as any)(
-			".about-hero .page-label",
-			{ opacity: [0, 1], y: [10, 0] },
-			{ duration: 0.4, easing: [0.22, 1, 0.36, 1] },
+
+		const easeOut = "cubic-bezier(0.22, 1, 0.36, 1)";
+
+		document.querySelector<HTMLElement>(".about-hero .page-label")?.animate(
+			[{ opacity: 0, transform: "translateY(10px)" }, { opacity: 1, transform: "translateY(0)" }],
+			{ duration: 400, easing: easeOut, fill: "forwards" },
 		);
-		(animate as any)(
-			".about-hero .heading",
-			{ opacity: [0, 1], y: [20, 0] },
-			{ duration: 0.5, delay: 0.1, easing: [0.22, 1, 0.36, 1] },
+		document.querySelector<HTMLElement>(".about-hero .heading")?.animate(
+			[{ opacity: 0, transform: "translateY(20px)" }, { opacity: 1, transform: "translateY(0)" }],
+			{ duration: 500, delay: 100, easing: easeOut, fill: "forwards" },
 		);
-		(animate as any)(
-			".about-hero .body-text",
-			{ opacity: [0, 1], y: [16, 0] },
-			{ duration: 0.5, delay: 0.2, easing: [0.22, 1, 0.36, 1] },
+		document.querySelector<HTMLElement>(".about-hero .body-text")?.animate(
+			[{ opacity: 0, transform: "translateY(16px)" }, { opacity: 1, transform: "translateY(0)" }],
+			{ duration: 500, delay: 200, easing: easeOut, fill: "forwards" },
 		);
 	});
 </script>

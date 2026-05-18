@@ -187,6 +187,11 @@ const { intro, specialties } = Astro.props;
 		color: var(--color-primary);
 		font-weight: var(--weight-bold);
 	}
+	@media (prefers-reduced-motion: no-preference) {
+		.ticker-text {
+			opacity: 0;
+		}
+	}
 	@media (max-width: 640px) {
 		.ticker {
 			padding: 3rem 1.25rem;

@@ -7,8 +7,8 @@ export const home: HomeContent = {
         heading: "Practice management\nthat makes your clinic run",
        // heading: "Practice management,\nsimplified",
     subheading:
-      "Running a practice is hard, not the clinical side of things, that's what you've spent years training for. It's everything else. The billing that never quite adds up. The Medicare compliance update sitting unopened in your inbox. The endless admin pulling you away from the patients who need you most.",
-    body: "At MedZo, we provide end-to-end medical practice management across Australia, so you can focus on delivering exceptional care.",
+      "Running a practice is hard. Not the clinical side. That's what you trained for. It's the billing, the compliance updates, the endless admin pulling you away from patients.",
+    body: "At MedZo, we handle it all so you can focus on exceptional care.",
     ctaPrimary: { label: "Book a free consult", href: "/contact" },
     ctaSecondary: { label: "See how we work", href: "#services" },
   },
@@ -19,20 +19,60 @@ export const home: HomeContent = {
       "General Practice, medical specialists, allied health, dental, physiotherapy, telehealth providers, and multidisciplinary clinics.",
   },
 
+  howItWorks: {
+    eyebrow: "Our Process",
+    heading: "From Consultation to Continuity",
+    subheading: "Every engagement follows three steps: understand your practice, build the right team, and stay involved as you grow.",
+    steps: [
+      {
+        stepLabel: "STEP 1: Discovery",
+        title: "Practice Alignment",
+        description: "A structured consultation to map your workflows, systems, and pain points before anything else moves.",
+        bullets: [
+          "Day-to-day on-site team operations",
+          "Practice management systems and software",
+          "Patient volumes and appointment patterns",
+          "Administrative bottlenecks",
+        ],
+      },
+      {
+        stepLabel: "STEP 2: Recruitment",
+        title: "Training and Onboarding",
+        description: "We build a tailored support plan, then handle all recruitment, training, and onboarding end-to-end.",
+        bullets: [
+          "Virtual Medical Receptionists with healthcare experience",
+          "Onboarding matched to your systems",
+          "Training to Australian healthcare standards",
+          "Privacy and data security protocols",
+        ],
+      },
+      {
+        stepLabel: "STEP 3: Integration",
+        title: "Ongoing Support",
+        description: "Your Virtual Receptionist joins as a genuine team extension, backed by Medzo's active governance.",
+        bullets: [
+          "Performance monitoring and quality assurance",
+          "Workflow refinement and efficiency reviews",
+          "Coaching and operational support",
+          "Clear escalation and continuity planning",
+        ],
+      },
+    ],
+  },
+
   servicesSection: {
     title: "What does MedZo do?",
     body: "We offer tailored support that scales with your practice, ensuring clinical precision and administrative ease.",
   },
 
-  metrics: [
-    { value: 6,      suffix: "+", label: "Years of experience" },
-    { value: 100000, suffix: "+", label: "Appointments booked virtually" },
-    { value: 10,     suffix: "+", label: "Doctors who trust us" },
-  ],
-
   whySection: {
     heading: "Why doctors choose MedZo",
     imageAlt: "MedZo team working with a medical practice",
+    metrics: [
+      { value: 6,      suffix: "+", label: "Years of experience" },
+      { value: 100000, suffix: "+", label: "Appointments booked virtually" },
+      { value: 10,     suffix: "+", label: "Doctors who trust us" },
+    ],
     items: [
       {
         iconName: "activity",

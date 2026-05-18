@@ -14,6 +14,12 @@ function initials(name: string): string {
 	const parts = name.trim().split(/\s+/);
 	return (parts[0][0] + (parts[parts.length - 1][0] ?? "")).toUpperCase();
 }
+
+function shortenName(name: string): string {
+	const parts = name.trim().split(/\s+/);
+	if (parts.length === 1) return parts[0];
+	return `${parts[0]} ${parts[parts.length - 1][0].toUpperCase()}.`;
+}
 ---
 
 <section class="team" id="team">
@@ -45,7 +51,7 @@ function initials(name: string): string {
 							</div>
 							<div class="card-body">
 								<p class="member-role">{member.role}</p>
-								<h3 class="member-name">{member.name}</h3>
+								<h3 class="member-name">{shortenName(member.name)}</h3>
 								<p class="member-bio">{member.bio}</p>
 							<button class="read-more" aria-expanded="false">Read more</button>
 							</div>
@@ -260,7 +266,7 @@ function initials(name: string): string {
 	}
 	@media (max-width: 640px) {
 		.team {
-			padding: 3.5rem 1.25rem;
+			padding: 4.5rem 1.5rem;
 		}
 		.card {
 			flex: 0 0 calc(80vw - 2.5rem);

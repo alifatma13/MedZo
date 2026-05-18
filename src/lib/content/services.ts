@@ -7,12 +7,7 @@ export const services: ServiceCard[] = [
     title: "Virtual Practice Management",
     description:
       "Scale your practice with expert remote management that handles operations from anywhere in Australia.",
-  },
-  {
-    iconName: "home",
-    title: "Onsite Practice Management",
-    description:
-      "Dedicated professionals who integrate directly into your physical clinic for hands-on operational leadership.",
+    gentuNote: "We work natively inside Gentu, with no handover friction and no learning curve.",
   },
   {
     iconName: "file-text",

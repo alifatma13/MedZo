@@ -55,8 +55,8 @@ export const contact: ContactContent = {
 		},
 	},
 	offices: {
-		heading: "Our offices",
-		body: "MedZo operates across Australia with physical offices in New South Wales and Queensland.",
+		heading: "Our office",
+		body: "MedZo operates across Australia with physical office in Sydney, New South Wales.",
 		locations: [
 			{
 				state: "NSW",
@@ -66,10 +66,5 @@ export const contact: ContactContent = {
 				email: "nsw@medzo.com.au",
 			},
 		],
-		comingSoon: {
-			badge: "Coming Soon",
-			heading: "Expanding Soon",
-			body: "We are growing across Australia. New locations are on the way - stay tuned.",
-		},
 	},
 };

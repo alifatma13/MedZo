@@ -331,6 +331,45 @@ document.addEventListener("astro:page-load", () => {
 - Any event listener (e.g. accordion `click`) attached outside `astro:page-load` — the elements are replaced on each navigation, so listeners attached once are lost.
 - Any script that calls an init function directly (e.g. `initAccordion()`) without going through `astro:page-load`.
 
+### No-flash rule — mandatory for every entrance animation
+
+**Never animate an element from `opacity: 0` in JavaScript without first setting `opacity: 0` in CSS.**
+
+When `motion.animate()` is called with `{ opacity: [0, 1] }`, the browser paints the element visible on the first frame, then the animation immediately forces it to `opacity: 0`, causing a visible flash before the fade-in plays. Setting the initial state in CSS prevents the browser from ever painting the element visible.
+
+**The pattern — always pair JS animation with a CSS initial state:**
+
+```css
+/* In the component's <style> block */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-heading,
+  .card,
+  .section-body {
+    opacity: 0;
+  }
+}
+```
+
+```ts
+// In the <script> block — JS animates from the CSS initial state
+(animate as any)(
+  ".hero-heading",
+  { opacity: [0, 1], y: [24, 0] },
+  { duration: 0.5, easing: [0.22, 1, 0.36, 1] },
+);
+```
+
+**Rules:**
+
+- Every element that appears in an `animate(..., { opacity: [0, 1] })` call must have `opacity: 0` set in CSS under `@media (prefers-reduced-motion: no-preference)`.
+- Wrap the CSS rule in the media query so users who prefer reduced motion always see content immediately — never hide content from them via CSS.
+- Do not add a global `opacity: 0` on `<main>` or any large wrapper — only target the specific elements being animated.
+
+**Violations to catch before committing:**
+
+- Any `animate(..., { opacity: [0, 1] })` call where the element has no matching `opacity: 0` in the component's `<style>` block.
+- Any `opacity: 0` CSS rule outside `@media (prefers-reduced-motion: no-preference)` — this hides content from users who opted out of motion.
+
 ### motion type errors
 
 The `motion` package's TypeScript overloads do not cover all valid runtime arguments (e.g. CSS selector strings with comma-separated selectors, `clipPath`, `x`, `y` shorthands on `Element` references). When the correct runtime call produces a TS error, cast `animate` to `any` rather than using `@ts-ignore`:

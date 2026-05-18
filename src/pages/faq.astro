@@ -1,0 +1,16 @@
+---
+// faq.astro — standalone FAQ page.
+import Layout from "../layouts/Layout.astro";
+import FAQSection from "../components/sections/FAQSection.astro";
+import FinalCTA from "../components/sections/FinalCTA.astro";
+import { faqs } from "../lib/content/faq";
+import { home } from "../lib/content/home";
+---
+
+<Layout
+	title="Frequently Asked Questions | MedZo"
+	description="Answers to common questions about MedZo's virtual medical receptionist and practice management services."
+>
+	<FAQSection heading={home.faqSection.heading} faqs={faqs} />
+	<FinalCTA {...home.finalCta} />
+</Layout>

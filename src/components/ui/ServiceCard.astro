@@ -3,7 +3,7 @@
 import { icons } from "../../lib/utils/icons";
 import type { ServiceCard } from "../../types/ServiceCard";
 interface Props extends ServiceCard {}
-const { iconName, title, description } = Astro.props;
+const { iconName, title, description, gentuNote } = Astro.props;
 ---
 
 <div class="card">
@@ -12,6 +12,12 @@ const { iconName, title, description } = Astro.props;
   </div>
   <h3 class="card-title">{title}</h3>
   <p class="card-desc">{description}</p>
+  {gentuNote && (
+    <div class="gentu-note">
+      <span class="gentu-badge">Gentu</span>
+      <span class="gentu-text">{gentuNote}</span>
+    </div>
+  )}
 </div>
 
 <style>
@@ -86,6 +92,32 @@ const { iconName, title, description } = Astro.props;
     font-size: var(--text-base);
     color: var(--color-text-body);
     margin: 0;
+    line-height: var(--leading-normal);
+  }
+  .gentu-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-top: auto;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--color-border);
+  }
+  .gentu-badge {
+    flex-shrink: 0;
+    font-size: 0.65rem;
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    background: rgba(0, 193, 253, 0.1);
+    border: 1px solid rgba(0, 193, 253, 0.25);
+    border-radius: 0.25rem;
+    padding: 0.15rem 0.4rem;
+    line-height: 1.4;
+  }
+  .gentu-text {
+    font-size: var(--text-sm);
+    color: var(--color-text-body);
     line-height: var(--leading-normal);
   }
   @media (prefers-reduced-motion: reduce) {

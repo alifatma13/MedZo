@@ -8,9 +8,9 @@ export const footerContent: FooterContent = {
     "End-to-end medical practice management across Australia. Operational excellence so you can focus on care.",
   services: services.map((s) => s.title),
   company: [
-    { label: "Why MedZo", href: "#why-medzo" },
-    { label: "Testimonials", href: "#testimonials" },
-    { label: "FAQ", href: "#faq" },
+    { label: "Why MedZo", href: "/#why-medzo" },
+    { label: "Testimonials", href: "/#testimonials" },
+    { label: "FAQ", href: "/faq" },
     { label: "Book a Consult", href: "/contact" },
   ],
   contact: {

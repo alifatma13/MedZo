@@ -5,16 +5,14 @@ import heroImageSrc from "../res/hero_image.png";
 import Layout from "../layouts/Layout.astro";
 import HeroSection from "../components/sections/HeroSection.astro";
 import SpecialtyTicker from "../components/sections/SpecialtyTicker.astro";
+import HowItWorksSection from "../components/sections/HowItWorksSection.astro";
 import ServicesSection from "../components/sections/ServicesSection.astro";
 import WhyChooseUs from "../components/sections/WhyChooseUs.astro";
 import TestimonialsSection from "../components/sections/TestimonialsSection.astro";
-import FAQSection from "../components/sections/FAQSection.astro";
 import FinalCTA from "../components/sections/FinalCTA.astro";
-import MetricsSection from "../components/sections/MetricsSection.astro";
 import { home } from "../lib/content/home";
 import { services } from "../lib/content/services";
 import { testimonials } from "../lib/content/testimonials";
-import { faqs } from "../lib/content/faq";
 
 const heroImageOptimized = await getImage({
 	src: heroImageSrc,
@@ -34,14 +32,13 @@ const heroImageOptimized = await getImage({
 	/>
 	<HeroSection {...home.hero} />
 	<SpecialtyTicker {...home.ticker} />
-	<MetricsSection metrics={home.metrics} />
 	<ServicesSection heading={home.servicesSection} services={services} />
-	<WhyChooseUs heading={home.whySection.heading} items={home.whySection.items} imageAlt={home.whySection.imageAlt} />
+	<HowItWorksSection {...home.howItWorks} />
+	<WhyChooseUs heading={home.whySection.heading} items={home.whySection.items} imageAlt={home.whySection.imageAlt} metrics={home.whySection.metrics} />
 	<TestimonialsSection
 		heading={home.testimonialsSection.heading}
 		testimonials={testimonials}
 		viewMore={home.testimonialsSection.viewMore}
 	/>
-	<FAQSection heading={home.faqSection.heading} faqs={faqs} />
 	<FinalCTA {...home.finalCta} />
 </Layout>

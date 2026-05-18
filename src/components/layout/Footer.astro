@@ -27,12 +27,12 @@ const year = new Date().getFullYear();
 		</div>
 
 		<div class="links-col">
-			<h4 class="col-heading">Services</h4>
+			<p class="col-heading">Services</p>
 			<ul class="link-list">
 				{
 					footerContent.services.map((s) => (
 						<li>
-							<a href="#services" class="footer-link">
+							<a href="/#services" class="footer-link">
 								{s}
 							</a>
 						</li>
@@ -42,7 +42,7 @@ const year = new Date().getFullYear();
 		</div>
 
 		<div class="links-col">
-			<h4 class="col-heading">Company</h4>
+			<p class="col-heading">Company</p>
 			<ul class="link-list">
 				{
 					footerContent.company.map((c) => (
@@ -57,7 +57,7 @@ const year = new Date().getFullYear();
 		</div>
 
 		<div class="links-col">
-			<h4 class="col-heading">Contact</h4>
+			<p class="col-heading">Contact</p>
 			<ul class="link-list">
 				<li>
 					<a href={`mailto:${footerContent.contact.email}`} class="footer-link"
@@ -124,7 +124,7 @@ const year = new Date().getFullYear();
 	}
 	.tagline {
 		font-size: var(--text-sm);
-		color: rgba(255, 255, 255, 0.55);
+		color: rgba(255, 255, 255, 0.75);
 		line-height: var(--leading-normal);
 		margin: 0;
 		max-width: 22rem;
@@ -132,10 +132,11 @@ const year = new Date().getFullYear();
 	.col-heading {
 		font-size: var(--text-sm);
 		font-weight: var(--weight-semibold);
-		color: rgba(255, 255, 255, 0.45);
+		color: rgba(255, 255, 255, 0.65);
 		text-transform: uppercase;
 		letter-spacing: var(--tracking-wide);
 		margin: 0 0 1rem;
+		line-height: var(--leading-tight);
 	}
 	.link-list {
 		list-style: none;
@@ -172,7 +173,7 @@ const year = new Date().getFullYear();
 	}
 	.acknowledgement-text {
 		font-size: var(--text-sm);
-		color: rgba(255, 255, 255, 0.5);
+		color: rgba(255, 255, 255, 0.65);
 		line-height: var(--leading-normal);
 		margin: 0;
 		font-style: italic;
@@ -191,7 +192,7 @@ const year = new Date().getFullYear();
 	}
 	.copyright {
 		font-size: var(--text-sm);
-		color: rgba(255, 255, 255, 0.4);
+		color: rgba(255, 255, 255, 0.65);
 		margin: 0;
 	}
 	.legal-links {
@@ -200,12 +201,12 @@ const year = new Date().getFullYear();
 	}
 	.legal-link {
 		font-size: var(--text-sm);
-		color: rgba(255, 255, 255, 0.4);
+		color: rgba(255, 255, 255, 0.65);
 		text-decoration: none;
 		transition: color 0.15s;
 	}
 	.legal-link:hover {
-		color: rgba(255, 255, 255, 0.75);
+		color: rgba(255, 255, 255, 0.9);
 	}
 	/* iPad landscape + tablet: 3-col links so CONTACT stays in the same row */
 	@media (min-width: 641px) and (max-width: 1024px) {

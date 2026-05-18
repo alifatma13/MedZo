@@ -60,10 +60,10 @@ const headingLines = heading.split("\n");
 					src={heroImage}
 					alt=""
 					class="visual-bg"
-					widths={[560, 720, 960, 1120]}
+					widths={[375, 560, 768]}
 					sizes="(max-width: 768px) 100vw, 560px"
 					format="webp"
-					quality={82}
+					quality={72}
 					loading="eager"
 					fetchpriority="high"
 				/>
@@ -145,6 +145,7 @@ const headingLines = heading.split("\n");
 	.text-col {
 		display: flex;
 		flex-direction: column;
+		padding-top: 3rem;
 	}
 	.heading {
 		font-size: clamp(1.75rem, 3.5vw, 2.5rem);
@@ -189,6 +190,7 @@ const headingLines = heading.split("\n");
 		position: relative;
 		min-width: 0;
 		padding: 2rem 1.35rem 2.35rem 2.2rem;
+		margin-top: -2rem;
 	}
 	.hero-visual {
 		position: relative;
@@ -368,9 +370,8 @@ const headingLines = heading.split("\n");
 		gap: 0.45rem;
 		padding: 0.5rem 0.75rem;
 		color: #fff;
-		background: rgba(0, 50, 125, 0.58);
+		background: rgba(0, 50, 125, 0.88);
 		font-size: 0.72rem;
-		backdrop-filter: blur(12px);
 	}
 	.insight-pill span {
 		width: 0.55rem;
@@ -594,28 +595,28 @@ const headingLines = heading.split("\n");
 			font-size: 0.55rem;
 		}
 		.action-card:nth-child(1) {
-			top: calc(15% - 3.2rem);
+			top: calc(11% - 3.2rem);
 			left: calc(-3% + 5.8rem);
 			right: auto;
 		}
 		.action-card:nth-child(2) {
-			top: 6%;
+			top: -8%;
 			left: auto;
-			right: -3%;
+			right: -15%;
 		}
 		.action-card:nth-child(3) {
 			top: 30%;
 			left: auto;
-			right: -3%;
+			right: -13%;
 		}
 		.action-card:nth-child(4) {
 			top: 54%;
 			left: auto;
-			right: -3%;
+			right: -13%;
 		}
 		.metric-card {
 			left: -3%;
-			top: 15%;
+			top: 16%;
 			width: 5.8rem;
 			padding: 0.6rem 0.65rem;
 		}
@@ -633,10 +634,7 @@ const headingLines = heading.split("\n");
 			display: none;
 		}
 		.revenue-card {
-			left: -2%;
-			bottom: 8%;
-			width: 9.2rem;
-			padding: 0.65rem;
+			display: none;
 		}
 		.revenue-head strong {
 			font-size: 0.66rem;
@@ -651,9 +649,9 @@ const headingLines = heading.split("\n");
 			font-size: 0.48rem;
 		}
 		.profile-card {
-			left: 38%;
-			right: -3%;
-			bottom: -5%;
+			left: 16%;
+			right: 3%;
+			bottom: -10%;
 			width: auto;
 			padding: 0.65rem 0.75rem;
 			gap: 0.6rem;
@@ -676,42 +674,64 @@ const headingLines = heading.split("\n");
 </style>
 
 <script>
-	import { animate, stagger } from "motion";
-
 	document.addEventListener("astro:page-load", () => {
-		if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-			// Race fonts against 900ms so a slow CDN never stalls the entrance indefinitely.
-			const fontsReady = Promise.race([
-				document.fonts.ready,
-				new Promise<void>((resolve) => setTimeout(resolve, 900)),
-			]);
+		if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-			fontsReady.then(() => {
-				(animate as any)(
-					".hero .word-inner",
-					{ y: ["105%", "0%"], opacity: [0, 1] },
-					{ duration: 0.55, delay: stagger(0.07), easing: [0.22, 1, 0.36, 1] },
-				);
-				(animate as any)(
-					".hero .body-first, .hero .body-second",
-					{ opacity: [0, 1], y: [16, 0] },
-					{
-						duration: 0.5,
-						delay: stagger(0.15, { startDelay: 0.45 }),
-						easing: "ease-out",
-					},
-				);
-				(animate as any)(
-					".hero .cta-row",
-					{ opacity: [0, 1], y: [16, 0] },
-					{ duration: 0.5, delay: 0.75, easing: "ease-out" },
-				);
-				(animate as any)(
-					".hero .visual-col",
-					{ opacity: [0, 1], x: [32, 0] },
-					{ duration: 0.7, delay: 0.2, easing: [0.22, 1, 0.36, 1] },
-				);
-			});
-		}
+		// Race fonts against 900ms so a slow CDN never stalls the entrance indefinitely.
+		Promise.race([
+			document.fonts.ready,
+			new Promise<void>((resolve) => setTimeout(resolve, 900)),
+		]).then(() => {
+			const easeOut = "cubic-bezier(0.22, 1, 0.36, 1)";
+
+			// Word-by-word stagger
+			document
+				.querySelectorAll<HTMLElement>(".hero .word-inner")
+				.forEach((el, i) => {
+					el.animate(
+						[
+							{ opacity: 0, transform: "translateY(105%)" },
+							{ opacity: 1, transform: "translateY(0%)" },
+						],
+						{ duration: 550, delay: i * 70, easing: easeOut, fill: "forwards" },
+					);
+				});
+
+			// Body paragraphs stagger
+			document
+				.querySelectorAll<HTMLElement>(".hero .body-first, .hero .body-second")
+				.forEach((el, i) => {
+					el.animate(
+						[
+							{ opacity: 0, transform: "translateY(16px)" },
+							{ opacity: 1, transform: "translateY(0)" },
+						],
+						{
+							duration: 500,
+							delay: 450 + i * 150,
+							easing: "ease-out",
+							fill: "forwards",
+						},
+					);
+				});
+
+			// CTA row
+			document.querySelector<HTMLElement>(".hero .cta-row")?.animate(
+				[
+					{ opacity: 0, transform: "translateY(16px)" },
+					{ opacity: 1, transform: "translateY(0)" },
+				],
+				{ duration: 500, delay: 750, easing: "ease-out", fill: "forwards" },
+			);
+
+			// Visual column
+			document.querySelector<HTMLElement>(".hero .visual-col")?.animate(
+				[
+					{ opacity: 0, transform: "translateX(32px)" },
+					{ opacity: 1, transform: "translateX(0)" },
+				],
+				{ duration: 700, delay: 200, easing: easeOut, fill: "forwards" },
+			);
+		});
 	});
 </script>

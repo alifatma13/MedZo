@@ -4,5 +4,9 @@
 // @fontsource packages are CSS-only and ship no type declarations.
 declare module "@fontsource-variable/inter";
 declare module "@fontsource-variable/plus-jakarta-sans";
-declare module "@fontsource/podkova/400.css";
-declare module "@fontsource/podkova/700.css";
+
+// woff2 asset imports via Vite ?url suffix resolve to a string URL.
+declare module "*?url" {
+  const url: string;
+  export default url;
+}

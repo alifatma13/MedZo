@@ -9,7 +9,7 @@ export const teamMembers: TeamMember[] = [
   {
     name: "Tina Esarapu",
     role: "Practice Manager",
-    bio: "Tina is a people-centric Practice Manager with 6+ years of experience in patient-focused healthcare management. Known for her warm, approachable leadership style, she is passionate about building strong, supportive teams and creating positive experiences for both patients and health providers. She brings empathy, clear communication, and a collaborative spirit to every aspect of practice management, ensuring the team and the practice operate at their very best. Tina believes that when teams feel valued and empowered, exceptional patient care naturally follows — and she leads every day with that philosophy at heart. With a genuine love for healthcare and a fun, energetic approach, she creates a workplace culture where both staff and patients feel truly welcomed and cared for.",
+    bio: "Tina is a people-centric Practice Manager with 6+ years of experience in patient-focused healthcare management. Known for her warm, approachable leadership style, she is passionate about building strong, supportive teams and creating positive experiences for both patients and health providers. She brings empathy, clear communication, and a collaborative spirit to every aspect of practice management, ensuring the team and the practice operate at their very best. Tina believes that when teams feel valued and empowered, exceptional patient care naturally follows, and she leads every day with that philosophy at heart. With a genuine love for healthcare and a fun, energetic approach, she creates a workplace culture where both staff and patients feel truly welcomed and cared for.",
     imageUrl: "/images/team/TinaEsarapu.jpeg",
   },
   {
@@ -24,6 +24,12 @@ export const teamMembers: TeamMember[] = [
     role: "Practice Administrator",
     bio: "Hajirah brings a warm and professional approach to patient-facing administration, ensuring every patient feels supported from the moment they make contact with the practice. With hands-on experience in specialist practice coordination, she excels in patient liaison, appointment management, and maintaining clear communication between patients and the specialist team.",
     imageUrl: "/images/team/Alvia.jpeg",
+  },
+  {
+    name: "Fatma Ali",
+    role: "Frontend & AI Engineer",
+    bio: "Fatma is the engineer behind MedZo's digital presence and AI initiatives, bringing a decade of mobile and web development experience to the practice. She develops the systems that give MedZo its market visibility, and leads the integration of AI tools that help the business operate more efficiently and intelligently.",
+    imageUrl: "/images/team/FatmaAli.png",
   },
   {
     name: "Chakrank Mantri",
@@ -47,5 +53,6 @@ export const teamMembers: TeamMember[] = [
     name: "Sobiya Ali",
     role: "Billing Administrator",
     bio: "Sobiya is the practice's dedicated billing and accounts specialist, bringing expert knowledge in medical billing, invoicing, and revenue cycle management. Her meticulous attention to detail and deep understanding of specialist billing processes ensure accuracy, compliance, and timely processing of all accounts.",
+    imageUrl: "/images/team/Sobiya.jpeg",
   },
 ];

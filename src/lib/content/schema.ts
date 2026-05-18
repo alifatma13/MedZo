@@ -1,11 +1,20 @@
-// schema.ts — JSON-LD structured data object (MedicalBusiness) injected into every page's <head>.
-import { SITE_NAME } from "./site";
+// schema.ts — JSON-LD structured data (MedicalBusiness) injected into every page's <head>.
+import { SITE_NAME, SITE_DOMAIN } from "./site";
 
 export const siteSchema = {
   "@context": "https://schema.org",
   "@type": "MedicalBusiness",
   name: SITE_NAME,
-  description: "End-to-end medical practice management across Australia.",
+  url: `https://${SITE_DOMAIN}`,
+  description: "End-to-end medical practice management across Australia. Billing, compliance, scheduling, and operations for GPs, specialists, and allied health clinics.",
+  logo: `https://${SITE_DOMAIN}/favicon.png`,
+  image: `https://${SITE_DOMAIN}/og-image.png`,
+  telephone: "+61-1300-000-000",
+  email: "hello@medzo.com.au",
+  address: {
+    "@type": "PostalAddress",
+    addressCountry: "AU",
+  },
   areaServed: {
     "@type": "Country",
     name: "Australia",
@@ -26,4 +35,5 @@ export const siteSchema = {
     "Telehealth",
     "Multidisciplinary Clinics",
   ],
+  sameAs: [],
 };
