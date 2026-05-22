@@ -125,6 +125,7 @@ html {
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  scrollbar-gutter: stable;
 }
 
 body {
@@ -228,3 +229,4 @@ p {
   font-weight: var(--weight-bold);
   letter-spacing: var(--tracking-normal);
 }
+

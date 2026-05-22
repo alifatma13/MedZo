@@ -1,0 +1,38 @@
+---
+// [service].astro — dynamic route generating one page per service slug.
+// Content lives in src/lib/content/servicepages.ts — swap for a CMS fetcher when ready.
+import Layout from "../../layouts/Layout.astro";
+import ServicePageHero from "../../components/sections/ServicePageHero.astro";
+import ServiceFeatureGrid from "../../components/sections/ServiceFeatureGrid.astro";
+import ServicePageCTA from "../../components/sections/ServicePageCTA.astro";
+import { servicePages } from "../../lib/content/servicepages";
+
+export function getStaticPaths() {
+  return Object.keys(servicePages).map((slug) => ({ params: { service: slug } }));
+}
+
+const { service } = Astro.params;
+const page = servicePages[service];
+---
+
+<Layout title={page.metaTitle} description={page.metaDescription}>
+  <ServicePageHero
+    label={page.heroLabel}
+    heading={page.heroHeading}
+    intro={page.heroIntro}
+    ctaLabel={page.heroCtaLabel}
+    ctaHref={page.heroCtaHref}
+    heroImage={page.heroImage}
+  />
+  <ServiceFeatureGrid
+    heading={page.featuresHeading}
+    intro={page.featuresIntro}
+    features={page.features}
+  />
+  <ServicePageCTA
+    heading={page.ctaHeading}
+    body={page.ctaBody}
+    ctaLabel={page.ctaLabel}
+    ctaHref={page.ctaHref}
+  />
+</Layout>

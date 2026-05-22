@@ -6,7 +6,7 @@ export interface FooterLink {
 
 export interface FooterContent {
   tagline: string;
-  services: string[];
+  services: FooterLink[];
   company: FooterLink[];
   contact: { email: string; location: string };
   acknowledgement: string;

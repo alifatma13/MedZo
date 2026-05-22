@@ -4,8 +4,7 @@ import type { HomeContent } from "../../types/HomeContent";
 
 export const home: HomeContent = {
   hero: {
-        heading: "Practice management\nthat makes your clinic run",
-       // heading: "Practice management,\nsimplified",
+    heading: "Practice management,\nsimplified.",
     subheading:
       "Running a practice is hard. Not the clinical side. That's what you trained for. It's the billing, the compliance updates, the endless admin pulling you away from patients.",
     body: "At MedZo, we handle it all so you can focus on exceptional care.",

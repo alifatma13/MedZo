@@ -4,4 +4,5 @@ export interface ServiceCard {
   title: string;
   description: string;
   gentuNote?: string;
+  href?: string;
 }

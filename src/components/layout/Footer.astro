@@ -32,8 +32,8 @@ const year = new Date().getFullYear();
 				{
 					footerContent.services.map((s) => (
 						<li>
-							<a href="/#services" class="footer-link">
-								{s}
+							<a href={s.href} class="footer-link">
+								{s.label}
 							</a>
 						</li>
 					))

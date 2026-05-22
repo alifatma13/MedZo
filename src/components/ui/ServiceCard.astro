@@ -3,7 +3,7 @@
 import { icons } from "../../lib/utils/icons";
 import type { ServiceCard } from "../../types/ServiceCard";
 interface Props extends ServiceCard {}
-const { iconName, title, description, gentuNote } = Astro.props;
+const { iconName, title, description, gentuNote, href } = Astro.props;
 ---
 
 <div class="card">
@@ -17,6 +17,12 @@ const { iconName, title, description, gentuNote } = Astro.props;
       <span class="gentu-badge">Gentu</span>
       <span class="gentu-text">{gentuNote}</span>
     </div>
+  )}
+  {href && (
+    <a href={href} class="card-link" aria-label={`Explore ${title}`}>
+      <span>Explore service</span>
+      <Fragment set:html={icons["arrow-right"] ?? ""} />
+    </a>
   )}
 </div>
 
@@ -93,6 +99,7 @@ const { iconName, title, description, gentuNote } = Astro.props;
     color: var(--color-text-body);
     margin: 0;
     line-height: var(--leading-normal);
+    flex: 1;
   }
   .gentu-note {
     display: flex;
@@ -120,7 +127,37 @@ const { iconName, title, description, gentuNote } = Astro.props;
     color: var(--color-text-body);
     line-height: var(--leading-normal);
   }
+  .card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: auto;
+    padding-top: 0.875rem;
+    border-top: 1px solid var(--color-border);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: gap 0.2s cubic-bezier(0.22, 1, 0.36, 1), color 0.15s;
+  }
+  .card-link svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .card-link:hover {
+    color: var(--color-accent);
+    gap: 0.6rem;
+  }
+  .card-link:hover svg {
+    transform: translateX(3px);
+  }
+  .card-link:focus-visible {
+    outline: 2px solid var(--color-accent);
+    border-radius: 2px;
+  }
   @media (prefers-reduced-motion: reduce) {
-    .card, .card::after, .icon-wrap { transition: none; }
+    .card, .card::after, .icon-wrap, .card-link, .card-link svg { transition: none; }
   }
 </style>

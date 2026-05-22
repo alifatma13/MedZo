@@ -1,36 +1,26 @@
-// services.ts — service card collection (icon, title, description). Section heading lives in home.ts.
+// services.ts — service card collection (icon, title, description, href). Section heading lives in home.ts.
 import type { ServiceCard } from "../../types/ServiceCard";
 
 export const services: ServiceCard[] = [
   {
     iconName: "monitor",
-    title: "Virtual Practice Management",
+    title: "Virtual Medical Receptionist",
     description:
-      "Scale your practice with expert remote management that handles operations from anywhere in Australia.",
-    gentuNote: "We work natively inside Gentu, with no handover friction and no learning curve.",
-  },
-  {
-    iconName: "file-text",
-    title: "Medical Billing Services",
-    description:
-      "Streamlined Medicare, DVA, and private health billing to maximize revenue and minimize claim rejections.",
+      "Your patients heard, your calendar full, your admin handled. A dedicated remote receptionist who becomes a seamless part of your practice.",
+    href: "/services/virtual-receptionist",
   },
   {
     iconName: "users",
-    title: "HR and Recruitment",
+    title: "Managerial Support",
     description:
-      "Find the right clinical and administrative talent to grow your medical team with confidence.",
+      "Focus on patient care while a dedicated practice manager leads your team, streamlines workflows, and keeps your operations running smoothly.",
+    href: "/services/managerial-support",
   },
   {
-    iconName: "bar-chart",
-    title: "Healthcare Finance",
+    iconName: "file-text",
+    title: "Billing Support",
     description:
-      "Specialized bookkeeping and financial reporting designed for the unique needs of medical practices.",
-  },
-  {
-    iconName: "shield-check",
-    title: "Compliance & Risk",
-    description:
-      "Stay ahead of AHPRA regulations and healthcare standards with our expert compliance audits.",
+      "Faster payments, fewer rejections, zero billing stress. Complete claims management across Medicare, DVA, WorkCover, and all private health funds.",
+    href: "/services/billing-support",
   },
 ];

@@ -13,7 +13,30 @@ export const navBrand: NavBrand = {
 };
 
 export const navLinks: NavLink[] = [
-  { label: "Services", href: "/#services" },
+  {
+    label: "Services",
+    href: "/#services",
+    children: [
+      {
+        label: "Virtual Medical Receptionist",
+        href: "/services/virtual-receptionist",
+        description: "Remote patient coordination and front-desk support",
+        iconName: "monitor",
+      },
+      {
+        label: "Managerial Support",
+        href: "/services/managerial-support",
+        description: "Practice operations, staff leadership and reporting",
+        iconName: "users",
+      },
+      {
+        label: "Billing Support",
+        href: "/services/billing-support",
+        description: "End-to-end claims, payments and reconciliation",
+        iconName: "file-text",
+      },
+    ],
+  },
   { label: "Why MedZo", href: "/#why-medzo" },
   { label: "Testimonials", href: "/#testimonials" },
   { label: "FAQ", href: "/faq" },

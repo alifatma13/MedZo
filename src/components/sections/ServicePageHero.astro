@@ -1,0 +1,245 @@
+---
+// ServicePageHero.astro — light split-layout hero for individual service pages.
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+interface Props {
+  label: string;
+  heading: string;
+  intro: string;
+  ctaLabel: string;
+  ctaHref: string;
+  heroImage: ImageMetadata;
+}
+const { label, heading, intro, ctaLabel, ctaHref, heroImage } = Astro.props;
+---
+
+<section class="svc-hero">
+  <div class="container">
+    <div class="hero-content">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/" class="crumb-link">Home</a>
+        <span class="crumb-sep" aria-hidden="true">/</span>
+        <span class="crumb-current" aria-current="page">{label}</span>
+      </nav>
+      <h1 class="hero-heading">{heading}</h1>
+      <p class="hero-intro">{intro}</p>
+      <div class="hero-actions">
+        <a href={ctaHref} class="hero-cta">{ctaLabel} <span aria-hidden="true">→</span></a>
+        <a href="/#services" class="hero-back">View all services</a>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="vis-blob" aria-hidden="true"></div>
+      <Image
+        src={heroImage}
+        alt=""
+        class="hero-img"
+        widths={[480, 720]}
+        sizes="(max-width: 900px) 480px, 720px"
+      />
+    </div>
+  </div>
+</section>
+
+<style>
+  .svc-hero {
+    background: linear-gradient(155deg, #ffffff 0%, #f0f5ff 50%, #e8f0fe 100%);
+    padding: 5rem clamp(1.5rem, 10%, 8rem) 4rem;
+    overflow: hidden;
+    position: relative;
+  }
+  .svc-hero::before {
+    content: "";
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0, 193, 253, 0.08) 0%, transparent 70%);
+    bottom: -150px;
+    left: -100px;
+    pointer-events: none;
+  }
+  .container {
+    max-width: none;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 4rem;
+  }
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: var(--text-sm);
+  }
+  .crumb-link {
+    color: var(--color-text-body);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .crumb-link:hover { color: var(--color-primary); }
+  .crumb-sep { color: var(--color-text-body); opacity: 0.5; }
+  .crumb-current {
+    color: var(--color-accent);
+    font-weight: var(--weight-medium);
+  }
+  .hero-heading {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: var(--weight-extrabold);
+    color: var(--color-primary);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    margin: 0;
+  }
+  .hero-intro {
+    font-size: var(--text-lg);
+    color: var(--color-text-body);
+    line-height: var(--leading-normal);
+    margin: 0;
+    max-width: 520px;
+  }
+  .hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+    margin-top: 0.25rem;
+  }
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-primary) 100%);
+    color: #fff;
+    padding: 0.875rem 2rem;
+    border-radius: 0.625rem;
+    font-size: var(--text-base);
+    font-weight: var(--weight-bold);
+    text-decoration: none;
+    box-shadow: 0 4px 20px rgba(0, 193, 253, 0.3);
+    transition:
+      transform 0.18s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .hero-cta:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 32px rgba(0, 193, 253, 0.4);
+  }
+  .hero-cta:focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+  .hero-back {
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-body);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 50, 125, 0.25);
+    padding-bottom: 1px;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .hero-back:hover {
+    color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
+  }
+  .hero-back:focus-visible {
+    outline: 2px solid var(--color-accent);
+    border-radius: 2px;
+  }
+
+  /* ── Image visual ────────────────────────────────────── */
+  .hero-visual {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .vis-blob {
+    position: absolute;
+    width: 420px;
+    height: 420px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0, 193, 253, 0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-img {
+    position: relative;
+    width: 100%;
+    max-width: 520px;
+    height: auto;
+    border-radius: 1.5rem;
+    box-shadow:
+      0 32px 80px rgba(0, 50, 125, 0.14),
+      0 8px 24px rgba(0, 193, 253, 0.1),
+      0 0 0 1px rgba(0, 193, 253, 0.12);
+    object-fit: cover;
+  }
+
+  @media (max-width: 900px) {
+    .container { grid-template-columns: 1fr; gap: 2.5rem; }
+    .hero-img { max-width: 480px; }
+  }
+  @media (max-width: 640px) {
+    .svc-hero { padding: 4rem 1.5rem 3rem; }
+    .container { max-width: none; }
+    .hero-visual { display: none; }
+    .hero-actions { flex-direction: column; align-items: flex-start; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-cta { transition: none; }
+  }
+</style>
+
+<style>
+  @media (prefers-reduced-motion: no-preference) {
+    .svc-hero {
+      opacity: 0;
+    }
+  }
+</style>
+
+<script>
+  import { animate } from "motion";
+
+  document.addEventListener("astro:page-load", () => {
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      (animate as any)(
+        ".svc-hero",
+        { opacity: [0, 1] },
+        { duration: 0.3, easing: [0.22, 1, 0.36, 1] },
+      );
+      (animate as any)(
+        ".svc-hero .breadcrumb",
+        { y: [10, 0] },
+        { duration: 0.4, easing: [0.22, 1, 0.36, 1] },
+      );
+      (animate as any)(
+        ".svc-hero .hero-heading",
+        { y: [24, 0] },
+        { duration: 0.6, delay: 0.08, easing: [0.22, 1, 0.36, 1] },
+      );
+      (animate as any)(
+        ".svc-hero .hero-intro",
+        { y: [18, 0] },
+        { duration: 0.55, delay: 0.18, easing: [0.22, 1, 0.36, 1] },
+      );
+      (animate as any)(
+        ".svc-hero .hero-actions",
+        { y: [14, 0] },
+        { duration: 0.5, delay: 0.28, easing: [0.22, 1, 0.36, 1] },
+      );
+      (animate as any)(
+        ".svc-hero .hero-visual",
+        { x: [32, 0] },
+        { duration: 0.65, delay: 0.15, easing: [0.22, 1, 0.36, 1] },
+      );
+    }
+  });
+</script>
