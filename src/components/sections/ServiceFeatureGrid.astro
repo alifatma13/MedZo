@@ -220,23 +220,23 @@ const { heading, intro, features } = Astro.props;
   }
 
   /* ── Responsive ──────────────────────────────────────── */
-  @media (max-width: 900px) {
+  /* Tablet: collapse to 2-column — 3-col at ≤1024px gives ~209px inner text width */
+  @media (max-width: 1024px) {
     .feature-grid { grid-template-columns: repeat(2, 1fr); }
     .feature-card--hero { flex-direction: column; gap: 1.5rem; padding: 2rem; }
   }
   @media (max-width: 600px) {
     .svc-features { padding: 4rem clamp(1.5rem, 5%, 2rem); }
-    .container { max-width: none; }
+    .container { max-width: none; gap: 2.5rem; }
     .feature-grid { grid-template-columns: 1fr; }
     .feature-card--hero { padding: 1.75rem; }
   }
 
   /* ── Orphan card fix ─────────────────────────────────── */
-  /* When the last non-hero card lands alone in its row (e.g. 5-feature pages),
-     span it across 2 columns so it doesn't sit isolated at col 1.
-     nth-child(3n+2): hero occupies full row 1; 5th DOM child = 3×1+2. */
+  /* When the last non-hero card lands alone in its row (2-col grid),
+     span it full width so it doesn't sit isolated at col 1. */
   @media (min-width: 601px) {
-    .feature-card:not(.feature-card--hero):last-child:nth-child(3n + 2) {
+    .feature-card:not(.feature-card--hero):last-child:nth-child(odd) {
       grid-column: span 2;
     }
   }

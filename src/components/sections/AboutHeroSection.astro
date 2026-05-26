@@ -31,7 +31,7 @@ const { heading, paragraphs } = Astro.props;
 		display: grid;
 		grid-template-columns: 56fr 44fr;
 		gap: 5rem;
-		align-items: start;
+		align-items: center;
 	}
 	.heading-col {
 		display: flex;
@@ -55,7 +55,6 @@ const { heading, paragraphs } = Astro.props;
 		display: flex;
 		flex-direction: column;
 		gap: 1.375rem;
-		padding-top: 0.625rem;
 	}
 	.body-para {
 		font-size: var(--text-base);
@@ -64,7 +63,10 @@ const { heading, paragraphs } = Astro.props;
 		margin: 0;
 	}
 
-	@media (max-width: 960px) {
+	@media (max-width: 1024px) {
+		.about-hero {
+			padding: 5rem clamp(1.5rem, 6%, 4rem) 4.5rem;
+		}
 		.inner {
 			grid-template-columns: 1fr;
 			gap: 2.5rem;

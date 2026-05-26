@@ -75,7 +75,7 @@ const { heading, items } = Astro.props;
 
 	/* ── Value title ── */
 	.title {
-		font-size: clamp(1.1rem, 2vw, 1.375rem);
+		font-size: clamp(1.25rem, 2vw, 1.5rem);
 		font-weight: var(--weight-bold);
 		color: var(--color-primary);
 		line-height: var(--leading-tight);
@@ -91,10 +91,14 @@ const { heading, items } = Astro.props;
 	}
 
 	/* ── Responsive ── */
-	@media (max-width: 800px) {
+	/* Padding relief for tablet range (covers 801–960px gap) */
+	@media (max-width: 960px) {
 		.values {
 			padding: 4rem clamp(1.5rem, 6%, 4rem) 5rem;
 		}
+	}
+	/* Grid collapse: 3-col → num + text at 800px and below */
+	@media (max-width: 800px) {
 		.item {
 			grid-template-columns: 3rem 1fr;
 			grid-template-rows: auto auto;
