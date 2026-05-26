@@ -63,7 +63,7 @@ const { heading, buttonLabel, buttonHref } = Astro.props;
 	.cta-heading {
 		font-size: clamp(1.75rem, 3.5vw, 3rem);
 		font-weight: var(--weight-bold);
-		color: #fff;
+		color: oklch(98% 0.006 220);
 		letter-spacing: var(--tracking-tight);
 		margin: 0;
 		max-width: 72rem;
@@ -72,6 +72,12 @@ const { heading, buttonLabel, buttonHref } = Astro.props;
 	@media (max-width: 640px) {
 		.final-cta {
 			padding: 4rem 1.25rem;
+		}
+	}
+	@media (prefers-reduced-motion: no-preference) {
+		.cta-heading,
+		.btn {
+			opacity: 0;
 		}
 	}
 </style>

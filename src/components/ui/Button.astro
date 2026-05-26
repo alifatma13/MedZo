@@ -19,17 +19,17 @@ const { label, href, variant = "primary", id } = Astro.props;
     padding: 0.875rem 2rem;
     border-radius: 0.5rem;
     font-size: var(--text-base);
-    font-weight: var(--weight-regular);
+    font-weight: var(--weight-semibold);
     text-decoration: none;
     cursor: pointer;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, color 0.15s ease;
   }
   .btn:focus-visible {
     outline: 2px solid var(--color-accent);
     outline-offset: 3px;
   }
   .btn--primary {
-    background: linear-gradient(90deg, var(--color-accent) 0%, var(--color-primary) 100%);
+    background: var(--gradient-cta);
     color: #fff;
     box-shadow: 0 4px 6px -1px rgba(0, 193, 253, 0.25), 0 2px 4px -2px rgba(0, 50, 125, 0.2);
   }
@@ -37,6 +37,10 @@ const { label, href, variant = "primary", id } = Astro.props;
     background: transparent;
     color: var(--color-primary);
     border: 2px solid var(--color-primary);
+  }
+  .btn--outline:hover {
+    background: var(--color-primary);
+    color: oklch(98% 0.006 220);
   }
   .btn--accent {
     background: #fff;

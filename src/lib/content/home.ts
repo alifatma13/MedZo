@@ -60,6 +60,7 @@ export const home: HomeContent = {
   },
 
   servicesSection: {
+    eyebrow: "Our Services",
     title: "What does MedZo do?",
     body: "We offer tailored support that scales with your practice, ensuring clinical precision and administrative ease.",
   },

@@ -47,10 +47,11 @@
   --weight-extrabold: 800;
 
   /* --- Line Heights --- */
-  --leading-tight:  1.25;  /* headings */
-  --leading-snug:   1.4;   /* subheadings */
-  --leading-normal: 1.6;   /* body */
-  --leading-loose:  1.75;  /* long-form / article text */
+  --leading-tight:   1.25;  /* headings */
+  --leading-snug:    1.4;   /* subheadings */
+  --leading-relaxed: 1.5;   /* comfortable body text */
+  --leading-normal:  1.6;   /* body */
+  --leading-loose:   1.75;  /* long-form / article text */
 
   /* --- Letter Spacing --- */
   --tracking-tight:  -0.02em;  /* large headings */
@@ -61,12 +62,17 @@
   /* --- Brand Colours --- */
   --color-primary:     #00327d;
   --color-accent:      #00c1fd;
+  --color-highlight:   #ebff53;  /* lime yellow — hero metric/chart accent */
   --color-bg-hero:     #f8f9ff;
   --color-bg-ticker:   #e6efff;
   --color-bg-why:      #eef4ff;
   --color-text-heading: #0b1c30;
   --color-text-body:   #434653;
   --color-border:      #c3c6d5;
+
+  /* --- Brand Gradients --- */
+  --gradient-brand: linear-gradient(135deg, var(--color-accent) 0%, var(--color-primary) 100%);
+  --gradient-cta:   linear-gradient(90deg,  var(--color-accent) 0%, var(--color-primary) 100%);
 }
 
 /* ============================================================
@@ -145,7 +151,7 @@ h1, h2, h3, h4, h5, h6 {
   line-height: var(--leading-tight);
   letter-spacing: var(--tracking-tight);
   margin: 0 0 0.5em;
-  color: #111827;
+  color: var(--color-text-heading);
 }
 
 h1 {

@@ -21,12 +21,13 @@ const { intro, specialties } = Astro.props;
 	import { animate, inView } from "motion";
 
 	let rafId: number | null = null;
+	let visibilityObserver: IntersectionObserver | null = null;
+	let onResize: (() => void) | null = null;
 
 	document.addEventListener("astro:page-load", () => {
-		if (rafId !== null) {
-			cancelAnimationFrame(rafId);
-			rafId = null;
-		}
+		if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
+		if (visibilityObserver !== null) { visibilityObserver.disconnect(); visibilityObserver = null; }
+		if (onResize !== null) { window.removeEventListener("resize", onResize); onResize = null; }
 
 		// ── Entrance animation ───────────────────────────
 		if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -51,8 +52,9 @@ const { intro, specialties } = Astro.props;
 			ctx &&
 			!window.matchMedia("(prefers-reduced-motion: reduce)").matches
 		) {
-			let w = 0,
-				h = 0;
+			let w = 0, h = 0;
+			let paused = false;
+			let start: number | null = null;
 
 			function resize() {
 				const dpr = window.devicePixelRatio || 1;
@@ -64,7 +66,8 @@ const { intro, specialties } = Astro.props;
 				ctx!.scale(dpr, dpr);
 			}
 			resize();
-			window.addEventListener("resize", resize, { passive: true });
+			onResize = resize;
+			window.addEventListener("resize", onResize, { passive: true });
 
 			const bands = [
 				{
@@ -93,9 +96,8 @@ const { intro, specialties } = Astro.props;
 				},
 			];
 
-			let start: number | null = null;
-
 			function draw(ts: number) {
+				if (paused) { rafId = null; return; }
 				if (!start) start = ts;
 				const t = (ts - start) / 1000;
 
@@ -132,6 +134,21 @@ const { intro, specialties } = Astro.props;
 
 				rafId = requestAnimationFrame(draw);
 			}
+
+			// Pause the loop when scrolled off-screen, resume when visible.
+			visibilityObserver = new IntersectionObserver(
+				(entries) => {
+					for (const entry of entries) {
+						paused = !entry.isIntersecting;
+						if (!paused && rafId === null) {
+							start = null;
+							rafId = requestAnimationFrame(draw);
+						}
+					}
+				},
+				{ threshold: 0 },
+			);
+			visibilityObserver.observe(canvas);
 
 			rafId = requestAnimationFrame(draw);
 		}

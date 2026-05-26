@@ -203,14 +203,7 @@ import { icons } from "../../lib/utils/icons";
 		font-size: 2.1rem;
 		font-weight: var(--weight-regular);
 		letter-spacing: 0.02em;
-		background: linear-gradient(
-			90deg,
-			var(--color-accent) 0%,
-			var(--color-primary) 100%
-		);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
+		color: var(--color-primary);
 	}
 	.tagline {
 		font-family: var(--font-wordmark);
@@ -359,7 +352,7 @@ import { icons } from "../../lib/utils/icons";
 		width: 36px;
 		height: 36px;
 		border-radius: 0.5rem;
-		background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-primary) 100%);
+		background: var(--gradient-brand);
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -388,11 +381,7 @@ import { icons } from "../../lib/utils/icons";
 		line-height: var(--leading-snug);
 	}
 	.nav-cta {
-		background: linear-gradient(
-			90deg,
-			var(--color-accent) 0%,
-			var(--color-primary) 100%
-		);
+		background: var(--gradient-cta);
 		color: #fff;
 		padding: 0.5rem 1.25rem;
 		border-radius: 0.5rem;
@@ -416,12 +405,12 @@ import { icons } from "../../lib/utils/icons";
 		justify-content: center;
 		align-items: center;
 		gap: 5px;
-		width: 40px;
-		height: 40px;
+		width: 44px;
+		height: 44px;
 		background: none;
 		border: none;
 		cursor: pointer;
-		padding: 0.35rem;
+		padding: 0.5rem;
 		border-radius: 0.375rem;
 		flex-shrink: 0;
 	}
@@ -515,22 +504,15 @@ import { icons } from "../../lib/utils/icons";
 	.drawer-wordmark {
 		font-family: var(--font-wordmark);
 		font-size: 1.6rem;
-		background: linear-gradient(
-			90deg,
-			var(--color-accent) 0%,
-			var(--color-primary) 100%
-		);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
+		color: var(--color-primary);
 		font-weight: var(--weight-regular);
 	}
 	.close-btn {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 36px;
-		height: 36px;
+		width: 44px;
+		height: 44px;
 		background: none;
 		border: 1px solid rgba(0, 50, 125, 0.12);
 		border-radius: 0.375rem;
@@ -631,7 +613,7 @@ import { icons } from "../../lib/utils/icons";
 		width: 22px;
 		height: 22px;
 		border-radius: 0.3rem;
-		background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-primary) 100%);
+		background: var(--gradient-brand);
 		padding: 4px;
 		color: #fff;
 		flex-shrink: 0;
@@ -653,11 +635,7 @@ import { icons } from "../../lib/utils/icons";
 	.drawer-cta {
 		display: block;
 		text-align: center;
-		background: linear-gradient(
-			90deg,
-			var(--color-accent) 0%,
-			var(--color-primary) 100%
-		);
+		background: var(--gradient-cta);
 		color: #fff;
 		padding: 0.875rem 1.5rem;
 		border-radius: 0.5rem;
@@ -770,13 +748,16 @@ import { icons } from "../../lib/utils/icons";
 		const dropdownItems = document.querySelectorAll<HTMLElement>(".has-dropdown");
 		dropdownItems.forEach((item) => {
 			let hideTimer: ReturnType<typeof setTimeout> | null = null;
+			const trigger = item.querySelector<HTMLElement>("[aria-expanded]");
 			item.addEventListener("mouseenter", () => {
 				if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
 				item.classList.add("is-open");
+				trigger?.setAttribute("aria-expanded", "true");
 			});
 			item.addEventListener("mouseleave", () => {
 				hideTimer = setTimeout(() => {
 					item.classList.remove("is-open");
+					trigger?.setAttribute("aria-expanded", "false");
 					hideTimer = null;
 				}, 150);
 			});

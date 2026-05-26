@@ -71,7 +71,7 @@ const { iconName, title, description, gentuNote, href } = Astro.props;
     height: 48px;
     border-radius: 0.5rem;
     padding: 10px;
-    background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-primary) 100%);
+    background: var(--gradient-brand);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -89,7 +89,7 @@ const { iconName, title, description, gentuNote, href } = Astro.props;
   }
   .card-title {
     font-size: var(--text-base);
-    font-weight: var(--weight-regular);
+    font-weight: var(--weight-semibold);
     color: var(--color-primary);
     margin: 0.75rem 0 0;
     letter-spacing: normal;
