@@ -3,6 +3,7 @@
 import { Image } from "astro:assets";
 import whyImage from "../../res/why_us.png";
 import WhyItem from "../ui/WhyItem.astro";
+import { icons } from "../../lib/utils/icons";
 import type { WhyItem as WhyItemType } from "../../types/WhyItem";
 import type { Metric } from "../../types/Metric";
 interface Props {
@@ -12,6 +13,13 @@ interface Props {
 	metrics: Metric[];
 }
 const { heading, items, imageAlt, metrics } = Astro.props;
+
+// Derive badge value from the appointments metric so it stays in sync with metrics data
+const apptMetric = metrics.find((m) => m.label.toLowerCase().includes("appointment"));
+const badgeValue = apptMetric
+	? `${apptMetric.value >= 1000 ? (apptMetric.value / 1000).toLocaleString("en-AU") + "k" : apptMetric.value}${apptMetric.suffix}`
+	: null;
+const badgeLabel = apptMetric?.label ?? null;
 ---
 
 <section class="why">
@@ -37,16 +45,34 @@ const { heading, items, imageAlt, metrics } = Astro.props;
 	</div>
 	<div class="container" id="why-medzo">
 		<div class="image-col">
-			<Image
-				src={whyImage}
-				alt={imageAlt}
-				class="section-img"
-				widths={[480, 640, 900, 1200, 1600]}
-				sizes="(max-width: 768px) 100vw, 50vw"
-				format="webp"
-				quality={80}
-				loading="lazy"
-			/>
+			<!-- Dot-grid decoration (top-left) -->
+			<div class="img-dots" aria-hidden="true"></div>
+			<!-- Gradient offset block that peeks behind the photo (bottom-right) -->
+			<div class="img-offset" aria-hidden="true"></div>
+			<!-- Photo card with overflow-hidden for the badge -->
+			<div class="img-card">
+				<Image
+					src={whyImage}
+					alt={imageAlt}
+					class="section-img"
+					widths={[480, 640, 900, 1200, 1600]}
+					sizes="(max-width: 768px) 100vw, 50vw"
+					format="webp"
+					quality={80}
+					loading="lazy"
+				/>
+				{badgeValue && badgeLabel && (
+					<div class="img-badge" aria-hidden="true">
+						<span class="badge-icon">
+							<Fragment set:html={icons["check-circle"]} />
+						</span>
+						<div class="badge-body">
+							<strong class="badge-value">{badgeValue}</strong>
+							<span class="badge-label">{badgeLabel}</span>
+						</div>
+					</div>
+				)}
+			</div>
 		</div>
 		<div class="content-col">
 			<h2 class="section-title">{heading}</h2>
@@ -123,19 +149,107 @@ const { heading, items, imageAlt, metrics } = Astro.props;
 		z-index: 1;
 	}
 
+	/* ── Modern image treatment ── */
 	.image-col {
-		border-radius: 1rem;
+		position: relative;
+		/* Extra room so the dot grid and offset block can bleed outside the photo */
+		padding: 0.75rem 0.75rem 0.75rem 0;
+	}
+
+	/* Repeating dot-grid — top-left corner decoration */
+	.img-dots {
+		position: absolute;
+		top: 0;
+		left: -0.5rem;
+		width: 150px;
+		height: 150px;
+		background-image: radial-gradient(circle, rgba(0, 193, 253, 0.4) 1.5px, transparent 1.5px);
+		background-size: 18px 18px;
+		pointer-events: none;
+		z-index: 0;
+	}
+
+	/* Brand-gradient block offset behind and to the bottom-right of the photo */
+	.img-offset {
+		position: absolute;
+		bottom: 0;
+		right: 0;
+		width: calc(100% - 0.5rem);
+		height: calc(100% - 0.75rem);
+		background: var(--gradient-brand);
+		border-radius: 1.5rem;
+		opacity: 0.1;
+		z-index: 0;
+	}
+
+	/* The actual photo card */
+	.img-card {
+		position: relative;
+		z-index: 1;
+		border-radius: 1.25rem;
 		overflow: hidden;
 		box-shadow:
-			0 20px 25px -5px rgba(0, 0, 0, 0.1),
-			0 8px 10px -6px rgba(0, 0, 0, 0.1);
+			0 32px 64px rgba(0, 50, 125, 0.16),
+			0 8px 24px rgba(0, 193, 253, 0.1),
+			0 0 0 1px rgba(0, 193, 253, 0.1);
 	}
+
 	.section-img {
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
 		display: block;
 		aspect-ratio: 1407/768;
+	}
+
+	/* Frosted-glass badge floating over the photo */
+	.img-badge {
+		position: absolute;
+		bottom: 1.25rem;
+		left: 1.25rem;
+		display: flex;
+		align-items: center;
+		gap: 0.625rem;
+		background: rgba(255, 255, 255, 0.92);
+		backdrop-filter: blur(12px);
+		-webkit-backdrop-filter: blur(12px);
+		border: 1px solid rgba(0, 193, 253, 0.22);
+		border-radius: 0.875rem;
+		padding: 0.625rem 1rem;
+		box-shadow:
+			0 8px 20px rgba(0, 50, 125, 0.12),
+			0 2px 6px rgba(0, 0, 0, 0.06);
+	}
+	.badge-icon {
+		width: 1.25rem;
+		height: 1.25rem;
+		color: var(--color-accent);
+		flex-shrink: 0;
+		display: flex;
+		align-items: center;
+	}
+	.badge-icon :global(svg) {
+		width: 100%;
+		height: 100%;
+	}
+	.badge-body {
+		display: flex;
+		flex-direction: column;
+		gap: 0.1rem;
+	}
+	.badge-value {
+		font-size: 0.875rem;
+		font-weight: var(--weight-extrabold);
+		color: var(--color-primary);
+		line-height: 1.1;
+	}
+	.badge-label {
+		font-size: 0.65rem;
+		font-weight: var(--weight-semibold);
+		color: var(--color-text-body);
+		line-height: 1.2;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
 	}
 	.content-col {
 		display: flex;
@@ -203,7 +317,7 @@ const { heading, items, imageAlt, metrics } = Astro.props;
 		}
 	}
 	@media (prefers-reduced-motion: no-preference) {
-		.image-col,
+		.img-card,
 		.items-list li {
 			opacity: 0;
 		}
@@ -235,12 +349,12 @@ const { heading, items, imageAlt, metrics } = Astro.props;
 
 		if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
 			inView(".why", () => {
-				const imageCol = document.querySelector(".why .image-col");
+				const imgCard = document.querySelector(".why .img-card");
 				const title = document.querySelector(".why .section-title");
 				const items = document.querySelectorAll(".why .items-list li");
-				if (imageCol)
+				if (imgCard)
 					(animate as any)(
-						imageCol,
+						imgCard,
 						{ opacity: [0, 1], x: [-32, 0] },
 						{ duration: 0.6, easing: [0.22, 1, 0.36, 1] },
 					);
