@@ -217,7 +217,7 @@ const e = f.errors;
 		margin-bottom: 0.875rem;
 	}
 	.heading {
-		font-size: var(--text-5xl);
+		font-size: clamp(2.25rem, 8vw, var(--text-5xl));
 		font-weight: var(--weight-extrabold);
 		color: var(--color-primary);
 		letter-spacing: var(--tracking-tight);
@@ -305,7 +305,7 @@ const e = f.errors;
 	.form {
 		display: flex;
 		flex-direction: column;
-		gap: 0.5rem;
+		gap: 0.875rem;
 	}
 	.form-row {
 		display: grid;
@@ -334,7 +334,7 @@ const e = f.errors;
 		background: #f8f9ff;
 		border: 1.5px solid var(--color-border);
 		border-radius: 0.5rem;
-		padding: 0.4rem 0.75rem;
+		padding: 0.625rem 0.75rem;
 		width: 100%;
 		transition: border-color 0.15s, box-shadow 0.15s;
 	}
@@ -431,8 +431,9 @@ const e = f.errors;
 		.contact-intro {
 			padding: 2.5rem clamp(1.5rem, 5%, 2rem);
 		}
-		.heading {
-			font-size: var(--text-4xl);
+		/* ::before ring is clipped by overflow:hidden at this width — hide it */
+		.contact-intro::before {
+			display: none;
 		}
 		.form-card {
 			padding: 1.25rem;
