@@ -135,11 +135,19 @@ function shortenName(name: string): string {
 		align-items: center;
 		justify-content: center;
 		cursor: pointer;
-		transition: background 0.18s, border-color 0.18s;
+		/* Delight: scale gives tactile press feedback */
+		transition:
+			background 0.18s cubic-bezier(0.22, 1, 0.36, 1),
+			border-color 0.18s cubic-bezier(0.22, 1, 0.36, 1),
+			transform 0.18s cubic-bezier(0.22, 1, 0.36, 1);
 	}
 	.arrow:hover {
 		background: var(--color-accent);
 		border-color: var(--color-accent);
+		transform: scale(1.12);
+	}
+	.arrow:active {
+		transform: scale(0.95);
 	}
 	.arrow:focus-visible {
 		outline: 2px solid var(--color-accent);
@@ -155,18 +163,24 @@ function shortenName(name: string): string {
 	.card {
 		flex: 0 0 270px;
 		scroll-snap-align: start;
-		background: #fff;
+		background: oklch(99% 0.005 220);
 		border-radius: 1.25rem;
 		overflow: hidden;
 		display: flex;
 		flex-direction: column;
 		box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18);
-		transition: transform 0.2s, box-shadow 0.2s;
+		transition:
+			transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+			box-shadow 0.28s cubic-bezier(0.22, 1, 0.36, 1);
 	}
 	.card:hover {
-		transform: translateY(-4px);
-		box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+		transform: translateY(-6px);
+		box-shadow:
+			0 16px 48px rgba(0, 0, 0, 0.28),
+			0 0 0 1px rgba(0, 193, 253, 0.15);
 	}
+
+	/* ── Photo ───────────────────────────────────────────── */
 	.photo-wrap {
 		width: 5.5rem;
 		height: 5.5rem;
@@ -180,6 +194,17 @@ function shortenName(name: string): string {
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		/* Delight: ring brightens when you look at this person */
+		transition:
+			border-color 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+			box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+	}
+	/* Delight: hovering a card makes the person's avatar ring glow */
+	.card:hover .photo-wrap {
+		border-color: rgba(0, 193, 253, 0.75);
+		box-shadow:
+			0 2px 12px rgba(0, 50, 125, 0.12),
+			0 0 0 4px rgba(0, 193, 253, 0.12);
 	}
 	.initials {
 		font-size: var(--text-xl);
@@ -192,7 +217,14 @@ function shortenName(name: string): string {
 		height: 100%;
 		object-fit: cover;
 		display: block;
+		/* Delight: portrait steps slightly forward when you hover the card */
+		transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 	}
+	.card:hover .photo {
+		transform: scale(1.07);
+	}
+
+	/* ── Card text ───────────────────────────────────────── */
 	.card-body {
 		padding: 1rem 1.5rem 1.5rem;
 		display: flex;
@@ -250,6 +282,7 @@ function shortenName(name: string): string {
 		letter-spacing: 0.03em;
 		text-align: center;
 		width: fit-content;
+		transition: opacity 0.15s;
 	}
 	.read-more:hover {
 		text-decoration: underline;
@@ -281,6 +314,31 @@ function shortenName(name: string): string {
 			gap: 0;
 		}
 	}
+
+	/* ── No-flash: set initial states before JS animates ─── */
+	@media (prefers-reduced-motion: no-preference) {
+		.section-title,
+		.section-body,
+		.card {
+			opacity: 0;
+		}
+		/* Photo starts slightly scaled down — pops into place after card enters */
+		.photo-wrap {
+			transform: scale(0.82);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.photo-wrap,
+		.photo,
+		.card,
+		.arrow {
+			transition: none;
+		}
+		.photo-wrap {
+			transform: none;
+		}
+	}
 </style>
 
 <script>
@@ -291,6 +349,7 @@ function shortenName(name: string): string {
 		const prevBtn = document.querySelector(".team .arrow-prev") as HTMLButtonElement | null;
 		const nextBtn = document.querySelector(".team .arrow-next") as HTMLButtonElement | null;
 
+		// Shuffle card order — different every visit (already a delight; preserve it)
 		if (track) {
 			const cards = [...track.children];
 			for (let i = cards.length - 1; i > 0; i--) {
@@ -301,6 +360,7 @@ function shortenName(name: string): string {
 			track.scrollLeft = 0;
 		}
 
+		// Read more toggle
 		document.querySelectorAll<HTMLButtonElement>(".team .read-more").forEach((btn) => {
 			const bio = btn.previousElementSibling as HTMLElement;
 			btn.addEventListener("click", () => {
@@ -310,36 +370,47 @@ function shortenName(name: string): string {
 			});
 		});
 
+		// Arrow scroll
 		if (track && prevBtn && nextBtn) {
 			const SCROLL_AMOUNT = 295;
-
 			const updateArrows = () => {
 				prevBtn.disabled = track.scrollLeft <= 0;
 				nextBtn.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 1;
 			};
-
 			prevBtn.addEventListener("click", () => {
 				track.scrollBy({ left: -SCROLL_AMOUNT, behavior: "smooth" });
 			});
 			nextBtn.addEventListener("click", () => {
 				track.scrollBy({ left: SCROLL_AMOUNT, behavior: "smooth" });
 			});
-
 			track.addEventListener("scroll", updateArrows, { passive: true });
 			updateArrows();
 		}
 
+		// Entrance animations
 		if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
 			inView(".team", () => {
+				// Header fades in
 				(animate as any)(
 					".team .section-title, .team .section-body",
 					{ opacity: [0, 1], y: [16, 0] },
 					{ duration: 0.5, easing: [0.22, 1, 0.36, 1] },
 				);
+
+				// Cards stagger in from below
 				(animate as any)(
 					".team .card",
-					{ opacity: [0, 1], y: [32, 0] },
-					{ duration: 0.5, delay: stagger(0.08), easing: [0.22, 1, 0.36, 1] },
+					{ opacity: [0, 1], y: [36, 0] },
+					{ duration: 0.5, delay: stagger(0.08, { startDelay: 0.15 }), easing: [0.22, 1, 0.36, 1] },
+				);
+
+				// Delight: after each card arrives, its avatar circle pops into full size.
+				// startDelay 0.38s means photos start popping 0.23s after the first card begins entering.
+				// The stagger matches the card stagger so each photo pops shortly after ITS card appears.
+				(animate as any)(
+					".team .photo-wrap",
+					{ scale: [0.82, 1] },
+					{ duration: 0.45, delay: stagger(0.08, { startDelay: 0.38 }), easing: [0.22, 1, 0.36, 1] },
 				);
 			});
 		}
