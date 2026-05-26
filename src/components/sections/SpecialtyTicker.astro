@@ -185,6 +185,24 @@ const row2 = [...[...specialties].reverse(), ...[...specialties].reverse()];
     margin: 0 1.25rem;
   }
 
+  /* ── Responsive ───────────────────────────────────────── */
+  @media (max-width: 768px) {
+    .ticker {
+      padding: 4rem 0;
+    }
+    .ticker-head {
+      padding-bottom: 2.5rem;
+    }
+  }
+  @media (max-width: 480px) {
+    .ticker {
+      padding: 3.5rem 0;
+    }
+    .ticker-head {
+      padding-bottom: 2rem;
+    }
+  }
+
   /* ── Reduced motion ────────────────────────────────────── */
   @media (prefers-reduced-motion: reduce) {
     .track--fwd,

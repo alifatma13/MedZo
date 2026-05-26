@@ -15,7 +15,7 @@ const { service } = Astro.params;
 const page = servicePages[service];
 ---
 
-<Layout title={page.metaTitle} description={page.metaDescription}>
+<Layout title={page.metaTitle} description={page.metaDescription} navBg="#fff">
   <ServicePageHero
     label={page.heroLabel}
     heading={page.heroHeading}

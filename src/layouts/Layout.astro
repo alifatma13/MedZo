@@ -17,12 +17,14 @@ interface Props {
 	title?: string;
 	description?: string;
 	ogImage?: string;
+	navBg?: string;
 }
 
 const {
 	title = defaultMeta.title,
 	description = defaultMeta.description,
 	ogImage = "/og-image.png",
+	navBg,
 } = Astro.props;
 
 const canonicalURL = Astro.url;
@@ -34,7 +36,7 @@ const jsonLd = {
 };
 ---
 
-<html lang="en">
+<html lang="en" style={navBg ? `--nav-bg: ${navBg}` : undefined}>
 	<head>
 		<ClientRouter />
 		<slot name="head" />

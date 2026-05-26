@@ -53,7 +53,7 @@ const { heading, services } = Astro.props;
 <style>
 	.services {
 		background: var(--color-bg-hero);
-		padding: 5rem clamp(1.5rem, 8%, 6rem) 5rem;
+		padding: 5rem clamp(1.5rem, 8%, 6rem) 4rem;
 	}
 	.container {
 		max-width: 1280px;
@@ -195,10 +195,15 @@ const { heading, services } = Astro.props;
 
 	/* ── Responsive ── */
 
-	@media (max-width: 768px) {
-		.services {
-			padding: 6.5rem clamp(1.5rem, 5%, 3rem) 1.5rem;
+	/* Hide bridge on everything below a wide desktop — iPad Pro landscape is 1366px */
+	@media (max-width: 1400px) {
+		.section-bridge {
+			display: none !important;
 		}
+	}
+
+	/* Tablet: collapse to single column — 3 cols at ≤1024px gives ~168px text width, too narrow */
+	@media (max-width: 1024px) {
 		.service-list {
 			grid-template-columns: 1fr;
 		}
@@ -216,9 +221,15 @@ const { heading, services } = Astro.props;
 		}
 	}
 
+	@media (max-width: 768px) {
+		.services {
+			padding: 4rem clamp(1.5rem, 5%, 3rem) 1.5rem;
+		}
+	}
+
 	@media (max-width: 480px) {
 		.services {
-			padding: 5.5rem 1.75rem 1.5rem;
+			padding: 3.5rem 1.5rem 1.5rem;
 		}
 	}
 

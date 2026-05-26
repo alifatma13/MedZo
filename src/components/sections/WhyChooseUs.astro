@@ -157,9 +157,27 @@ const { heading, items, imageAlt, metrics } = Astro.props;
 		flex-direction: column;
 		gap: 1.5rem;
 	}
+	/* Tablet: container top padding relief before full mobile collapse */
+	@media (max-width: 900px) {
+		.why {
+			padding-bottom: 5rem;
+		}
+		.container {
+			padding-top: 4rem;
+		}
+	}
+
 	@media (max-width: 768px) {
+		.why {
+			padding: 0 0 4rem;
+		}
+		.metrics-bar {
+			padding: 2.5rem clamp(1.5rem, 5%, 3rem);
+		}
 		.container {
 			grid-template-columns: 1fr;
+			padding-top: 3.5rem;
+			gap: 2.5rem;
 		}
 		.image-col {
 			display: none;
@@ -171,6 +189,17 @@ const { heading, items, imageAlt, metrics } = Astro.props;
 			border-right: none;
 			border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 			padding-bottom: 1.5rem;
+		}
+	}
+	@media (max-width: 480px) {
+		.why {
+			padding: 0 0 3.5rem;
+		}
+		.metrics-bar {
+			padding: 2rem 1.5rem;
+		}
+		.container {
+			padding-top: 2.5rem;
 		}
 	}
 	@media (prefers-reduced-motion: no-preference) {

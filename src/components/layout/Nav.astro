@@ -200,7 +200,7 @@ function isLinkActive(href: string): boolean {
 		position: sticky;
 		top: 0;
 		z-index: 100;
-		background: var(--color-bg-hero);
+		background: var(--nav-bg, var(--color-bg-hero));
 		box-shadow: none;
 		padding-top: 0.75rem;
 		transition: box-shadow 0.25s ease;
