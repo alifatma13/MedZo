@@ -93,12 +93,12 @@ export const servicePages: Record<string, ServicePageContent> = {
       {
         iconName: "bar-chart",
         title: "Weekly Reporting",
-        body: "Regular updates keep you informed at a glance, without burying you in paperwork.",
+        body: "A weekly snapshot of appointment volumes, staff performance, and billing activity so you always know where your practice stands.",
       },
       {
         iconName: "eye",
         title: "Monthly Reviews",
-        body: "Detailed operational reviews so nothing drifts, and improvements keep coming month after month.",
+        body: "A monthly deep-dive into practice performance, workflow efficiency, and compliance, with clear action points coming out of every session.",
       },
       {
         iconName: "sliders",
@@ -107,7 +107,7 @@ export const servicePages: Record<string, ServicePageContent> = {
       },
     ],
     ctaHeading: "Take back your time",
-    ctaBody: "Our practice managers become an extension of your team from day one.",
+    ctaBody: "From staff management to reporting and compliance, your practice manager handles the operations so you can focus entirely on patients.",
     ctaLabel: "Book a consult",
     ctaHref: "/contact",
   },

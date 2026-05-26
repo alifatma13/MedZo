@@ -72,7 +72,7 @@ export const home: HomeContent = {
   servicesSection: {
     eyebrow: "Our Services",
     title: "What does MedZo do?",
-    body: "We offer tailored support that scales with your practice, ensuring clinical precision and administrative ease.",
+    body: "From the first patient call to the final invoice, we handle the operational work so your clinical team does not have to.",
   },
 
   whySection: {
@@ -87,7 +87,7 @@ export const home: HomeContent = {
       {
         iconName: "activity",
         title: "Real healthcare expertise",
-        description: "We aren't generic consultants. We understand the nuances of the Australian medical landscape.",
+        description: "We aren't generic consultants. We know Medicare billing rules, AHPRA requirements, and the pressure bulk billing puts on a practice.",
       },
       {
         iconName: "eye",
@@ -117,7 +117,7 @@ export const home: HomeContent = {
   },
 
   finalCta: {
-    heading: "Looking for expert medical practice management in Australia?",
+    heading: "Take the admin off your plate.",
     buttonLabel: "Book a free consult",
     buttonHref: "/contact",
   },

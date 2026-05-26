@@ -5,7 +5,7 @@ export const faqs: FAQItem[] = [
   {
     question: "How does MedZo handle practice management?",
     answer:
-      "We offer a hybrid approach, combining high-level strategic planning with daily operational tasks like billing, HR, and compliance tailored specifically to your clinic's needs.",
+      "We start with a consultation to map your workflows and pain points, then put the right people in place to handle your billing, admin, compliance, and staff management. From there, we stay involved with weekly reporting and monthly reviews.",
   },
   {
     question: "What is the cost of your services?",
@@ -20,7 +20,7 @@ export const faqs: FAQItem[] = [
   {
     question: "Which clinical specialties do you support?",
     answer:
-      "We support a wide range of healthcare providers, from standard General Practices to complex surgical specialists and allied health clinics.",
+      "We work with General Practices, medical specialists, allied health, dental, physiotherapy, psychology, radiology, pathology, telehealth providers, and multidisciplinary clinics across Australia.",
   },
   {
     question: "What practice management software do you work with?",

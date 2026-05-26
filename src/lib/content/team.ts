@@ -3,7 +3,7 @@
 import type { TeamMember } from "../../types/TeamMember";
 
 export const teamHeading = "Meet the team";
-export const teamBody = "Our specialists bring years of combined experience across Australian healthcare settings.";
+export const teamBody = "Our team spans practice management, billing, administration, and technology. Every role exists because it directly affects how a practice runs.";
 
 export const teamMembers: TeamMember[] = [
   {

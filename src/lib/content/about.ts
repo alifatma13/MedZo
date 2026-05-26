@@ -38,7 +38,7 @@ export const about: AboutContent = {
     items: [
       {
         title: "Patients first",
-        body: "Every system we build and every process we put in place is ultimately about making things better for patients. That is the point of all of it.",
+        body: "Every system we build and every process we put in place is ultimately about making things better for patients.",
         icon: "users",
       },
       {

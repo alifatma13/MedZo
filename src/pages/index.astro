@@ -31,10 +31,10 @@ const heroImageOptimized = await getImage({
 		type="image/webp"
 	/>
 	<HeroSection {...home.hero} />
-	<SpecialtyTicker {...home.ticker} />
 	<ServicesSection heading={home.servicesSection} services={services} />
 	<HowItWorksSection {...home.howItWorks} />
 	<WhyChooseUs heading={home.whySection.heading} items={home.whySection.items} imageAlt={home.whySection.imageAlt} metrics={home.whySection.metrics} />
+	<SpecialtyTicker {...home.ticker} />
 	<TestimonialsSection
 		heading={home.testimonialsSection.heading}
 		testimonials={testimonials}
