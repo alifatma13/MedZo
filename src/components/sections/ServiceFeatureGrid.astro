@@ -37,7 +37,7 @@ const { heading, intro, features } = Astro.props;
 <style>
   .svc-features {
     background: linear-gradient(155deg, #f4f7ff 0%, #edf1ff 40%, #f8faff 100%);
-    padding: 6rem 1.5rem;
+    padding: 6rem clamp(1.5rem, 6%, 5rem);
     position: relative;
     overflow: hidden;
   }
@@ -53,7 +53,7 @@ const { heading, intro, features } = Astro.props;
     pointer-events: none;
   }
   .container {
-    max-width: none;
+    max-width: 1200px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -85,10 +85,7 @@ const { heading, intro, features } = Astro.props;
     letter-spacing: var(--tracking-tight);
     margin: 0;
     line-height: var(--leading-tight);
-    background: linear-gradient(135deg, var(--color-primary) 0%, #2563eb 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--color-primary);
   }
   .section-intro {
     font-size: var(--text-base);
@@ -160,15 +157,6 @@ const { heading, intro, features } = Astro.props;
     bottom: -1rem;
     right: 2rem;
   }
-  .feature-card--hero::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
-    background-size: 24px 24px;
-    pointer-events: none;
-    border-radius: 1.5rem;
-  }
   .feature-card--hero .feature-icon {
     background: rgba(255, 255, 255, 0.15);
     border: 1px solid rgba(255, 255, 255, 0.2);
@@ -232,10 +220,20 @@ const { heading, intro, features } = Astro.props;
     .feature-card--hero { flex-direction: column; gap: 1.5rem; padding: 2rem; }
   }
   @media (max-width: 600px) {
-    .svc-features { padding: 4rem 1.5rem; }
+    .svc-features { padding: 4rem clamp(1.25rem, 5%, 2rem); }
     .container { max-width: none; }
     .feature-grid { grid-template-columns: 1fr; }
     .feature-card--hero { padding: 1.75rem; }
+  }
+
+  /* ── Orphan card fix ─────────────────────────────────── */
+  /* When the last non-hero card lands alone in its row (e.g. 5-feature pages),
+     span it across 2 columns so it doesn't sit isolated at col 1.
+     nth-child(3n+2): hero occupies full row 1; 5th DOM child = 3×1+2. */
+  @media (min-width: 601px) {
+    .feature-card:not(.feature-card--hero):last-child:nth-child(3n + 2) {
+      grid-column: span 2;
+    }
   }
   @media (prefers-reduced-motion: reduce) {
     .feature-card, .feature-icon { transition: none; }

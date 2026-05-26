@@ -24,7 +24,7 @@ export const about: AboutContent = {
       "She uniquely combines executive leadership with first-hand clinical insight. As a qualified doctor holding a Master's degree in Advanced Health Services Management, she deeply understands the real-world needs and pressures of medical practitioners running modern practices, and what it takes to build operations that support them. Renowned for her strategic clarity and strong people leadership, she streamlines workflows, optimises revenue cycles, and reduces administrative burden so doctors can focus on medicine.",
       "Skilled in billing, compliance, customer service, and record retention, she built MedZo on the belief that helping practices run well is one of the most meaningful ways to help patients. Her warm personality, strong interpersonal skills, and genuine passion for healthcare are reflected in everything MedZo does.",
     ],
-    imageUrl: "/images/team/ZohraSaima.jpg",
+    imageUrl: "/images/team/ZohraSaima.png",
   },
   
 
