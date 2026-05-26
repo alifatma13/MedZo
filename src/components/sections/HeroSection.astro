@@ -145,7 +145,6 @@ const headingLines = heading.split("\n");
 	.text-col {
 		display: flex;
 		flex-direction: column;
-		padding-top: 3rem;
 	}
 	.heading {
 		font-size: clamp(2rem, 3.8vw, 3rem);
@@ -576,14 +575,28 @@ const headingLines = heading.split("\n");
 			max-width: 40rem;
 		}
 		/* Pull overlay cards inside image bounds on single-column layout */
-		.metric-card { left: 0%; top: 14%; }
-		.revenue-card { left: 0%; }
-		.insight-pill { left: 0%; }
-		.action-card:nth-child(1) { left: 7.8rem; top: 2%; }
+		.metric-card {
+			left: 0%;
+			top: 14%;
+		}
+		.revenue-card {
+			left: 0%;
+		}
+		.insight-pill {
+			left: 0%;
+		}
+		.action-card:nth-child(1) {
+			left: 7.8rem;
+			top: 2%;
+		}
 		.action-card:nth-child(2),
 		.action-card:nth-child(3),
-		.action-card:nth-child(4) { right: 2%; }
-		.profile-card { right: 0%; }
+		.action-card:nth-child(4) {
+			right: 2%;
+		}
+		.profile-card {
+			right: 0%;
+		}
 	}
 	@media (max-width: 640px) {
 		.body-first {
@@ -593,7 +606,7 @@ const headingLines = heading.split("\n");
 
 	@media (max-width: 480px) {
 		.visual-col {
-			padding: 1.4rem 2rem 2rem;
+			padding: 3rem 2rem 2rem;
 		}
 		.hero-visual {
 			aspect-ratio: 1 / 1.08;

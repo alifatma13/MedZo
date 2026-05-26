@@ -93,4 +93,11 @@ const panelStyle = defaultOpen ? "" : "display:none";
 		line-height: var(--leading-normal);
 		max-width: 68ch;
 	}
+
+	/* no-flash: hide items before JS entrance animation plays */
+	@media (prefers-reduced-motion: no-preference) {
+		.faq-item {
+			opacity: 0;
+		}
+	}
 </style>

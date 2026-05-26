@@ -52,6 +52,13 @@ const { heading, faqs } = Astro.props;
 			gap: 1.75rem;
 		}
 	}
+
+	/* no-flash: hide title before JS entrance animation plays */
+	@media (prefers-reduced-motion: no-preference) {
+		.section-title {
+			clip-path: inset(0 0 100% 0);
+		}
+	}
 </style>
 
 <script>
