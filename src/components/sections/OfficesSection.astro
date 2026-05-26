@@ -82,7 +82,7 @@ const { heading, body, locations } = Astro.props;
 		gap: 1rem;
 	}
 	.section-title {
-		font-size: var(--text-4xl);
+		font-size: clamp(1.5rem, 5vw, var(--text-4xl));
 		font-weight: var(--weight-semibold);
 		color: var(--color-primary);
 		letter-spacing: var(--tracking-tight);

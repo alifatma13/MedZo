@@ -217,7 +217,7 @@ const e = f.errors;
 		margin-bottom: 0.875rem;
 	}
 	.heading {
-		font-size: clamp(2.25rem, 8vw, var(--text-5xl));
+		font-size: clamp(2rem, 8vw, var(--text-5xl));
 		font-weight: var(--weight-extrabold);
 		color: var(--color-primary);
 		letter-spacing: var(--tracking-tight);
@@ -227,8 +227,9 @@ const e = f.errors;
 	.body-text {
 		font-size: var(--text-base);
 		color: var(--color-text-body);
-		line-height: 1.7;
+		line-height: var(--leading-loose);
 		margin: 0 0 2rem;
+		max-width: 65ch;
 	}
 	.trust-list {
 		list-style: none;
@@ -440,6 +441,11 @@ const e = f.errors;
 		}
 		.form-row {
 			grid-template-columns: 1fr;
+		}
+		/* Prevent iOS Safari from auto-zooming the viewport on input focus */
+		.input,
+		.textarea {
+			font-size: var(--text-base);
 		}
 		.submit-btn {
 			width: 100%;

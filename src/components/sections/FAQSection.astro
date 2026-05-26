@@ -32,7 +32,7 @@ const { heading, faqs } = Astro.props;
 		gap: 3rem;
 	}
 	.section-title {
-		font-size: var(--text-4xl);
+		font-size: clamp(1.5rem, 5vw, var(--text-4xl));
 		font-weight: var(--weight-semibold);
 		color: var(--color-primary);
 		letter-spacing: var(--tracking-tight);
@@ -46,10 +46,10 @@ const { heading, faqs } = Astro.props;
 	}
 	@media (max-width: 640px) {
 		.faq {
-			padding: 4rem 1.25rem;
+			padding: 4rem 1.5rem;
 		}
-		.section-title {
-			font-size: var(--text-2xl);
+		.container {
+			gap: 1.75rem;
 		}
 	}
 </style>
