@@ -74,6 +74,11 @@ export const home: HomeContent = {
     title: "What does MedZo do?",
     body: "From the first patient call to the final invoice, we handle the operational work so your clinical team does not have to.",
   },
+  servicesBridge: {
+    text: "See how we deliver this",
+    href: "#how-it-works",
+    ariaLabel: "See our process",
+  },
 
   whySection: {
     heading: "Why doctors choose MedZo",
@@ -114,6 +119,8 @@ export const home: HomeContent = {
 
   faqSection: {
     heading: "Frequently Asked Questions",
+    metaTitle: "Frequently Asked Questions | MedZo",
+    metaDescription: "Answers to common questions about MedZo's virtual medical receptionist and practice management services.",
   },
 
   finalCta: {

@@ -12,6 +12,8 @@ export interface HomeContent {
 	ticker: TickerContent;
 	howItWorks: HowItWorksContent;
 	servicesSection: SectionHeading;
+	/** Bridge link below the services strip pointing to the How It Works section. */
+	servicesBridge?: { text: string; href: string; ariaLabel: string };
 	whySection: {
 		heading: string;
 		imageAlt: string;
@@ -24,6 +26,8 @@ export interface HomeContent {
 	};
 	faqSection: {
 		heading: string;
+		metaTitle: string;
+		metaDescription: string;
 	};
 	finalCta: FinalCta;
 }

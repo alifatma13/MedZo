@@ -8,6 +8,7 @@ export const terms: PolicyContent = {
   title: "Terms of Service",
   lastUpdated: "May 2025",
   intro: "By using MedZo's services, you agree to these terms. Please read them carefully.",
+  sidebarAriaLabel: "Terms sections",
   backLink: BACK_TO_HOME,
   sections: [
     {

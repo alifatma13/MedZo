@@ -15,6 +15,7 @@ export interface ServicePageContent {
   heroCtaLabel: string;
   heroCtaHref: string;
   heroImage: ImageMetadata;
+  featuresEyebrow: string;
   featuresHeading: string;
   featuresIntro: string;
   features: ServiceFeature[];

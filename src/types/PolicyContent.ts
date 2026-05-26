@@ -20,7 +20,13 @@ export interface PolicyContent {
 	title: string;
 	lastUpdated: string;
 	intro: string;
+	/** Accessible label for the sidebar <nav> element. */
+	sidebarAriaLabel: string;
 	backLink: PolicyBackLink;
 	sections: PolicySection[];
 	faqs?: PolicyFAQ[];
+	/** Heading shown above the FAQ accordion block (only rendered when faqs is non-empty). */
+	faqsHeading?: string;
+	/** Sidebar link label for the FAQs anchor (only rendered when faqs is non-empty). */
+	faqsLinkLabel?: string;
 }

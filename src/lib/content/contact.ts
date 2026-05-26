@@ -37,6 +37,7 @@ export const contact: ContactContent = {
 			},
 			defaultSubject: "Practice Management Enquiry",
 			submit: "Send message",
+			sendingLabel: "Sending…",
 			errors: {
 				nameRequired: "Please enter your name.",
 				nameMin: "Name must be at least 2 characters.",

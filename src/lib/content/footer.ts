@@ -4,6 +4,11 @@ import { services } from "./services";
 import { SITE_NAME } from "./site";
 
 export const footerContent: FooterContent = {
+  columnHeadings: {
+    services: "Services",
+    company: "Company",
+    contact: "Contact",
+  },
   tagline:
     "End-to-end medical practice management across Australia. Operational excellence so you can focus on care.",
   services: services.map((s) => ({ label: s.title, href: s.href ?? "/#services" })),

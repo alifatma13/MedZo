@@ -3,11 +3,13 @@
 import type { ServiceCard } from "../../types/ServiceCard";
 import type { SectionHeading } from "../../types/SectionHeading";
 import { icons } from "../../lib/utils/icons";
+import { ui } from "../../lib/content/ui";
 interface Props {
 	heading: SectionHeading;
 	services: ServiceCard[];
+	bridge?: { text: string; href: string; ariaLabel: string };
 }
-const { heading, services } = Astro.props;
+const { heading, services, bridge } = Astro.props;
 ---
 
 <section class="services" id="services">
@@ -40,7 +42,7 @@ const { heading, services } = Astro.props;
 								class="col-link"
 								aria-label={`Explore ${service.title}`}
 							>
-								<span>Explore</span>
+								<span>{ui.exploreLabel}</span>
 								<span aria-hidden="true">→</span>
 							</a>
 						)}
@@ -49,10 +51,12 @@ const { heading, services } = Astro.props;
 			}
 		</ul>
 
-		<a href="#how-it-works" class="section-bridge" aria-label="See our process">
-			<span class="bridge-text">See how we deliver this</span>
-			<span class="bridge-arrow" aria-hidden="true">↓</span>
-		</a>
+		{bridge && (
+			<a href={bridge.href} class="section-bridge" aria-label={bridge.ariaLabel}>
+				<span class="bridge-text">{bridge.text}</span>
+				<span class="bridge-arrow" aria-hidden="true">↓</span>
+			</a>
+		)}
 	</div>
 </section>
 

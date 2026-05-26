@@ -2,6 +2,7 @@
 // TeamSection.astro — team member carousel used on the /about page.
 import type { TeamMember } from "../../types/AboutContent";
 import { icons } from "../../lib/utils/icons";
+import { ui } from "../../lib/content/ui";
 
 interface Props {
 	heading: string;
@@ -29,7 +30,7 @@ function shortenName(name: string): string {
 			<p class="section-body">{body}</p>
 		</div>
 		<div class="carousel-wrap">
-			<button class="arrow arrow-prev" aria-label="Scroll left">
+			<button class="arrow arrow-prev" aria-label={ui.scrollLeftLabel}>
 				<Fragment set:html={icons["carousel-prev"]} />
 			</button>
 			<div class="track">
@@ -53,13 +54,18 @@ function shortenName(name: string): string {
 								<p class="member-role">{member.role}</p>
 								<h3 class="member-name">{shortenName(member.name)}</h3>
 								<p class="member-bio">{member.bio}</p>
-							<button class="read-more" aria-expanded="false">Read more</button>
+							<button
+								class="read-more"
+								aria-expanded="false"
+								data-label-read-more={ui.readMoreLabel}
+								data-label-read-less={ui.readLessLabel}
+							>{ui.readMoreLabel}</button>
 							</div>
 						</article>
 					))
 				}
 			</div>
-			<button class="arrow arrow-next" aria-label="Scroll right">
+			<button class="arrow arrow-next" aria-label={ui.scrollRightLabel}>
 				<Fragment set:html={icons["carousel-next"]} />
 			</button>
 		</div>
@@ -365,7 +371,7 @@ function shortenName(name: string): string {
 			const bio = btn.previousElementSibling as HTMLElement;
 			btn.addEventListener("click", () => {
 				const expanded = bio.classList.toggle("expanded");
-				btn.textContent = expanded ? "Read less" : "Read more";
+				btn.textContent = expanded ? (btn.dataset.labelReadLess ?? "Read less") : (btn.dataset.labelReadMore ?? "Read more");
 				btn.setAttribute("aria-expanded", String(expanded));
 			});
 		});

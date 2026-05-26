@@ -8,6 +8,9 @@ export const privacy: PolicyContent = {
   title: "Privacy Policy",
   lastUpdated: "May 2025",
   intro: "MedZo Pty Ltd ('MedZo', 'we', 'us') is bound by the Australian Privacy Principles (APPs) under the Privacy Act 1988 (Cth). This policy explains what personal information we collect, why we collect it, how we protect it, and your rights as a client or website visitor.",
+  sidebarAriaLabel: "Privacy policy sections",
+  faqsHeading: "Frequently Asked Questions",
+  faqsLinkLabel: "FAQs",
   backLink: BACK_TO_HOME,
   sections: [
     {

@@ -1,6 +1,7 @@
 ---
 // ServiceCard.astro — icon + title + description card used in the ServicesSection grid.
 import { icons } from "../../lib/utils/icons";
+import { ui } from "../../lib/content/ui";
 import type { ServiceCard } from "../../types/ServiceCard";
 interface Props extends ServiceCard {}
 const { iconName, title, description, gentuNote, href } = Astro.props;
@@ -14,13 +15,13 @@ const { iconName, title, description, gentuNote, href } = Astro.props;
   <p class="card-desc">{description}</p>
   {gentuNote && (
     <div class="gentu-note">
-      <span class="gentu-badge">Gentu</span>
+      <span class="gentu-badge">{ui.gentuBadgeLabel}</span>
       <span class="gentu-text">{gentuNote}</span>
     </div>
   )}
   {href && (
     <a href={href} class="card-link" aria-label={`Explore ${title}`}>
-      <span>Explore service</span>
+      <span>{ui.exploreServiceLabel}</span>
       <Fragment set:html={icons["arrow-right"] ?? ""} />
     </a>
   )}

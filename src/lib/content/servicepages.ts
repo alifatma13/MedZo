@@ -1,6 +1,7 @@
 // servicepages.ts — full content for all three service detail pages.
 // Swap the static objects below for CMS fetcher calls when ready — no component changes needed.
 import type { ServicePageContent } from "../../types/ServicePage";
+import { ui } from "./ui";
 import receptionistImg from "../../res/virtual_receptionist.png";
 import managerialImg from "../../res/practice_manager.png";
 import billingImg from "../../res/billing.png";
@@ -18,6 +19,7 @@ export const servicePages: Record<string, ServicePageContent> = {
     heroCtaLabel: "Book a consult",
     heroCtaHref: "/contact",
     heroImage: receptionistImg,
+    featuresEyebrow: ui.featuresEyebrow,
     featuresHeading: "Everything your front desk handles, done remotely",
     featuresIntro:
       "From the first patient call to the final invoice, every touchpoint is covered.",
@@ -71,6 +73,7 @@ export const servicePages: Record<string, ServicePageContent> = {
     heroCtaLabel: "Book a consult",
     heroCtaHref: "/contact",
     heroImage: managerialImg,
+    featuresEyebrow: ui.featuresEyebrow,
     featuresHeading: "Practice-wide oversight, handled end to end",
     featuresIntro:
       "Every operational detail managed so nothing slips through the cracks.",
@@ -124,6 +127,7 @@ export const servicePages: Record<string, ServicePageContent> = {
     heroCtaLabel: "Book a consult",
     heroCtaHref: "/contact",
     heroImage: billingImg,
+    featuresEyebrow: ui.featuresEyebrow,
     featuresHeading: "Complete billing management, nothing left behind",
     featuresIntro:
       "Every claim submitted, every payment reconciled, every account followed up.",

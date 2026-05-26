@@ -31,7 +31,7 @@ const heroImageOptimized = await getImage({
 		type="image/webp"
 	/>
 	<HeroSection {...home.hero} />
-	<ServicesSection heading={home.servicesSection} services={services} />
+	<ServicesSection heading={home.servicesSection} services={services} bridge={home.servicesBridge} />
 	<HowItWorksSection {...home.howItWorks} />
 	<WhyChooseUs heading={home.whySection.heading} items={home.whySection.items} imageAlt={home.whySection.imageAlt} metrics={home.whySection.metrics} />
 	<SpecialtyTicker {...home.ticker} />

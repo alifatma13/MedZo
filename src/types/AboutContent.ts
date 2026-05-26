@@ -2,6 +2,14 @@
 import type { TeamMember } from "./TeamMember";
 export type { TeamMember };
 
+/** Shape expected by CEOSection.astro for the founder spotlight block. */
+export interface CEOContent {
+	imageUrl: string;
+	name: string;
+	role: string;
+	bio: string;
+}
+
 export interface AboutFounder {
 	sectionHeading: string;
 	intro: string;

@@ -4,8 +4,15 @@ export interface FooterLink {
   href: string;
 }
 
+export interface FooterColumnHeadings {
+  services: string;
+  company: string;
+  contact: string;
+}
+
 export interface FooterContent {
   tagline: string;
+  columnHeadings: FooterColumnHeadings;
   services: FooterLink[];
   company: FooterLink[];
   contact: { email: string; location: string };

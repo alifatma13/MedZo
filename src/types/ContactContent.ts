@@ -27,6 +27,8 @@ export interface ContactFormFields {
 	message: { label: string; placeholder: string };
 	defaultSubject: string;
 	submit: string;
+	/** Button label shown while the form is submitting. */
+	sendingLabel: string;
 	errors: ContactFormErrors;
 	successHeading: string;
 	successBody: string;

@@ -32,7 +32,7 @@ function toLabel(heading: string) {
 			<!-- Two-column body -->
 			<div class="card-body">
 
-				<nav class="sidebar" aria-label="Policy sections">
+				<nav class="sidebar" aria-label={privacy.sidebarAriaLabel}>
 					<ul class="sidebar-links">
 						{
 							privacy.sections.map((s) => (
@@ -46,7 +46,7 @@ function toLabel(heading: string) {
 						{
 							privacy.faqs && privacy.faqs.length > 0 && (
 								<li>
-									<a href="#faqs" class="sidebar-link">FAQs</a>
+									<a href="#faqs" class="sidebar-link">{privacy.faqsLinkLabel}</a>
 								</li>
 							)
 						}
@@ -69,7 +69,7 @@ function toLabel(heading: string) {
 			{
 				privacy.faqs && privacy.faqs.length > 0 && (
 					<div class="faq-block" id="faqs">
-						<h2 class="faq-title">Frequently Asked Questions</h2>
+						<h2 class="faq-title">{privacy.faqsHeading}</h2>
 						<div class="faq-list">
 							{privacy.faqs.map((faq, i) => (
 								<FAQItem question={faq.question} answer={faq.answer} index={i} defaultOpen={false} />
@@ -429,7 +429,7 @@ function toLabel(heading: string) {
 		// Entrance animations
 		if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
 			import("motion")
-				.then(({ animate }) => {
+				.then(({ animate, inView, stagger }) => {
 					(animate as any)(
 						".policy .accent-bar",
 						{ scaleX: [0, 1], opacity: [0, 1] },
@@ -445,6 +445,15 @@ function toLabel(heading: string) {
 						{ opacity: [0, 1], y: [20, 0] },
 						{ duration: 0.55, delay: 0.2, easing: [0.22, 1, 0.36, 1] },
 					);
+
+					// FAQ items — scroll-reveal as they enter the viewport
+					inView(".policy .faq-block", () => {
+						(animate as any)(
+							".policy .faq-item",
+							{ opacity: [0, 1], y: [16, 0] },
+							{ duration: 0.4, delay: (stagger as any)(0.07), easing: [0.22, 1, 0.36, 1] },
+						);
+					});
 				})
 				.catch(() => {});
 		}

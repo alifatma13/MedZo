@@ -27,7 +27,7 @@ const year = new Date().getFullYear();
 		</div>
 
 		<div class="links-col">
-			<p class="col-heading">Services</p>
+			<p class="col-heading">{footerContent.columnHeadings.services}</p>
 			<ul class="link-list">
 				{
 					footerContent.services.map((s) => (
@@ -42,7 +42,7 @@ const year = new Date().getFullYear();
 		</div>
 
 		<div class="links-col">
-			<p class="col-heading">Company</p>
+			<p class="col-heading">{footerContent.columnHeadings.company}</p>
 			<ul class="link-list">
 				{
 					footerContent.company.map((c) => (
@@ -57,7 +57,7 @@ const year = new Date().getFullYear();
 		</div>
 
 		<div class="links-col">
-			<p class="col-heading">Contact</p>
+			<p class="col-heading">{footerContent.columnHeadings.contact}</p>
 			<ul class="link-list">
 				<li>
 					<a href={`mailto:${footerContent.contact.email}`} class="footer-link"
