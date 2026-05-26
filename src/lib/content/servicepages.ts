@@ -12,7 +12,7 @@ export const servicePages: Record<string, ServicePageContent> = {
     metaDescription:
       "Remote front-desk support covering appointment scheduling, patient coordination, billing and compliance, all handled professionally so you can focus on patient care.",
     heroLabel: "Virtual Medical Receptionist",
-    heroHeading: "Never miss a patient, a booking, or a call.",
+    heroHeading: "Never miss a patient, a booking, or a call",
     heroIntro:
       "Our virtual receptionists work inside your practice system, handling every patient interaction with the same care and professionalism you would expect from an in-clinic team member.",
     heroCtaLabel: "Book a consult",
