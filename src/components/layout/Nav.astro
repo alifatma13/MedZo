@@ -4,6 +4,21 @@ import { Image } from "astro:assets";
 import logoImg from "../../res/logo.png";
 import { navLinks, navCta, navBrand } from "../../lib/content/nav";
 import { icons } from "../../lib/utils/icons";
+
+const pathname = Astro.url.pathname;
+
+/**
+ * Returns true when this nav link represents the current route.
+ * - "/#services" → active on any /services/* page (parent grouping)
+ * - Other hash links → never active (they're section anchors on the home page, not pages)
+ * - Everything else → exact or prefix match
+ */
+function isLinkActive(href: string): boolean {
+	if (href === "/#services") return pathname.startsWith("/services");
+	if (href.startsWith("/#")) return false;
+	if (href === "/") return pathname === "/";
+	return pathname === href || pathname.startsWith(href + "/");
+}
 ---
 
 <header class="nav-header">
@@ -31,19 +46,29 @@ import { icons } from "../../lib/utils/icons";
 					<li class="nav-item has-dropdown">
 						<a
 							href={link.href}
-							class="nav-link nav-link--parent"
-							aria-haspopup="true"
-							aria-expanded="false"
+							class:list={["nav-link nav-link--parent", { "is-active": isLinkActive(link.href) }]}
+							aria-current={isLinkActive(link.href) ? "page" : undefined}
 						>
 							{link.label}
+						</a>
+						<button
+							class="dropdown-toggle"
+							aria-expanded="false"
+							aria-haspopup="true"
+							aria-label={`Toggle ${link.label} submenu`}
+						>
 							<span class="dropdown-chevron" aria-hidden="true">
 								<Fragment set:html={icons["chevron-down"]} />
 							</span>
-						</a>
-						<div class="dropdown" role="menu" aria-label={`${link.label} submenu`}>
+						</button>
+						<div class="dropdown" aria-label={`${link.label} submenu`}>
 							<div class="dropdown-inner">
 								{link.children.map((child) => (
-									<a href={child.href} class="dropdown-item" role="menuitem">
+									<a
+										href={child.href}
+										class:list={["dropdown-item", { "is-active": isLinkActive(child.href) }]}
+										aria-current={isLinkActive(child.href) ? "page" : undefined}
+									>
 										<span class="dropdown-icon" aria-hidden="true">
 											<Fragment set:html={icons[child.iconName] ?? ""} />
 										</span>
@@ -58,7 +83,11 @@ import { icons } from "../../lib/utils/icons";
 					</li>
 				) : (
 					<li class="nav-item">
-						<a href={link.href} class="nav-link">
+						<a
+							href={link.href}
+							class:list={["nav-link", { "is-active": isLinkActive(link.href) }]}
+							aria-current={isLinkActive(link.href) ? "page" : undefined}
+						>
 							{link.label}
 						</a>
 					</li>
@@ -119,7 +148,7 @@ import { icons } from "../../lib/utils/icons";
 				link.children ? (
 					<li class="drawer-item drawer-item--parent">
 						<button
-							class="drawer-link drawer-toggle"
+							class:list={["drawer-link drawer-toggle", { "is-active": isLinkActive(link.href) }]}
 							aria-expanded="false"
 						>
 							{link.label}
@@ -130,7 +159,11 @@ import { icons } from "../../lib/utils/icons";
 						<ul class="drawer-sub" aria-hidden="true">
 							{link.children.map((child) => (
 								<li>
-									<a href={child.href} class="drawer-link drawer-sub-link">
+									<a
+										href={child.href}
+										class:list={["drawer-link drawer-sub-link", { "is-active": isLinkActive(child.href) }]}
+										aria-current={isLinkActive(child.href) ? "page" : undefined}
+									>
 										<span class="drawer-sub-icon" aria-hidden="true">
 											<Fragment set:html={icons[child.iconName] ?? ""} />
 										</span>
@@ -142,7 +175,11 @@ import { icons } from "../../lib/utils/icons";
 					</li>
 				) : (
 					<li>
-						<a href={link.href} class="drawer-link">
+						<a
+							href={link.href}
+							class:list={["drawer-link", { "is-active": isLinkActive(link.href) }]}
+							aria-current={isLinkActive(link.href) ? "page" : undefined}
+						>
 							{link.label}
 						</a>
 					</li>
@@ -251,14 +288,42 @@ import { icons } from "../../lib/utils/icons";
 		transform-origin: left;
 		transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
 	}
-	.nav-link--parent::after {
-		width: calc(100% - 1.25rem);
+	.nav-item.has-dropdown {
+		display: flex;
+		align-items: center;
+	}
+	.dropdown-toggle {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: none;
+		border: none;
+		cursor: pointer;
+		padding: 0.2rem 0.25rem;
+		color: var(--color-text-heading);
+		border-radius: 2px;
+		flex-shrink: 0;
+		transition: color 0.15s;
+	}
+	.dropdown-toggle:hover {
+		color: var(--color-primary);
+	}
+	.dropdown-toggle:focus-visible {
+		outline: 2px solid var(--color-accent);
+		border-radius: 2px;
 	}
 	.nav-link:hover {
 		color: var(--color-primary);
 	}
 	.nav-link:hover::after {
 		transform: scaleX(1);
+	}
+	.nav-link.is-active {
+		color: var(--color-primary);
+	}
+	.nav-link.is-active::after {
+		transform: scaleX(1);
+		background: var(--color-primary);
 	}
 	.nav-link:focus-visible {
 		outline: 2px solid var(--color-accent);
@@ -284,7 +349,7 @@ import { icons } from "../../lib/utils/icons";
 		left: 50%;
 		transform: translateX(-50%) translateY(-8px);
 		width: 320px;
-		background: #fff;
+		background: oklch(99.5% 0.004 220);
 		border: 1px solid rgba(0, 50, 125, 0.1);
 		border-radius: 1rem;
 		box-shadow:
@@ -307,12 +372,11 @@ import { icons } from "../../lib/utils/icons";
 		transform: translateX(-50%) rotate(45deg);
 		width: 12px;
 		height: 12px;
-		background: #fff;
+		background: oklch(99.5% 0.004 220);
 		border-top: 1px solid rgba(0, 50, 125, 0.1);
 		border-left: 1px solid rgba(0, 50, 125, 0.1);
 	}
-	.has-dropdown.is-open .dropdown,
-	.has-dropdown:focus-within .dropdown {
+	.has-dropdown.is-open .dropdown {
 		opacity: 1;
 		visibility: visible;
 		pointer-events: auto;
@@ -322,8 +386,7 @@ import { icons } from "../../lib/utils/icons";
 			transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
 			visibility 0s 0s;
 	}
-	.has-dropdown.is-open .dropdown-chevron,
-	.has-dropdown:focus-within .dropdown-chevron {
+	.has-dropdown.is-open .dropdown-chevron {
 		transform: rotate(180deg);
 	}
 	.dropdown-inner {
@@ -336,13 +399,20 @@ import { icons } from "../../lib/utils/icons";
 		display: flex;
 		align-items: center;
 		gap: 0.875rem;
-		padding: 0.75rem 0.875rem;
+		padding: 0.875rem;
 		border-radius: 0.625rem;
 		text-decoration: none;
 		transition: background 0.15s;
 	}
 	.dropdown-item:hover {
 		background: var(--color-bg-hero);
+	}
+	.dropdown-item.is-active {
+		background: var(--color-bg-hero);
+	}
+	.dropdown-item.is-active .dropdown-label {
+		color: var(--color-primary);
+		font-weight: var(--weight-bold);
 	}
 	.dropdown-item:focus-visible {
 		outline: 2px solid var(--color-accent);
@@ -352,12 +422,12 @@ import { icons } from "../../lib/utils/icons";
 		width: 36px;
 		height: 36px;
 		border-radius: 0.5rem;
-		background: var(--gradient-brand);
+		background: none;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		flex-shrink: 0;
-		color: #fff;
+		color: var(--color-primary);
 		padding: 8px;
 	}
 	.dropdown-icon svg {
@@ -381,17 +451,18 @@ import { icons } from "../../lib/utils/icons";
 		line-height: var(--leading-snug);
 	}
 	.nav-cta {
-		background: var(--gradient-cta);
-		color: #fff;
+		background: var(--color-primary);
+		color: oklch(98% 0.006 220);
 		padding: 0.5rem 1.25rem;
 		border-radius: 0.5rem;
 		font-size: var(--text-sm);
 		font-weight: var(--weight-semibold);
 		text-decoration: none;
-		transition: transform 0.15s;
+		transition: transform 0.15s, filter 0.15s;
 	}
 	.nav-cta:hover {
 		transform: scale(1.04);
+		filter: brightness(1.15);
 	}
 	.nav-cta:focus-visible {
 		outline: 2px solid var(--color-accent);
@@ -567,6 +638,11 @@ import { icons } from "../../lib/utils/icons";
 		color: var(--color-primary);
 		background: rgba(0, 50, 125, 0.05);
 	}
+	.drawer-link.is-active {
+		color: var(--color-primary);
+		background: rgba(0, 50, 125, 0.07);
+		font-weight: var(--weight-semibold);
+	}
 	.drawer-link:focus-visible {
 		outline: 2px solid var(--color-accent);
 	}
@@ -613,9 +689,9 @@ import { icons } from "../../lib/utils/icons";
 		width: 22px;
 		height: 22px;
 		border-radius: 0.3rem;
-		background: var(--gradient-brand);
+		background: rgba(0, 193, 253, 0.12);
 		padding: 4px;
-		color: #fff;
+		color: var(--color-primary);
 		flex-shrink: 0;
 	}
 	.drawer-sub-icon svg {
@@ -635,17 +711,18 @@ import { icons } from "../../lib/utils/icons";
 	.drawer-cta {
 		display: block;
 		text-align: center;
-		background: var(--gradient-cta);
-		color: #fff;
+		background: var(--color-primary);
+		color: oklch(98% 0.006 220);
 		padding: 0.875rem 1.5rem;
 		border-radius: 0.5rem;
 		font-size: var(--text-base);
 		font-weight: var(--weight-semibold);
 		text-decoration: none;
-		transition: transform 0.15s;
+		transition: transform 0.15s, filter 0.15s;
 	}
 	.drawer-cta:hover {
 		transform: scale(1.02);
+		filter: brightness(1.15);
 	}
 	.drawer-cta:focus-visible {
 		outline: 2px solid var(--color-accent);
@@ -744,22 +821,31 @@ import { icons } from "../../lib/utils/icons";
 			});
 		});
 
-		// ── Desktop dropdown hover ──────────────────────────
+		// ── Desktop dropdown hover + keyboard toggle ─────────
 		const dropdownItems = document.querySelectorAll<HTMLElement>(".has-dropdown");
 		dropdownItems.forEach((item) => {
 			let hideTimer: ReturnType<typeof setTimeout> | null = null;
-			const trigger = item.querySelector<HTMLElement>("[aria-expanded]");
-			item.addEventListener("mouseenter", () => {
+			const toggleBtn = item.querySelector<HTMLButtonElement>(".dropdown-toggle");
+
+			function openDropdown() {
 				if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
 				item.classList.add("is-open");
-				trigger?.setAttribute("aria-expanded", "true");
-			});
+				toggleBtn?.setAttribute("aria-expanded", "true");
+			}
+			function closeDropdown() {
+				item.classList.remove("is-open");
+				toggleBtn?.setAttribute("aria-expanded", "false");
+			}
+
+			item.addEventListener("mouseenter", openDropdown);
 			item.addEventListener("mouseleave", () => {
-				hideTimer = setTimeout(() => {
-					item.classList.remove("is-open");
-					trigger?.setAttribute("aria-expanded", "false");
-					hideTimer = null;
-				}, 150);
+				hideTimer = setTimeout(() => { closeDropdown(); hideTimer = null; }, 150);
+			});
+
+			// Click / Enter / Space on the toggle button
+			toggleBtn?.addEventListener("click", (e) => {
+				e.stopPropagation();
+				item.classList.contains("is-open") ? closeDropdown() : openDropdown();
 			});
 		});
 
@@ -771,11 +857,12 @@ import { icons } from "../../lib/utils/icons";
 					closeDrawer();
 					return;
 				}
-				const activeParent = document.querySelector<HTMLElement>(".has-dropdown:focus-within");
+				const activeParent = document.querySelector<HTMLElement>(".has-dropdown.is-open");
 				if (activeParent) {
-					const link = activeParent.querySelector<HTMLElement>(".nav-link");
-					link?.blur();
-					link?.focus();
+					activeParent.classList.remove("is-open");
+					const btn = activeParent.querySelector<HTMLElement>(".dropdown-toggle");
+					btn?.setAttribute("aria-expanded", "false");
+					btn?.focus();
 				}
 				return;
 			}

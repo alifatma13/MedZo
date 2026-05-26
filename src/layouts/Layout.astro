@@ -80,10 +80,16 @@ const jsonLd = {
 	<body>
 		<a href="#main-content" class="skip-link">{layoutContent.skipLink}</a>
 		<Nav />
-		<main id="main-content">
+		<main id="main-content" class="page-content">
 			<slot />
 		</main>
 		<Footer />
 	</body>
 </html>
+
+<style>
+	.page-content {
+		zoom: 0.875;
+	}
+</style>
 

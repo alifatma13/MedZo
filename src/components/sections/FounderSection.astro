@@ -1,5 +1,5 @@
 ---
-// FounderSection.astro — founder spotlight: section heading, intro, image, and full bio.
+// FounderSection.astro — editorial split: full-bleed portrait left, founder biography right.
 import type { AboutFounder } from "../../types/AboutContent";
 interface Props {
 	founder: AboutFounder;
@@ -8,141 +8,167 @@ const { founder } = Astro.props;
 ---
 
 <section class="founder">
-	<div class="container">
-		<div class="layout">
-			<div class="image-col">
-				{founder.imageUrl ? (
-					<img
-						src={founder.imageUrl}
-						alt={`Portrait of ${founder.name}`}
-						class="photo"
-						loading="lazy"
-					/>
-				) : (
-					<div class="photo-placeholder" aria-hidden="true">
-						{founder.name.split(" ").map((w) => w[0]).join("")}
-					</div>
-				)}
-			</div>
-			<div class="text-col">
-				<p class="label">{founder.sectionHeading} · {founder.role}</p>
-				<h2 class="name">{founder.name}</h2>
-				<p class="intro">{founder.intro}</p>
-				{founder.bio.map((para) => <p class="bio">{para}</p>)}
-			</div>
+	<div class="split">
+		<div class="photo-panel">
+			{founder.imageUrl ? (
+				<img
+					src={founder.imageUrl}
+					alt={`Portrait of ${founder.name}`}
+					class="portrait"
+					loading="lazy"
+				/>
+			) : (
+				<div class="portrait-fallback" aria-hidden="true">
+					{founder.name.split(" ").map((w) => w[0]).join("")}
+				</div>
+			)}
+		</div>
+
+		<div class="content">
+			<p class="kicker">{founder.sectionHeading}</p>
+			<h2 class="name">{founder.name}</h2>
+			<p class="role">{founder.role}</p>
+			<hr class="divider" aria-hidden="true" />
+			<p class="intro">{founder.intro}</p>
+			{founder.bio.map((para) => <p class="bio">{para}</p>)}
 		</div>
 	</div>
 </section>
 
 <style>
 	.founder {
-		background: var(--color-bg-hero);
-		padding: 6rem 5rem;
+		background: oklch(99% 0.005 220);
+		overflow: hidden;
 	}
-	.container {
-		max-width: 1100px;
-		margin: 0 auto;
+
+	/* ── Split layout ── */
+	.split {
+		display: grid;
+		grid-template-columns: 40fr 60fr;
+		min-height: 580px;
 	}
-	.label {
-		font-size: var(--text-sm);
+
+	/* ── Photo: bleeds to left edge, no card treatment ── */
+	.photo-panel {
+		position: relative;
+	}
+	.portrait {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center 12%;
+		display: block;
+	}
+	.portrait-fallback {
+		position: absolute;
+		inset: 0;
+		background: oklch(95% 0.02 220);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 5rem;
+		font-weight: var(--weight-extrabold);
+		color: var(--color-accent);
+		letter-spacing: 0.04em;
+	}
+
+	/* ── Content column ── */
+	.content {
+		padding: 5.5rem clamp(2rem, 6%, 5rem) 5.5rem clamp(2.5rem, 5%, 4.5rem);
+		display: flex;
+		flex-direction: column;
+		gap: 0.8rem;
+	}
+	.kicker {
+		font-size: var(--text-xs);
 		font-family: var(--font-nav);
 		font-weight: var(--weight-semibold);
-		letter-spacing: 0.08em;
+		letter-spacing: var(--tracking-wider);
 		text-transform: uppercase;
 		color: var(--color-accent);
 		margin: 0;
 	}
-	.layout {
-		display: grid;
-		grid-template-columns: 340px 1fr;
-		gap: 4rem;
-		align-items: start;
-	}
-
-	/* ── Image ───────────────────────────────────────────── */
-	.image-col {
-		border-radius: 1.25rem;
-		overflow: hidden;
-		box-shadow:
-			0 4px 20px rgba(0, 50, 125, 0.08),
-			0 20px 60px rgba(0, 50, 125, 0.12);
-	}
-	.photo-placeholder {
-		width: 100%;
-		aspect-ratio: 4 / 5;
-		background: rgba(0, 193, 253, 0.08);
-		border: 2px dashed rgba(0, 193, 253, 0.25);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-size: 4rem;
-		font-weight: var(--weight-bold);
-		color: var(--color-accent);
-		letter-spacing: 0.05em;
-	}
-	.photo {
-		width: 100%;
-		height: auto;
-		object-fit: cover;
-		display: block;
-	}
-
-	/* ── Text ────────────────────────────────────────────── */
-	.text-col {
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
-		padding-top: 0.5rem;
-	}
 	.name {
-		font-size: clamp(1.75rem, 2.5vw, var(--text-4xl));
-		font-weight: var(--weight-bold);
+		font-size: clamp(2rem, 3.5vw, 3rem);
+		font-weight: var(--weight-extrabold);
 		color: var(--color-primary);
 		letter-spacing: var(--tracking-tight);
-		line-height: var(--leading-tight);
+		line-height: 1.08;
 		margin: 0;
+	}
+	.role {
+		font-size: var(--text-sm);
+		font-weight: var(--weight-medium);
+		color: var(--color-text-body);
+		margin: 0;
+		letter-spacing: 0.01em;
+	}
+	.divider {
+		border: none;
+		border-top: 1px solid oklch(88% 0.014 220);
+		margin: 0.5rem 0;
+		width: 100%;
 	}
 	.intro {
 		font-size: var(--text-lg);
 		font-weight: var(--weight-semibold);
 		color: var(--color-primary);
-		line-height: var(--leading-loose);
+		line-height: var(--leading-snug);
 		margin: 0;
+		max-width: 60ch;
 	}
 	.bio {
 		font-size: var(--text-base);
 		color: var(--color-text-body);
 		line-height: var(--leading-loose);
 		margin: 0;
+		max-width: 68ch;
 	}
 
-	/* ── Responsive ──────────────────────────────────────── */
+	/* ── Responsive ── */
 	@media (max-width: 960px) {
-		.founder {
-			padding: 4rem 3rem;
-		}
-		.layout {
+		.split {
 			grid-template-columns: 1fr;
-			gap: 2.5rem;
+			min-height: auto;
 		}
-		.image-col {
-			max-width: 300px;
-			margin: 0 auto;
+		.photo-panel {
+			aspect-ratio: 3 / 2;
+			position: relative;
 		}
-		.text-col {
-			text-align: left;
-			align-items: flex-start;
+		.content {
+			padding: 3.5rem clamp(1.5rem, 6%, 4rem);
+		}
+		.intro,
+		.bio {
+			max-width: none;
 		}
 	}
 	@media (max-width: 640px) {
-		.founder {
-			padding: 4.5rem 1.5rem;
+		.photo-panel {
+			aspect-ratio: 4 / 3;
 		}
-		.image-col {
-			max-width: 220px;
+		.content {
+			padding: 3rem 1.5rem 4rem;
 		}
 		.name {
-			font-size: clamp(1.5rem, 6vw, 1.875rem);
+			font-size: clamp(1.75rem, 7vw, 2.25rem);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.photo-panel,
+		.content {
+			opacity: 1;
+		}
+	}
+
+	/* no-flash */
+	@media (prefers-reduced-motion: no-preference) {
+		.photo-panel,
+		.content {
+			opacity: 0;
 		}
 	}
 </style>
@@ -155,14 +181,14 @@ const { founder } = Astro.props;
 
 		inView(".founder", () => {
 			(animate as any)(
-				".founder .image-col",
-				{ opacity: [0, 1], x: [-30, 0] },
-				{ duration: 0.6, easing: [0.22, 1, 0.36, 1] },
+				".founder .photo-panel",
+				{ opacity: [0, 1], x: [-32, 0] },
+				{ duration: 0.7, easing: [0.22, 1, 0.36, 1] },
 			);
 			(animate as any)(
-				".founder .text-col",
-				{ opacity: [0, 1], x: [30, 0] },
-				{ duration: 0.6, delay: 0.1, easing: [0.22, 1, 0.36, 1] },
+				".founder .content",
+				{ opacity: [0, 1], y: [24, 0] },
+				{ duration: 0.65, delay: 0.18, easing: [0.22, 1, 0.36, 1] },
 			);
 		});
 	});

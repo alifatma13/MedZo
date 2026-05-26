@@ -158,7 +158,7 @@ const { intro, specialties } = Astro.props;
 <style>
 	.ticker {
 		background: linear-gradient(180deg, #f4f8ff 0%, #deeaff 100%);
-		padding: 4rem 1.5rem;
+		padding: 4rem clamp(1.5rem, 8%, 6rem);
 		position: relative;
 		overflow: hidden;
 	}
@@ -211,7 +211,7 @@ const { intro, specialties } = Astro.props;
 	}
 	@media (max-width: 640px) {
 		.ticker {
-			padding: 3rem 1.25rem;
+			padding: 3rem 1.5rem;
 		}
 		.ticker-text {
 			font-size: var(--text-base);

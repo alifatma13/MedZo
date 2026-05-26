@@ -68,8 +68,10 @@ function shortenName(name: string): string {
 
 <style>
 	.team {
-		background: var(--color-primary);
-		padding: 5rem 5rem;
+		background: transparent;
+		padding: 5rem clamp(1.5rem, 8%, 6rem);
+		position: relative;
+		z-index: 1;
 	}
 	.container {
 		max-width: 1280px;
@@ -88,8 +90,8 @@ function shortenName(name: string): string {
 		gap: 0.6rem;
 	}
 	.section-title {
-		font-size: clamp(1.5rem, 3vw, var(--text-4xl));
-		font-weight: var(--weight-bold);
+		font-size: clamp(1.75rem, 3.5vw, 3rem);
+		font-weight: var(--weight-extrabold);
 		color: #fff;
 		letter-spacing: var(--tracking-tight);
 		margin: 0;
@@ -261,12 +263,12 @@ function shortenName(name: string): string {
 	/* ── Responsive ──────────────────────────────────────── */
 	@media (max-width: 900px) {
 		.team {
-			padding: 4rem 3rem;
+			padding: 4rem clamp(1.5rem, 6%, 4rem);
 		}
 	}
 	@media (max-width: 640px) {
 		.team {
-			padding: 4.5rem 1.5rem;
+			padding: 4.5rem clamp(1.5rem, 5%, 2rem);
 		}
 		.card {
 			flex: 0 0 calc(80vw - 2.5rem);

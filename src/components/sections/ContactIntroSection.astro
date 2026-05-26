@@ -156,7 +156,7 @@ const e = f.errors;
 		position: relative;
 		background: var(--color-bg-hero);
 		min-height: calc(100dvh - 76px);
-		padding: 3rem 5rem;
+		padding: 3rem clamp(1.5rem, 8%, 6rem);
 		display: flex;
 		align-items: center;
 		overflow: hidden;
@@ -402,7 +402,7 @@ const e = f.errors;
 	@media (max-width: 1024px) {
 		.contact-intro {
 			min-height: unset;
-			padding: 3.5rem 3rem;
+			padding: 3.5rem clamp(1.5rem, 6%, 4rem);
 			align-items: flex-start;
 		}
 		.contact-intro::after {
@@ -416,9 +416,20 @@ const e = f.errors;
 			max-width: unset;
 		}
 	}
+	/* ── Animation initial states (prevent flash-before-fade) ── */
+	@media (prefers-reduced-motion: no-preference) {
+		.accent-bar,
+		.heading,
+		.body-text,
+		.trust-item,
+		.form-card {
+			opacity: 0;
+		}
+	}
+
 	@media (max-width: 640px) {
 		.contact-intro {
-			padding: 2.5rem 1.25rem;
+			padding: 2.5rem clamp(1.5rem, 5%, 2rem);
 		}
 		.heading {
 			font-size: var(--text-4xl);

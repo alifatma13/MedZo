@@ -19,16 +19,57 @@ import { about } from "../lib/content/about";
 	<FounderSection founder={about.founder} />
 	<MissionSection heading={about.mission.heading} body={about.mission.body} />
 	<ValuesSection heading={about.values.heading} items={about.values.items} />
-	<TeamSection
-		heading={about.team.heading}
-		body={about.team.body}
-		members={about.team.members}
-	/>
-	<CredentialsSection
-		credentialsHeading={about.credentials.heading}
-		credentialItems={about.credentials.items}
-		ctaBody={about.cta.body}
-		ctaButtonLabel={about.cta.buttonLabel}
-		ctaButtonHref={about.cta.buttonHref}
-	/>
+
+	<!-- Team + CTA share one navy canvas with blobs spanning both -->
+	<div class="navy-band">
+		<div class="nb-blob nb-blob-1" aria-hidden="true"></div>
+		<div class="nb-blob nb-blob-2" aria-hidden="true"></div>
+		<div class="nb-overlay" aria-hidden="true"></div>
+		<TeamSection
+			heading={about.team.heading}
+			body={about.team.body}
+			members={about.team.members}
+		/>
+		<CredentialsSection
+			ctaBody={about.cta.body}
+			ctaButtonLabel={about.cta.buttonLabel}
+			ctaButtonHref={about.cta.buttonHref}
+		/>
+	</div>
 </Layout>
+
+<style>
+	.navy-band {
+		background: var(--color-primary);
+		position: relative;
+		overflow: hidden;
+	}
+	.nb-overlay {
+		position: absolute;
+		inset: 0;
+		opacity: 0.08;
+		background: radial-gradient(ellipse at 50% 40%, #fff 0%, transparent 65%);
+		pointer-events: none;
+		z-index: 0;
+	}
+	.nb-blob {
+		position: absolute;
+		border-radius: 50%;
+		pointer-events: none;
+		z-index: 0;
+	}
+	.nb-blob-1 {
+		width: 700px;
+		height: 700px;
+		top: -140px;
+		right: -120px;
+		background: radial-gradient(circle, rgba(0, 193, 253, 0.18) 0%, transparent 60%);
+	}
+	.nb-blob-2 {
+		width: 500px;
+		height: 500px;
+		bottom: -100px;
+		left: -80px;
+		background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 65%);
+	}
+</style>
