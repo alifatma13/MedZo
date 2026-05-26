@@ -14,7 +14,7 @@ export const servicePages: Record<string, ServicePageContent> = {
     heroLabel: "Virtual Medical Receptionist",
     heroHeading: "Never miss a patient, a booking, or a call.",
     heroIntro:
-      "Never miss a patient call, a booking, or a billing task again. Our virtual receptionists work inside your practice system, handling every patient interaction with the same care and professionalism you would expect from an in-clinic team member.",
+      "Our virtual receptionists work inside your practice system, handling every patient interaction with the same care and professionalism you would expect from an in-clinic team member.",
     heroCtaLabel: "Book a consult",
     heroCtaHref: "/contact",
     heroImage: receptionistImg,
@@ -120,7 +120,7 @@ export const servicePages: Record<string, ServicePageContent> = {
     heroLabel: "Billing Support",
     heroHeading: "Get paid accurately, on time, every time",
     heroIntro:
-      "Stop leaving money on the table. Our billing specialists handle every claim, chase every unpaid account, and make sure your practice gets paid accurately and on time across every fund and every procedure type.",
+      "Stop leaving money on the table. Our billing specialists handle every claim and chase every unpaid account so you get paid.",
     heroCtaLabel: "Book a consult",
     heroCtaHref: "/contact",
     heroImage: billingImg,

@@ -10,8 +10,8 @@ export const about: AboutContent = {
     title: "",
     heading: "Australian medical practice management built by healthcare insiders",
     paragraphs: [
-      "MedZo is a medical practice management company built by people who have worked inside Australian healthcare, not just consulted to it. We understand the back-office pressures that good practices face because we have lived them. The billing errors that pile up when no one has capacity to stay across them. The accreditation scrambles that happen without the right structure in place. The good doctors held back by bad systems. We know that most of these challenges are not inevitable; they are preventable with the right support in place from the beginning.",
-      "That is what MedZo was built to provide. Across practice management, administration, compliance, healthcare finance, and records, we exist to give practices the operational foundation they need to run well, so the people inside them can focus on what they do best.",
+      "We have worked inside Australian healthcare, not just consulted to it. The billing errors, compliance gaps, and admin overload holding good doctors back are problems we know firsthand.",
+      "MedZo exists to fix that. We give practices the operational foundation to run well, so the people inside them can focus on medicine.",
     ],
   },
 
@@ -21,7 +21,7 @@ export const about: AboutContent = {
     name: "Dr. Zohra",
     role: "CEO, Founder & Director",
     bio: [
-      "She uniquely combines executive leadership with first-hand clinical insight. As a qualified doctor holding a Master's degree in Advanced Health Services Management, she deeply understands the real-world needs and pressures of medical practitioners running modern practices, and what it takes to build operations that support them. Renowned for her strategic clarity and strong people leadership, she streamlines workflows, optimises revenue cycles, and reduces administrative burden so doctors can focus on medicine.",
+      "She uniquely combines executive leadership with first-hand clinical insight. A qualified doctor with a Master's degree in Advanced Health Services Management, she knows what practitioners need to run a modern practice. Renowned for her strategic clarity and strong people leadership, she streamlines workflows, optimises revenue cycles, and reduces administrative burden so doctors can focus on medicine.",
       "Skilled in billing, compliance, customer service, and record retention, she built MedZo on the belief that helping practices run well is one of the most meaningful ways to help patients. Her warm personality, strong interpersonal skills, and genuine passion for healthcare are reflected in everything MedZo does.",
     ],
     imageUrl: "/images/team/ZohraSaima.png",
@@ -30,7 +30,7 @@ export const about: AboutContent = {
 
   mission: {
     heading: "What we are trying to achieve",
-    body: "Our goal is straightforward. We want Australian medical practices to run well. Clean billing, stable teams, solid compliance, clear finances, and doctors who can concentrate on medicine without the operational side of things constantly pulling at their attention. When practices run well, everyone benefits. The practice is more viable. The staff are better off. And most importantly, patients get better care. That is the point of all of it.",
+    body: "We want Australian medical practices to run well. Clean billing, stable teams, solid compliance, and doctors who can focus on medicine without the operational side pulling at their attention. When that happens, everyone benefits, most of all patients.",
   },
 
   values: {
@@ -82,7 +82,7 @@ export const about: AboutContent = {
   },
 
   cta: {
-    body: "MedZo is an Australian medical practice management company that works as a genuine partner to the practices we support. If you would like to find out whether we are the right fit for your clinic, book a free, no-pressure conversation.",
+    body: "If you would like to find out whether we are the right fit for your clinic, book a free, no-pressure conversation.",
     buttonLabel: "Book a conversation with MedZo",
     buttonHref: "/contact",
   },

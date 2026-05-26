@@ -9,7 +9,7 @@ export const teamMembers: TeamMember[] = [
   {
     name: "Tina Esarapu",
     role: "Practice Manager",
-    bio: "Tina is a people-centric Practice Manager with 6+ years of experience in patient-focused healthcare management. Known for her warm, approachable leadership style, she is passionate about building strong, supportive teams and creating positive experiences for both patients and health providers. She brings empathy, clear communication, and a collaborative spirit to every aspect of practice management, ensuring the team and the practice operate at their very best. Tina believes that when teams feel valued and empowered, exceptional patient care naturally follows, and she leads every day with that philosophy at heart. With a genuine love for healthcare and a fun, energetic approach, she creates a workplace culture where both staff and patients feel truly welcomed and cared for.",
+    bio: "Tina is a Practice Manager with 6+ years of experience in healthcare management, known for her warm leadership style and ability to build strong, high-performing teams. She brings clear communication and a collaborative approach to every aspect of practice operations.",
     imageUrl: "/images/team/TinaEsarapu.jpeg",
   },
   {
