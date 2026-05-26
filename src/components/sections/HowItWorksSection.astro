@@ -45,6 +45,8 @@ const { eyebrow, heading, subheading, steps } = Astro.props;
 	.how-it-works {
 		background: var(--color-bg-hero);
 		padding: 2.5rem clamp(1.5rem, 8%, 6rem) 5rem;
+		/* Ensure anchor navigation never hides heading under the sticky nav */
+		scroll-margin-top: 5rem;
 	}
 
 	.container {
@@ -68,7 +70,7 @@ const { eyebrow, heading, subheading, steps } = Astro.props;
 		font-weight: var(--weight-semibold);
 		letter-spacing: var(--tracking-wider);
 		text-transform: uppercase;
-		color: var(--color-primary);
+		color: var(--color-accent);
 	}
 
 	.section-title {
