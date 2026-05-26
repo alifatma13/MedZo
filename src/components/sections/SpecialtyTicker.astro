@@ -1,220 +1,218 @@
 ---
-// SpecialtyTicker.astro — animated dot-wave banner listing the medical specialties MedZo supports.
+// SpecialtyTicker.astro — drenched-navy two-row marquee with dashed-border ticket tags.
 import type { TickerContent } from "../../types/TickerContent";
 interface Props extends TickerContent {}
 const { intro, specialties } = Astro.props;
+
+// Duplicate for seamless CSS loop
+const row1 = [...specialties, ...specialties];
+const row2 = [...[...specialties].reverse(), ...[...specialties].reverse()];
 ---
 
 <section class="ticker" aria-label="Specialties we support">
-	<canvas class="dot-wave" aria-hidden="true"></canvas>
 
-	<div class="container">
-		<p class="ticker-text">
-			<span>{intro}</span>
-			{" "}
-			<strong class="highlight">{specialties}</strong>
-		</p>
-	</div>
+  <div class="ticker-head">
+    <p class="ticker-intro">{intro}</p>
+  </div>
+
+  <!-- aria-hidden: presentational; accessible fallback below -->
+  <div class="ticker-stage" aria-hidden="true">
+
+    <!-- Row 1: scrolls left — dashed accent border, beats every 3rd -->
+    <div class="track-wrap">
+      <div class="track track--fwd">
+        {row1.map((s, i) => (
+          <>
+            <span class:list={["tag", { "tag--beat": i % 3 === 0 }]}>{s}</span>
+            <span class="sep">◆</span>
+          </>
+        ))}
+      </div>
+    </div>
+
+    <!-- Row 2: scrolls right — dimmer, smaller -->
+    <div class="track-wrap">
+      <div class="track track--rev">
+        {row2.map((s) => (
+          <>
+            <span class="tag tag--bg">{s}</span>
+            <span class="sep sep--bg">◆</span>
+          </>
+        ))}
+      </div>
+    </div>
+
+  </div>
+
+  <p class="sr-only">{specialties.join(", ")}</p>
+
 </section>
 
-<script>
-	import { animate, inView } from "motion";
-
-	let rafId: number | null = null;
-	let visibilityObserver: IntersectionObserver | null = null;
-	let onResize: (() => void) | null = null;
-
-	document.addEventListener("astro:page-load", () => {
-		if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
-		if (visibilityObserver !== null) { visibilityObserver.disconnect(); visibilityObserver = null; }
-		if (onResize !== null) { window.removeEventListener("resize", onResize); onResize = null; }
-
-		// ── Entrance animation ───────────────────────────
-		if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-			inView(".ticker", () => {
-				const text = document.querySelector(".ticker .ticker-text");
-				if (text)
-					(animate as any)(
-						text,
-						{ opacity: [0, 1], y: [24, 0] },
-						{ duration: 0.6, easing: [0.22, 1, 0.36, 1] },
-					);
-			});
-		}
-
-		// ── Dot wave ─────────────────────────────────────
-		const canvas =
-			document.querySelector<HTMLCanvasElement>(".ticker .dot-wave");
-		const ctx = canvas?.getContext("2d");
-
-		if (
-			canvas &&
-			ctx &&
-			!window.matchMedia("(prefers-reduced-motion: reduce)").matches
-		) {
-			let w = 0, h = 0;
-			let paused = false;
-			let start: number | null = null;
-
-			function resize() {
-				const dpr = window.devicePixelRatio || 1;
-				const rect = canvas!.getBoundingClientRect();
-				w = rect.width;
-				h = rect.height;
-				canvas!.width = w * dpr;
-				canvas!.height = h * dpr;
-				ctx!.scale(dpr, dpr);
-			}
-			resize();
-			onResize = resize;
-			window.addEventListener("resize", onResize, { passive: true });
-
-			const bands = [
-				{
-					cy: 0.5,
-					amp: 0.2,
-					cycles: 2,
-					phase: 0,
-					speed: 0.38,
-					rows: 11,
-					rowGap: 7,
-					dotGap: 13,
-					dotR: 2.6,
-					rgb: "0,60,160",
-				},
-				{
-					cy: 0.55,
-					amp: 0.15,
-					cycles: 2,
-					phase: Math.PI * 0.55,
-					speed: 0.52,
-					rows: 9,
-					rowGap: 6,
-					dotGap: 15,
-					dotR: 2.1,
-					rgb: "0,60,160",
-				},
-			];
-
-			function draw(ts: number) {
-				if (paused) { rafId = null; return; }
-				if (!start) start = ts;
-				const t = (ts - start) / 1000;
-
-				ctx!.clearRect(0, 0, w, h);
-
-				for (const band of bands) {
-					const baseY = h * band.cy;
-					const amp = h * band.amp;
-					const halfRows = (band.rows - 1) / 2;
-
-					for (let row = 0; row < band.rows; row++) {
-						const dist = Math.abs(row - halfRows) / halfRows;
-						const opacity = (1 - dist * dist) * 0.72 + 0.08;
-						const radius = band.dotR * (0.55 + (1 - dist) * 0.45);
-						const rowY = baseY + (row - halfRows) * band.rowGap;
-						const rowPhase = band.phase + row * 0.18;
-
-						for (let x = 0; x <= w + band.dotGap; x += band.dotGap) {
-							const y =
-								rowY +
-								amp *
-									Math.sin(
-										(x / w) * band.cycles * Math.PI * 2 +
-											rowPhase +
-											t * band.speed,
-									);
-							ctx!.beginPath();
-							ctx!.arc(x, y, radius, 0, Math.PI * 2);
-							ctx!.fillStyle = `rgba(${band.rgb},${opacity.toFixed(3)})`;
-							ctx!.fill();
-						}
-					}
-				}
-
-				rafId = requestAnimationFrame(draw);
-			}
-
-			// Pause the loop when scrolled off-screen, resume when visible.
-			visibilityObserver = new IntersectionObserver(
-				(entries) => {
-					for (const entry of entries) {
-						paused = !entry.isIntersecting;
-						if (!paused && rafId === null) {
-							start = null;
-							rafId = requestAnimationFrame(draw);
-						}
-					}
-				},
-				{ threshold: 0 },
-			);
-			visibilityObserver.observe(canvas);
-
-			rafId = requestAnimationFrame(draw);
-		}
-	});
-</script>
-
 <style>
-	.ticker {
-		background: linear-gradient(180deg, #f4f8ff 0%, #deeaff 100%);
-		padding: 4rem clamp(1.5rem, 8%, 6rem);
-		position: relative;
-		overflow: hidden;
-	}
+  /* ── Section ───────────────────────────────────────────── */
+  .ticker {
+    background: var(--color-primary);
+    padding: 6rem 0;
+    overflow: hidden;
+    position: relative;
+  }
+  .ticker::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      ellipse 85% 110% at 50% 50%,
+      rgba(0, 193, 253, 0.08) 0%,
+      transparent 62%
+    );
+    pointer-events: none;
+  }
 
-	.dot-wave {
-		position: absolute;
-		inset: 0;
-		width: 100%;
-		height: 100%;
-		pointer-events: none;
-		z-index: 0;
-		mask-image: radial-gradient(
-			ellipse 80% 100% at 50% 50%,
-			transparent 44%,
-			rgba(0, 0, 0, 0.6) 58%,
-			black 72%
-		);
-		-webkit-mask-image: radial-gradient(
-			ellipse 80% 100% at 50% 50%,
-			transparent 44%,
-			rgba(0, 0, 0, 0.6) 58%,
-			black 72%
-		);
-	}
+  /* ── Intro ─────────────────────────────────────────────── */
+  .ticker-head {
+    padding: 0 clamp(1.5rem, 8%, 6rem) 3.5rem;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+  .ticker-intro {
+    font-size: clamp(1.1rem, 2.2vw, 1.5rem);
+    font-weight: var(--weight-semibold);
+    letter-spacing: -0.01em;
+    color: oklch(88% 0.02 210);
+    margin: 0 auto;
+    max-width: 56ch;
+    line-height: 1.45;
+  }
 
-	.container {
-		max-width: 860px;
-		margin: 0 auto;
-		padding: 0 2rem;
-		position: relative;
-		z-index: 2;
-	}
-	.ticker-text {
-		font-family: var(--font-wordmark);
-		font-size: var(--text-lg, 1.125rem);
-		color: var(--color-text-body);
-		text-align: center;
-		line-height: 1.7;
-		margin: 0;
-		letter-spacing: -0.01em;
-	}
-	.highlight {
-		color: var(--color-primary);
-		font-weight: var(--weight-bold);
-	}
-	@media (prefers-reduced-motion: no-preference) {
-		.ticker-text {
-			opacity: 0;
-		}
-	}
-	@media (max-width: 640px) {
-		.ticker {
-			padding: 3rem 1.5rem;
-		}
-		.ticker-text {
-			font-size: var(--text-base);
-		}
-	}
+  /* ── Stage + edge vignette ─────────────────────────────── */
+  .ticker-stage {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+    position: relative;
+  }
+  .ticker-stage::before,
+  .ticker-stage::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 16%;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .ticker-stage::before {
+    left: 0;
+    background: linear-gradient(to right, rgba(0, 50, 125, 1), rgba(0, 50, 125, 0));
+  }
+  .ticker-stage::after {
+    right: 0;
+    background: linear-gradient(to left, rgba(0, 50, 125, 1), rgba(0, 50, 125, 0));
+  }
+
+  /* ── Tracks ────────────────────────────────────────────── */
+  .track-wrap {
+    overflow: hidden;
+    width: 100%;
+  }
+  .track {
+    display: flex;
+    align-items: center;
+    width: max-content;
+    will-change: transform;
+  }
+  .track--fwd {
+    animation: scroll-left 32s linear infinite;
+  }
+  .track--rev {
+    animation: scroll-right 52s linear infinite;
+    animation-delay: -18s;
+  }
+
+  @keyframes scroll-left {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  @keyframes scroll-right {
+    from { transform: translateX(-50%); }
+    to   { transform: translateX(0); }
+  }
+
+  /* ── Ticket tags — dashed border ───────────────────────── */
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.6rem 1.6rem;
+    border-radius: 5px;
+    border: 1.5px dashed rgba(0, 193, 253, 0.45);
+    color: oklch(91% 0.018 210);
+    font-family: var(--font-nav);
+    font-size: var(--text-base);
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.015em;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  /* Beat — solid border + faint fill so it pops from the dashed stream */
+  .tag--beat {
+    border-style: solid;
+    border-color: rgba(0, 193, 253, 0.65);
+    background: rgba(0, 193, 253, 0.09);
+    color: oklch(94% 0.025 210);
+  }
+  /* Background row — smaller, very dim dashes */
+  .tag--bg {
+    padding: 0.45rem 1.25rem;
+    font-size: var(--text-sm);
+    border-width: 1px;
+    border-color: rgba(255, 255, 255, 0.14);
+    color: oklch(62% 0.01 220);
+  }
+
+  /* ── Separators ────────────────────────────────────────── */
+  .sep {
+    color: var(--color-accent);
+    font-size: 0.45rem;
+    margin: 0 1.5rem;
+    opacity: 0.6;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+  .sep--bg {
+    color: oklch(55% 0.008 220);
+    opacity: 0.28;
+    margin: 0 1.25rem;
+  }
+
+  /* ── Reduced motion ────────────────────────────────────── */
+  @media (prefers-reduced-motion: reduce) {
+    .track--fwd,
+    .track--rev {
+      animation-play-state: paused;
+    }
+  }
+
+  /* ── No-flash ───────────────────────────────────────────── */
+  @media (prefers-reduced-motion: no-preference) {
+    .ticker-intro {
+      opacity: 0;
+    }
+  }
 </style>
+
+<script>
+  import { animate, inView } from "motion";
+
+  document.addEventListener("astro:page-load", () => {
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      inView(".ticker", () => {
+        (animate as any)(
+          ".ticker .ticker-intro",
+          { opacity: [0, 1], y: [14, 0] },
+          { duration: 0.55, easing: [0.22, 1, 0.36, 1] },
+        );
+      });
+    }
+  });
+</script>

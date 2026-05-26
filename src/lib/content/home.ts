@@ -13,9 +13,19 @@ export const home: HomeContent = {
   },
 
   ticker: {
-    intro: "MedZo works with practices across all areas of Australian healthcare",
-    specialties:
-      "General Practice, medical specialists, allied health, dental, physiotherapy, telehealth providers, and multidisciplinary clinics.",
+    intro: "Supporting practices across all areas of Australian healthcare",
+    specialties: [
+      "General Practice",
+      "Medical Specialists",
+      "Allied Health",
+      "Dental",
+      "Physiotherapy",
+      "Telehealth Providers",
+      "Multidisciplinary Clinics",
+      "Pathology",
+      "Radiology",
+      "Psychology",
+    ],
   },
 
   howItWorks: {
