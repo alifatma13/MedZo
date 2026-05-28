@@ -1,13 +1,16 @@
 ---
 // HeroSection.astro — above-the-fold hero with animated heading, two CTAs, and a floating dashboard visual.
+// heroImageUrl is a Sanity CDN URL computed in the page via urlFor(data.heroImage).
 import { Image } from "astro:assets";
 import Button from "../ui/Button.astro";
-import heroImage from "../../res/hero_image.png";
 import type { HeroContent } from "../../types/HeroContent";
 import { icons } from "../../lib/utils/icons";
 import { heroVisual as visual } from "../../lib/content/heroVisual";
-interface Props extends HeroContent {}
-const { heading, subheading, body, ctaPrimary, ctaSecondary } = Astro.props;
+interface Props extends HeroContent {
+	heroImageUrl: string;
+}
+const { heading, subheading, body, ctaPrimary, ctaSecondary, heroImageUrl } =
+	Astro.props;
 const headingLines = heading.split("\n");
 ---
 
@@ -57,13 +60,11 @@ const headingLines = heading.split("\n");
 		<div class="visual-col" aria-hidden="true">
 			<div class="hero-visual">
 				<Image
-					src={heroImage}
+					src={heroImageUrl}
 					alt=""
 					class="visual-bg"
-					widths={[375, 560, 768]}
-					sizes="(max-width: 768px) 100vw, 560px"
-					format="webp"
-					quality={72}
+					width={960}
+					height={620}
 					loading="eager"
 					fetchpriority="high"
 				/>
@@ -130,7 +131,7 @@ const headingLines = heading.split("\n");
 <style>
 	.hero {
 		background: var(--color-bg-hero);
-		padding: 3rem clamp(1.5rem, 8%, 6rem) 6rem;
+		padding: 6rem clamp(1.5rem, 8%, 6rem) 6rem;
 		overflow: visible;
 	}
 	.container {

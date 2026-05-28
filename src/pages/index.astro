@@ -1,7 +1,5 @@
 ---
-// index.astro — home page: composes all homepage sections and preloads the hero image for LCP.
-import { getImage } from "astro:assets";
-import heroImageSrc from "../res/hero_image.png";
+// index.astro — home page: fetches all content from Sanity and composes homepage sections.
 import Layout from "../layouts/Layout.astro";
 import HeroSection from "../components/sections/HeroSection.astro";
 import SpecialtyTicker from "../components/sections/SpecialtyTicker.astro";
@@ -10,35 +8,78 @@ import ServicesSection from "../components/sections/ServicesSection.astro";
 import WhyChooseUs from "../components/sections/WhyChooseUs.astro";
 import TestimonialsSection from "../components/sections/TestimonialsSection.astro";
 import FinalCTA from "../components/sections/FinalCTA.astro";
-import { home } from "../lib/content/home";
-import { services } from "../lib/content/services";
-import { testimonials } from "../lib/content/testimonials";
+import { getHomePage } from "../lib/api/homePage";
+import { getServices } from "../lib/api/services";
+import { getTestimonials } from "../lib/api/testimonials";
+import { urlFor } from "../lib/utils/sanityImage";
 
-const heroImageOptimized = await getImage({
-	src: heroImageSrc,
-	width: 960,
-	format: "webp",
-	quality: 82,
-});
+const [data, services, testimonials] = await Promise.all([
+  getHomePage(),
+  getServices(),
+  getTestimonials(),
+]);
+
+if (!data) throw new Error("Home page not found in Sanity. Publish the Home Page document in Studio.");
+
+// Compute image URLs via Sanity CDN transformations
+const heroImageUrl = urlFor(data.heroImage).width(960).height(620).fit("crop").format("webp").quality(82).url();
+const whyImageUrl  = urlFor(data.whyImage).width(960).height(640).fit("crop").format("webp").quality(80).url();
+
+// Map Sanity services to the ServiceCard shape ServicesSection expects
+const serviceCards = (services ?? []).map((s) => ({
+  iconName:    s.cardIconName,
+  title:       s.title,
+  description: s.description,
+  href:        s.href,
+}));
 ---
 
-<Layout>
-	<link
-		slot="head"
-		rel="preload"
-		as="image"
-		href={heroImageOptimized.src}
-		type="image/webp"
-	/>
-	<HeroSection {...home.hero} />
-	<ServicesSection heading={home.servicesSection} services={services} bridge={home.servicesBridge} />
-	<HowItWorksSection {...home.howItWorks} />
-	<WhyChooseUs heading={home.whySection.heading} items={home.whySection.items} imageAlt={home.whySection.imageAlt} metrics={home.whySection.metrics} />
-	<SpecialtyTicker {...home.ticker} />
-	<TestimonialsSection
-		heading={home.testimonialsSection.heading}
-		testimonials={testimonials}
-		viewMore={home.testimonialsSection.viewMore}
-	/>
-	<FinalCTA {...home.finalCta} />
+<Layout
+  title={data.seoTitle ?? undefined}
+  description={data.seoDescription ?? undefined}
+>
+  <link
+    slot="head"
+    rel="preload"
+    as="image"
+    href={heroImageUrl}
+    type="image/webp"
+  />
+  <HeroSection
+    heading={data.heroHeading}
+    subheading={data.heroSubheading}
+    body={data.heroBody}
+    ctaPrimary={{ label: data.heroPrimaryCtaLabel, href: "/contact" }}
+    ctaSecondary={{ label: data.heroSecondaryCtaLabel, href: "#services" }}
+    heroImageUrl={heroImageUrl}
+  />
+  <ServicesSection
+    heading={{ eyebrow: data.servicesEyebrow, title: data.servicesTitle, body: data.servicesBody }}
+    services={serviceCards}
+    bridge={{ text: data.servicesBridgeText, href: "#how-it-works", ariaLabel: "See our process" }}
+  />
+  <HowItWorksSection
+    eyebrow={data.howItWorksEyebrow}
+    heading={data.howItWorksHeading}
+    subheading={data.howItWorksSubheading}
+    steps={data.howItWorksSteps ?? []}
+  />
+  <WhyChooseUs
+    heading={data.whyHeading}
+    items={data.whyItems ?? []}
+    imageAlt={data.whyImage?.alt ?? "MedZo team working with a medical practice"}
+    whyImageUrl={whyImageUrl}
+    metrics={data.whyMetrics ?? []}
+  />
+  <SpecialtyTicker intro={data.tickerIntro} specialties={data.tickerSpecialties ?? []} />
+  <TestimonialsSection
+    heading={data.testimonialsHeading}
+    testimonials={testimonials ?? []}
+    viewMore={{ label: data.testimonialsViewMoreLabel, href: "#contact" }}
+  />
+  <FinalCTA
+    heading={data.finalCtaHeading}
+    buttonLabel={data.finalCtaButtonLabel}
+    buttonHref="/contact"
+  />
 </Layout>

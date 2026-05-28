@@ -1,7 +1,7 @@
 ---
 // ServicePageHero.astro — light split-layout hero for individual service pages.
+// heroImageUrl is a Sanity CDN URL computed in [service].astro via urlFor(data.heroImage).
 import { Image } from "astro:assets";
-import type { ImageMetadata } from "astro";
 import { icons } from "../../lib/utils/icons";
 import { ui } from "../../lib/content/ui";
 interface Props {
@@ -10,9 +10,9 @@ interface Props {
   intro: string;
   ctaLabel: string;
   ctaHref: string;
-  heroImage: ImageMetadata;
+  heroImageUrl: string;
 }
-const { label, heading, intro, ctaLabel, ctaHref, heroImage } = Astro.props;
+const { label, heading, intro, ctaLabel, ctaHref, heroImageUrl } = Astro.props;
 ---
 
 <section class="svc-hero">
@@ -39,11 +39,11 @@ const { label, heading, intro, ctaLabel, ctaHref, heroImage } = Astro.props;
       <!-- Photo frame — overflow-hidden so the badge clips correctly -->
       <div class="vis-frame">
         <Image
-          src={heroImage}
+          src={heroImageUrl}
           alt=""
           class="hero-img"
-          width={heroImage.width}
-          height={heroImage.height}
+          width={900}
+          height={600}
         />
         <!-- Decorative trust chip (aria-hidden — purely visual) -->
         <div class="vis-badge" aria-hidden="true">

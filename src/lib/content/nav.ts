@@ -1,5 +1,8 @@
-// nav.ts — navigation links, CTA button copy, and brand/aria strings used by Nav.astro.
-import type { NavLink, NavBrand } from "../../types/NavLink";
+// nav.ts — developer-owned navigation strings.
+// navLinks has been removed — top-level links now come from siteSettings.navigation[] in Sanity
+// and services dropdown children come from the service collection in Sanity.
+// Only structural identity strings and the Services parent label stay here.
+import type { NavBrand } from "../../types/NavLink";
 import { SITE_NAME } from "./site";
 
 export const navBrand: NavBrand = {
@@ -12,35 +15,11 @@ export const navBrand: NavBrand = {
   ariaDialog: "Navigation",
 };
 
-export const navLinks: NavLink[] = [
-  {
-    label: "Services",
-    href: "/#services",
-    children: [
-      {
-        label: "Virtual Medical Receptionist",
-        href: "/services/virtual-receptionist",
-        description: "Remote patient coordination and front-desk support",
-        iconName: "monitor",
-      },
-      {
-        label: "Managerial Support",
-        href: "/services/managerial-support",
-        description: "Practice operations, staff leadership and reporting",
-        iconName: "users",
-      },
-      {
-        label: "Billing Support",
-        href: "/services/billing-support",
-        description: "End-to-end claims, payments and reconciliation",
-        iconName: "file-text",
-      },
-    ],
-  },
-  { label: "Why MedZo", href: "/#why-medzo" },
-  { label: "Testimonials", href: "/#testimonials" },
-  { label: "FAQ", href: "/faq" },
-  { label: "About", href: "/about" },
-];
+// "Services" parent item — label and anchor href stay hardcoded because they are
+// structural UI (the dropdown trigger), not team-managed content.
+export const navServicesItem = {
+  label: "Services",
+  href:  "/#services",
+} as const;
 
-export const navCta: NavLink = { label: "Book a consult", href: "/contact" };
+export const navCta = { label: "Book a consult", href: "/contact" } as const;

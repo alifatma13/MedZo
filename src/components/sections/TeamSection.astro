@@ -1,13 +1,23 @@
 ---
 // TeamSection.astro — team member carousel used on the /about page.
-import type { TeamMember } from "../../types/AboutContent";
+// Members come from the Sanity teamMember collection via getTeamMembers().
+import { Image } from "astro:assets";
 import { icons } from "../../lib/utils/icons";
 import { ui } from "../../lib/content/ui";
+import { urlFor } from "../../lib/utils/sanityImage";
+import type { SanityImage } from "../../types/SanityImage";
 
+interface SanityMember {
+  _id: string;
+  name: string;
+  role: string;
+  bio: string;
+  photo?: SanityImage | null;
+}
 interface Props {
 	heading: string;
 	body: string;
-	members: TeamMember[];
+	members: SanityMember[];
 }
 const { heading, body, members } = Astro.props;
 
@@ -38,13 +48,14 @@ function shortenName(name: string): string {
 					members.map((member) => (
 						<article class="card">
 							<div class="photo-wrap">
-								{member.imageUrl ? (
-									<img
-										src={member.imageUrl}
-										alt={`Photo of ${member.name}`}
+								{member.photo?.asset ? (
+									<Image
+										src={urlFor(member.photo).width(176).height(176).fit("crop").format("webp").url()}
+										alt={member.photo.alt ?? `Photo of ${member.name}`}
 										class="photo"
+										width={176}
+										height={176}
 										loading="lazy"
-										style={`object-position: ${member.imagePosition ?? "center 20%"}`}
 									/>
 								) : (
 									<div class="initials" aria-hidden="true">{initials(member.name)}</div>

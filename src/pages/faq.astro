@@ -1,16 +1,27 @@
 ---
-// faq.astro — standalone FAQ page.
+// faq.astro — standalone FAQ page: fetches items and page heading from Sanity.
 import Layout from "../layouts/Layout.astro";
 import FAQSection from "../components/sections/FAQSection.astro";
 import FinalCTA from "../components/sections/FinalCTA.astro";
-import { faqs } from "../lib/content/faq";
-import { home } from "../lib/content/home";
+import { getFaqs } from "../lib/api/faq";
+import { getHomePage } from "../lib/api/homePage";
+
+const [faqs, homeData] = await Promise.all([
+  getFaqs(),
+  getHomePage(),
+]);
+
+if (!homeData) throw new Error("Home page not found in Sanity. Publish the Home Page document in Studio.");
 ---
 
 <Layout
-	title={home.faqSection.metaTitle}
-	description={home.faqSection.metaDescription}
+  title={homeData.seoTitle ?? undefined}
+  description={homeData.seoDescription ?? undefined}
 >
-	<FAQSection heading={home.faqSection.heading} faqs={faqs} />
-	<FinalCTA {...home.finalCta} />
+  <FAQSection heading="Frequently Asked Questions" faqs={faqs ?? []} />
+  <FinalCTA
+    heading={homeData.finalCtaHeading}
+    buttonLabel={homeData.finalCtaButtonLabel}
+    buttonHref="/contact"
+  />
 </Layout>

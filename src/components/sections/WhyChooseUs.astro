@@ -1,7 +1,7 @@
 ---
 // WhyChooseUs.astro — metrics bar + two-column section with a photo and a list of reasons to choose MedZo.
+// whyImageUrl is a Sanity CDN URL computed in the page via urlFor(data.whyImage).
 import { Image } from "astro:assets";
-import whyImage from "../../res/why_us.png";
 import WhyItem from "../ui/WhyItem.astro";
 import { icons } from "../../lib/utils/icons";
 import type { WhyItem as WhyItemType } from "../../types/WhyItem";
@@ -10,9 +10,10 @@ interface Props {
 	heading: string;
 	items: WhyItemType[];
 	imageAlt: string;
+	whyImageUrl: string;
 	metrics: Metric[];
 }
-const { heading, items, imageAlt, metrics } = Astro.props;
+const { heading, items, imageAlt, whyImageUrl, metrics } = Astro.props;
 
 // Derive badge value from the appointments metric so it stays in sync with metrics data
 const apptMetric = metrics.find((m) => m.label.toLowerCase().includes("appointment"));
@@ -52,13 +53,11 @@ const badgeLabel = apptMetric?.label ?? null;
 			<!-- Photo card with overflow-hidden for the badge -->
 			<div class="img-card">
 				<Image
-					src={whyImage}
+					src={whyImageUrl}
 					alt={imageAlt}
 					class="section-img"
-					widths={[480, 640, 900, 1200, 1600]}
-					sizes="(max-width: 768px) 100vw, 50vw"
-					format="webp"
-					quality={80}
+					width={960}
+					height={640}
 					loading="lazy"
 				/>
 				{badgeValue && badgeLabel && (

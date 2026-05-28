@@ -1,8 +1,20 @@
 ---
 // FounderSection.astro — editorial split: full-bleed portrait left, founder biography right.
-import type { AboutFounder } from "../../types/AboutContent";
+// Founder data comes from the Sanity aboutPage singleton via getAboutPage().
+import { Image } from "astro:assets";
+import { urlFor } from "../../lib/utils/sanityImage";
+import type { SanityImage } from "../../types/SanityImage";
+
+interface SanityFounder {
+  sectionHeading: string;
+  intro: string;
+  name: string;
+  role: string;
+  bio: string[];
+  photo?: SanityImage | null;
+}
 interface Props {
-	founder: AboutFounder;
+  founder: SanityFounder;
 }
 const { founder } = Astro.props;
 ---
@@ -10,11 +22,13 @@ const { founder } = Astro.props;
 <section class="founder">
 	<div class="split">
 		<div class="photo-panel">
-			{founder.imageUrl ? (
-				<img
-					src={founder.imageUrl}
-					alt={`Portrait of ${founder.name}`}
+			{founder.photo?.asset ? (
+				<Image
+					src={urlFor(founder.photo).width(640).height(800).fit("crop").format("webp").url()}
+					alt={founder.photo.alt ?? `Portrait of ${founder.name}`}
 					class="portrait"
+					width={640}
+					height={800}
 					loading="lazy"
 				/>
 			) : (

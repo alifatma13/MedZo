@@ -1,5 +1,14 @@
 {
   "extends": "astro/tsconfigs/strict",
-  "include": [".astro/types.d.ts", "**/*"],
+  "compilerOptions": {
+    // @sanity/astro/module enables the `sanity:client` virtual import in .astro files.
+    "types": ["@sanity/astro/module"]
+  },
+  "include": [
+    ".astro/types.d.ts",
+    "**/*",
+    // Explicitly include TypeGen output so the compiler always picks up generated types.
+    "sanity.types.ts"
+  ],
   "exclude": ["dist"]
 }

@@ -1,16 +1,30 @@
 ---
-// contact.astro — contact page: enquiry form, team members, and office locations.
+// contact.astro — contact page: fetches hero copy and office details from Sanity.
+// Form field labels and validation copy stay in src/lib/content/contact.ts (developer-owned).
 import Layout from "../layouts/Layout.astro";
 import ContactIntroSection from "../components/sections/ContactIntroSection.astro";
 import OfficesSection from "../components/sections/OfficesSection.astro";
+import { getContactPage } from "../lib/api/contactPage";
 import { contact } from "../lib/content/contact";
+
+const data = await getContactPage();
+
+if (!data) throw new Error("Contact page not found in Sanity. Publish the Contact Page document in Studio.");
+
+// hero trust points from Sanity; fall back to empty array so ContactIntroSection never receives undefined
+const heroData = {
+  heading:        data.heroHeading,
+  body:           data.heroBody,
+  trust:          data.heroTrustPoints ?? [],
+  trustAriaLabel: contact.hero.trustAriaLabel, // static UI string — stays in code
+};
 ---
 
-<Layout title={contact.meta.title} description={contact.meta.description}>
-	<ContactIntroSection hero={contact.hero} form={contact.form} />
-	<OfficesSection
-		heading={contact.offices.heading}
-		body={contact.offices.body}
-		locations={contact.offices.locations}
-	/>
+<Layout title={data.seoTitle ?? undefined} description={data.seoDescription ?? undefined}>
+  <ContactIntroSection hero={heroData} form={contact.form} />
+  <OfficesSection
+    heading={data.officesHeading}
+    body={data.officesBody}
+    locations={data.officeLocations ?? []}
+  />
 </Layout>

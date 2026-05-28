@@ -63,26 +63,26 @@ const { heading, services, bridge } = Astro.props;
 <style>
 	.services {
 		background: var(--color-bg-hero);
-		padding: 5rem clamp(1.5rem, 8%, 6rem) 4rem;
+		padding: clamp(5rem, 8vw, 9rem) clamp(1.5rem, 8%, 6rem) clamp(4rem, 6vw, 7rem);
 	}
 	.container {
 		max-width: 1280px;
 		margin: 0 auto;
 		display: flex;
 		flex-direction: column;
-		gap: 2.5rem;
 	}
 
-	/* ── Section header ── */
+	/* ── Section header — two-column on desktop ── */
 	.section-header {
-		display: flex;
-		flex-direction: column;
-		gap: 0.75rem;
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: clamp(2rem, 4vw, 4rem);
+		align-items: end;
 	}
 	.title-col {
 		display: flex;
 		flex-direction: column;
-		gap: 0.6rem;
+		gap: 0.5rem;
 	}
 	.eyebrow {
 		font-size: var(--text-xs);
@@ -105,13 +105,14 @@ const { heading, services, bridge } = Astro.props;
 		margin: 0;
 		line-height: var(--leading-relaxed);
 		max-width: 52ch;
+		padding-bottom: 0.2rem;
 	}
 
 	/* ── Three-column service strip ── */
 	.service-list {
 		list-style: none;
-		margin: 0;
-		padding: 0;
+		margin: clamp(3.5rem, 5vw, 5.5rem) 0 0;
+		padding: 2.5rem 0 0;
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
 		border-top: 1px solid var(--color-border);
@@ -121,44 +122,44 @@ const { heading, services, bridge } = Astro.props;
 	.service-col {
 		display: flex;
 		flex-direction: column;
-		gap: 0.6rem;
-		padding: 2rem 0;
-		transition: background 0.22s ease;
+		gap: 1.25rem;
+		padding: 2.5rem 0;
+		transition: background 0.22s cubic-bezier(0.22, 1, 0.36, 1);
 	}
 	.service-col:hover {
-		background: rgba(0, 193, 253, 0.04);
+		background: rgba(0, 193, 253, 0.08);
 	}
-	/* column padding + dividers */
-	.service-col:not(:last-child) {
-		padding-right: 2.5rem;
+	/* columns 1 and 4 — first in their row */
+	.service-col:not(:nth-child(3n)) {
+		padding-right: 3rem;
 		border-right: 1px solid var(--color-border);
 	}
-	.service-col:not(:first-child) {
-		padding-left: 2.5rem;
+	/* columns 2, 3, 5, 6 — not first in their row */
+	.service-col:not(:nth-child(3n+1)) {
+		padding-left: 3rem;
 	}
 
 	.col-num {
-		font-size: var(--text-xl);
+		font-size: clamp(2.75rem, 4vw, 4.5rem);
 		font-weight: var(--weight-extrabold);
-		color: oklch(89% 0.016 220);
+		color: oklch(91% 0.014 220);
 		line-height: 1;
 		letter-spacing: var(--tracking-tight);
-		margin-bottom: 0.25rem;
 	}
 
 	.col-body {
 		display: flex;
 		flex-direction: column;
-		gap: 0.45rem;
+		gap: 0.4rem;
 		flex: 1;
 	}
 	.col-icon {
-		width: 1.375rem;
-		height: 1.375rem;
+		width: 1.625rem;
+		height: 1.625rem;
 		color: var(--color-accent);
 		display: flex;
 		align-items: center;
-		margin-bottom: 0.15rem;
+		margin-bottom: 0.2rem;
 	}
 	.col-icon :global(svg) {
 		width: 100%;
@@ -191,11 +192,14 @@ const { heading, services, bridge } = Astro.props;
 		text-decoration: none;
 		transition:
 			gap 0.18s cubic-bezier(0.22, 1, 0.36, 1),
-			color 0.15s;
+			color 0.15s cubic-bezier(0.22, 1, 0.36, 1);
 	}
 	.col-link:hover {
 		color: var(--color-primary);
 		gap: 0.7rem;
+	}
+	.col-link:active {
+		opacity: 0.65;
 	}
 	.col-link:focus-visible {
 		outline: 2px solid var(--color-accent);
@@ -205,20 +209,19 @@ const { heading, services, bridge } = Astro.props;
 
 	/* ── Responsive ── */
 
-	/* Hide bridge on everything below a wide desktop — iPad Pro landscape is 1366px */
 	@media (max-width: 1400px) {
 		.section-bridge {
 			display: none !important;
 		}
 	}
 
-	/* Tablet: collapse to single column — 3 cols at ≤1024px gives ~168px text width, too narrow */
 	@media (max-width: 1024px) {
 		.service-list {
 			grid-template-columns: 1fr;
+			padding-top: 2rem;
 		}
 		.service-col {
-			padding: 1.75rem 0;
+			padding: 2rem 0;
 			border-right: none;
 		}
 		.service-col:not(:last-child) {
@@ -233,7 +236,11 @@ const { heading, services, bridge } = Astro.props;
 
 	@media (max-width: 768px) {
 		.services {
-			padding: 4rem clamp(1.5rem, 5%, 3rem) 1.5rem;
+			padding: 4rem clamp(1.5rem, 5%, 3rem) 2rem;
+		}
+		.section-header {
+			grid-template-columns: 1fr;
+			gap: 0.75rem;
 		}
 	}
 
@@ -245,7 +252,8 @@ const { heading, services, bridge } = Astro.props;
 
 	@media (prefers-reduced-motion: reduce) {
 		.service-col,
-		.col-link {
+		.col-link,
+		.section-bridge {
 			transition: none;
 		}
 	}

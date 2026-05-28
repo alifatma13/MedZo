@@ -31,6 +31,10 @@ export default defineConfig({
     inlineStylesheets: "always",
   },
   image: {
-    remotePatterns: [{ protocol: "https", hostname: "i.pravatar.cc" }],
+    remotePatterns: [
+      { protocol: "https", hostname: "i.pravatar.cc" },
+      // Sanity CDN — required for Astro <Image /> to optimise images uploaded via Studio
+      { protocol: "https", hostname: "cdn.sanity.io" },
+    ],
   },
 });

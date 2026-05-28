@@ -1,8 +1,29 @@
 ---
 // Footer.astro — site-wide footer with brand blurb, service list, company links, contact info, and legal links.
+// Tagline, contact info, acknowledgement, and service links come from Sanity (team-managed).
+// Column headings, company links, legal links, and brand strings stay in footer.ts (developer-owned).
 import { Image } from "astro:assets";
 import logoImg from "../../res/logo.png";
 import { footerContent } from "../../lib/content/footer";
+import { getSiteSettings } from "../../lib/api/siteSettings";
+import { getServices } from "../../lib/api/services";
+
+const [siteSettings, sanityServices] = await Promise.all([
+  getSiteSettings(),
+  getServices(),
+]);
+
+// Services list for the footer column — title + href from Sanity
+const footerServices = (sanityServices ?? []).map((s) => ({ label: s.title, href: s.href }));
+
+// Dynamic fields from Sanity with static fallbacks for graceful degradation during local dev
+const tagline         = siteSettings?.footerTagline         ?? footerContent.tagline;
+const contactEmail    = siteSettings?.contactEmail          ?? footerContent.contact.email;
+const contactLocation = siteSettings?.contactLocation       ?? footerContent.contact.location;
+const acknowledgement = siteSettings?.acknowledgementText   ?? footerContent.acknowledgement;
+
+// Services column: prefer Sanity list; fall back to static list while content is being entered
+const serviceLinks = footerServices.length > 0 ? footerServices : footerContent.services;
 
 const year = new Date().getFullYear();
 ---
@@ -23,14 +44,14 @@ const year = new Date().getFullYear();
 				/>
 				{footerContent.wordmark}
 			</a>
-			<p class="tagline">{footerContent.tagline}</p>
+			<p class="tagline">{tagline}</p>
 		</div>
 
 		<div class="links-col">
 			<p class="col-heading">{footerContent.columnHeadings.services}</p>
 			<ul class="link-list">
 				{
-					footerContent.services.map((s) => (
+					serviceLinks.map((s) => (
 						<li>
 							<a href={s.href} class="footer-link">
 								{s.label}
@@ -60,12 +81,12 @@ const year = new Date().getFullYear();
 			<p class="col-heading">{footerContent.columnHeadings.contact}</p>
 			<ul class="link-list">
 				<li>
-					<a href={`mailto:${footerContent.contact.email}`} class="footer-link"
-						>{footerContent.contact.email}</a
+					<a href={`mailto:${contactEmail}`} class="footer-link"
+						>{contactEmail}</a
 					>
 				</li>
 				<li>
-					<span class="footer-text">{footerContent.contact.location}</span>
+					<span class="footer-text">{contactLocation}</span>
 				</li>
 			</ul>
 		</div>
@@ -73,7 +94,7 @@ const year = new Date().getFullYear();
 
 	<div class="acknowledgement-bar">
 		<div class="acknowledgement-inner">
-			<p class="acknowledgement-text">{footerContent.acknowledgement}</p>
+			<p class="acknowledgement-text">{acknowledgement}</p>
 		</div>
 	</div>
 

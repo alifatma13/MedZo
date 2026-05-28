@@ -1,39 +1,50 @@
 ---
 // [service].astro — dynamic route generating one page per service slug.
-// Content lives in src/lib/content/servicepages.ts — swap for a CMS fetcher when ready.
+// Slugs are fetched from Sanity; content is fetched per slug at build time.
 import Layout from "../../layouts/Layout.astro";
 import ServicePageHero from "../../components/sections/ServicePageHero.astro";
 import ServiceFeatureGrid from "../../components/sections/ServiceFeatureGrid.astro";
 import ServicePageCTA from "../../components/sections/ServicePageCTA.astro";
-import { servicePages } from "../../lib/content/servicepages";
+import { getServiceSlugs, getServiceBySlug } from "../../lib/api/services";
+import { urlFor } from "../../lib/utils/sanityImage";
+import { ui } from "../../lib/content/ui";
 
-export function getStaticPaths() {
-  return Object.keys(servicePages).map((slug) => ({ params: { service: slug } }));
+export async function getStaticPaths() {
+  const slugs = await getServiceSlugs();
+  return (slugs ?? []).map((s) => ({ params: { service: s.slug } }));
 }
 
 const { service } = Astro.params;
-const page = servicePages[service];
+const page = await getServiceBySlug(service);
+
+if (!page) throw new Error(`Service "${service}" not found in Sanity. Publish the service document in Studio.`);
+
+const heroImageUrl = urlFor(page.heroImage).width(900).height(600).fit("crop").format("webp").url();
 ---
 
-<Layout title={page.metaTitle} description={page.metaDescription} navBg="#fff">
+<Layout
+  title={page.seoTitle ?? page.title}
+  description={page.seoDescription ?? undefined}
+  navBg="#fff"
+>
   <ServicePageHero
     label={page.heroLabel}
     heading={page.heroHeading}
     intro={page.heroIntro}
     ctaLabel={page.heroCtaLabel}
-    ctaHref={page.heroCtaHref}
-    heroImage={page.heroImage}
+    ctaHref="/contact"
+    heroImageUrl={heroImageUrl}
   />
   <ServiceFeatureGrid
-    eyebrow={page.featuresEyebrow}
+    eyebrow={ui.featuresEyebrow}
     heading={page.featuresHeading}
     intro={page.featuresIntro}
-    features={page.features}
+    features={page.features ?? []}
   />
   <ServicePageCTA
     heading={page.ctaHeading}
     body={page.ctaBody}
     ctaLabel={page.ctaLabel}
-    ctaHref={page.ctaHref}
+    ctaHref="/contact"
   />
 </Layout>
