@@ -59,7 +59,7 @@ const { iconName, title, description, gentuNote, href } = Astro.props;
   }
   .card:hover {
     transform: translateY(-6px);
-    border-color: var(--color-accent);
+    border-color: var(--color-accent-text);
     box-shadow:
       0 20px 40px rgba(0, 193, 253, 0.12),
       0 8px 16px rgba(0, 50, 125, 0.08);
@@ -116,7 +116,7 @@ const { iconName, title, description, gentuNote, href } = Astro.props;
     font-weight: var(--weight-semibold);
     letter-spacing: 0.04em;
     text-transform: uppercase;
-    color: var(--color-accent);
+    color: var(--color-accent-text);
     background: rgba(0, 193, 253, 0.1);
     border: 1px solid rgba(0, 193, 253, 0.25);
     border-radius: 0.25rem;
@@ -148,7 +148,7 @@ const { iconName, title, description, gentuNote, href } = Astro.props;
     transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
   }
   .card-link:hover {
-    color: var(--color-accent);
+    color: var(--color-accent-text);
     gap: 0.6rem;
   }
   .card-link:hover svg {

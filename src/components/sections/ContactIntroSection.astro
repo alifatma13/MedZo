@@ -162,37 +162,6 @@ const e = f.errors;
 		align-items: center;
 		overflow: hidden;
 	}
-	.contact-intro::before {
-		content: "";
-		position: absolute;
-		right: -4rem;
-		top: 50%;
-		transform: translateY(-50%);
-		width: 52rem;
-		height: 52rem;
-		border-radius: 50%;
-		border: 1px solid rgba(0, 193, 253, 0.08);
-		pointer-events: none;
-		z-index: 0;
-	}
-	.contact-intro::after {
-		content: "";
-		position: absolute;
-		right: -4rem;
-		top: 50%;
-		transform: translateY(-50%);
-		width: 32rem;
-		height: 32rem;
-		border-radius: 50%;
-		border: 1.5px solid rgba(0, 193, 253, 0.14);
-		background: radial-gradient(
-			circle at 65% 50%,
-			rgba(0, 193, 253, 0.07) 0%,
-			transparent 70%
-		);
-		pointer-events: none;
-		z-index: 0;
-	}
 	.container {
 		position: relative;
 		max-width: 1200px;
@@ -249,7 +218,7 @@ const e = f.errors;
 	.trust-icon {
 		width: 1.1rem;
 		height: 1.1rem;
-		color: var(--color-accent);
+		color: var(--color-accent-text);
 		flex-shrink: 0;
 	}
 	.trust-icon :global(svg) {
@@ -286,7 +255,7 @@ const e = f.errors;
 	.success-icon {
 		width: 3rem;
 		height: 3rem;
-		color: var(--color-accent);
+		color: var(--color-accent-text);
 	}
 	.success-icon :global(svg) {
 		width: 100%;
@@ -325,7 +294,7 @@ const e = f.errors;
 		color: var(--color-text-heading);
 	}
 	.required {
-		color: var(--color-accent);
+		color: var(--color-accent-text);
 		margin-left: 0.15em;
 	}
 	.input,
@@ -347,7 +316,7 @@ const e = f.errors;
 	.input:focus,
 	.textarea:focus {
 		outline: none;
-		border-color: var(--color-accent);
+		border-color: var(--color-accent-text);
 		box-shadow: 0 0 0 3px rgba(0, 193, 253, 0.18);
 	}
 	.input.invalid,
@@ -432,10 +401,6 @@ const e = f.errors;
 	@media (max-width: 640px) {
 		.contact-intro {
 			padding: 2.5rem clamp(1.5rem, 5%, 2rem);
-		}
-		/* ::before ring is clipped by overflow:hidden at this width — hide it */
-		.contact-intro::before {
-			display: none;
 		}
 		.form-card {
 			padding: 1.25rem;

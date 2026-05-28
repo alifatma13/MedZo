@@ -1,8 +1,8 @@
 ---
-// ServicesSection.astro — three services side-by-side in a horizontal editorial strip.
+// ServicesSection.astro — three open columns, all visible at a glance on a light ground.
+// Each column: accent cap + ordinal number + title + description + link.
 import type { ServiceCard } from "../../types/ServiceCard";
 import type { SectionHeading } from "../../types/SectionHeading";
-import { icons } from "../../lib/utils/icons";
 import { ui } from "../../lib/content/ui";
 interface Props {
 	heading: SectionHeading;
@@ -30,9 +30,6 @@ const { heading, services, bridge } = Astro.props;
 							{(i + 1).toString().padStart(2, "0")}
 						</span>
 						<div class="col-body">
-							<span class="col-icon" aria-hidden="true">
-								<Fragment set:html={icons[service.iconName] ?? ""} />
-							</span>
 							<h3 class="col-title">{service.title}</h3>
 							<p class="col-desc">{service.description}</p>
 						</div>
@@ -72,7 +69,7 @@ const { heading, services, bridge } = Astro.props;
 		flex-direction: column;
 	}
 
-	/* ── Section header — two-column on desktop ── */
+	/* ── Section header ───────────────────────────────── */
 	.section-header {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
@@ -89,7 +86,7 @@ const { heading, services, bridge } = Astro.props;
 		font-weight: var(--weight-semibold);
 		letter-spacing: var(--tracking-wider);
 		text-transform: uppercase;
-		color: var(--color-accent);
+		color: var(--color-accent-text);
 	}
 	.section-title {
 		font-size: clamp(2rem, 3.5vw, 2.75rem);
@@ -108,66 +105,52 @@ const { heading, services, bridge } = Astro.props;
 		padding-bottom: 0.2rem;
 	}
 
-	/* ── Three-column service strip ── */
+	/* ── Three-column index ───────────────────────────── */
 	.service-list {
 		list-style: none;
 		margin: clamp(3.5rem, 5vw, 5.5rem) 0 0;
-		padding: 2.5rem 0 0;
+		padding: 0;
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
-		border-top: 1px solid var(--color-border);
-		border-bottom: 1px solid var(--color-border);
+		gap: 3rem;
 	}
 
 	.service-col {
+		position: relative;
 		display: flex;
 		flex-direction: column;
-		gap: 1.25rem;
-		padding: 2.5rem 0;
-		transition: background 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+		gap: 0;
+		padding-top: 2rem;
+		border-top: 2px solid var(--color-accent);
+		transition: border-color 0.2s cubic-bezier(0.22, 1, 0.36, 1);
 	}
 	.service-col:hover {
-		background: rgba(0, 193, 253, 0.08);
-	}
-	/* columns 1 and 4 — first in their row */
-	.service-col:not(:nth-child(3n)) {
-		padding-right: 3rem;
-		border-right: 1px solid var(--color-border);
-	}
-	/* columns 2, 3, 5, 6 — not first in their row */
-	.service-col:not(:nth-child(3n+1)) {
-		padding-left: 3rem;
+		border-color: var(--color-primary);
 	}
 
 	.col-num {
-		font-size: clamp(2.75rem, 4vw, 4.5rem);
+		position: absolute;
+		bottom: -0.5rem;
+		right: -0.5rem;
+		font-size: clamp(6rem, 9vw, 9rem);
 		font-weight: var(--weight-extrabold);
-		color: oklch(91% 0.014 220);
+		color: var(--color-primary);
+		opacity: 0.05;
 		line-height: 1;
 		letter-spacing: var(--tracking-tight);
+		pointer-events: none;
+		user-select: none;
 	}
 
 	.col-body {
 		display: flex;
 		flex-direction: column;
-		gap: 0.4rem;
+		gap: 0.5rem;
 		flex: 1;
 	}
-	.col-icon {
-		width: 1.625rem;
-		height: 1.625rem;
-		color: var(--color-accent);
-		display: flex;
-		align-items: center;
-		margin-bottom: 0.2rem;
-	}
-	.col-icon :global(svg) {
-		width: 100%;
-		height: 100%;
-	}
 	.col-title {
-		font-size: var(--text-xl);
-		font-weight: var(--weight-semibold);
+		font-size: clamp(1.1rem, 1.5vw, 1.3rem);
+		font-weight: var(--weight-bold);
 		color: var(--color-primary);
 		margin: 0;
 		line-height: var(--leading-tight);
@@ -184,19 +167,18 @@ const { heading, services, bridge } = Astro.props;
 		display: inline-flex;
 		align-items: center;
 		gap: 0.4rem;
-		margin-top: auto;
-		padding-top: 1rem;
+		margin-top: 1.75rem;
 		font-size: var(--text-sm);
 		font-weight: var(--weight-semibold);
-		color: var(--color-accent);
+		color: var(--color-accent-text);
 		text-decoration: none;
 		transition:
 			gap 0.18s cubic-bezier(0.22, 1, 0.36, 1),
-			color 0.15s cubic-bezier(0.22, 1, 0.36, 1);
+			color 0.15s;
 	}
 	.col-link:hover {
-		color: var(--color-primary);
 		gap: 0.7rem;
+		color: var(--color-primary);
 	}
 	.col-link:active {
 		opacity: 0.65;
@@ -207,58 +189,7 @@ const { heading, services, bridge } = Astro.props;
 		border-radius: 2px;
 	}
 
-	/* ── Responsive ── */
-
-	@media (max-width: 1400px) {
-		.section-bridge {
-			display: none !important;
-		}
-	}
-
-	@media (max-width: 1024px) {
-		.service-list {
-			grid-template-columns: 1fr;
-			padding-top: 2rem;
-		}
-		.service-col {
-			padding: 2rem 0;
-			border-right: none;
-		}
-		.service-col:not(:last-child) {
-			padding-right: 0;
-			border-right: none;
-			border-bottom: 1px solid var(--color-border);
-		}
-		.service-col:not(:first-child) {
-			padding-left: 0;
-		}
-	}
-
-	@media (max-width: 768px) {
-		.services {
-			padding: 4rem clamp(1.5rem, 5%, 3rem) 2rem;
-		}
-		.section-header {
-			grid-template-columns: 1fr;
-			gap: 0.75rem;
-		}
-	}
-
-	@media (max-width: 480px) {
-		.services {
-			padding: 3.5rem 2rem 2rem;
-		}
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		.service-col,
-		.col-link,
-		.section-bridge {
-			transition: none;
-		}
-	}
-
-	/* ── Scroll bridge ── */
+	/* ── Scroll bridge ────────────────────────────────── */
 	.section-bridge {
 		display: flex;
 		flex-direction: column;
@@ -292,16 +223,47 @@ const { heading, services, bridge } = Astro.props;
 		line-height: 1;
 		animation: bridge-nudge 2s ease-in-out infinite;
 	}
-	@keyframes bridge-nudge {
-		0%,
-		100% {
-			transform: translateY(0);
-		}
-		50% {
-			transform: translateY(5px);
+
+	/* ── Responsive ───────────────────────────────────── */
+	@media (max-width: 1400px) {
+		.section-bridge {
+			display: none !important;
 		}
 	}
+
+	@media (max-width: 1024px) {
+		.service-list {
+			gap: 2rem;
+		}
+	}
+
+	@media (max-width: 768px) {
+		.services {
+			padding: 4rem clamp(1.5rem, 5%, 3rem) 3rem;
+		}
+		.section-header {
+			grid-template-columns: 1fr;
+			gap: 0.75rem;
+		}
+		.service-list {
+			grid-template-columns: 1fr;
+			gap: 2.5rem;
+			margin-top: 3rem;
+		}
+	}
+
+	@media (max-width: 480px) {
+		.services {
+			padding: 3.5rem 1.5rem 2.5rem;
+		}
+	}
+
 	@media (prefers-reduced-motion: reduce) {
+		.service-col,
+		.col-link,
+		.section-bridge {
+			transition: none;
+		}
 		.bridge-arrow {
 			animation: none;
 		}
@@ -319,6 +281,11 @@ const { heading, services, bridge } = Astro.props;
 		.service-col {
 			opacity: 0;
 		}
+	}
+
+	@keyframes bridge-nudge {
+		0%, 100% { transform: translateY(0); }
+		50%       { transform: translateY(5px); }
 	}
 </style>
 
@@ -345,7 +312,7 @@ const { heading, services, bridge } = Astro.props;
 				);
 				(animate as any)(
 					".services .service-col",
-					{ opacity: [0, 1], y: [20, 0] },
+					{ opacity: [0, 1], y: [24, 0] },
 					{
 						duration: 0.5,
 						delay: (stagger as any)(0.1, { start: 0.28 }),
