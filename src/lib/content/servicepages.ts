@@ -157,6 +157,16 @@ export const servicePages: Record<string, ServicePageContent> = {
         title: "Debt Collection",
         body: "Professional, sensitive debt coordination. We handle the difficult conversations so you do not have to.",
       },
+      {
+        iconName: "pie-chart",
+        title: "Financial Reporting",
+        body: "Clear, regular reports on revenue, claim outcomes, and payment activity so you always have an accurate view of your practice finances.",
+      },
+      {
+        iconName: "line-chart",
+        title: "Practice Profitability Analysis",
+        body: "In-depth analysis of billing patterns, fee gaps, and revenue trends to identify opportunities and keep your practice financially healthy.",
+      },
     ],
     ctaHeading: "Maximise your practice revenue",
     ctaBody:

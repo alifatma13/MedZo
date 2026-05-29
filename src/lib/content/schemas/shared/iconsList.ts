@@ -24,6 +24,8 @@ export const CONTENT_ICONS = [
   { title: 'Alert Circle',  value: 'alert-circle'  },
   { title: 'Clipboard',     value: 'clipboard'     },
   { title: 'Shield Check',  value: 'shield-check'  },
+  { title: 'Pie Chart',     value: 'pie-chart'     },
+  { title: 'Line Chart',    value: 'line-chart'    },
   { title: 'Plug',          value: 'plug'          },
   // About page values + Why MedZo section
   { title: 'Activity',      value: 'activity'      },
