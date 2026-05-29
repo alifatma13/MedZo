@@ -8,10 +8,12 @@ const { iconName, title, description, gentuNote, href } = Astro.props;
 ---
 
 <div class="card">
-  <div class="icon-wrap" aria-hidden="true">
-    <Fragment set:html={icons[iconName] ?? ""} />
+  <div class="card-head">
+    <div class="icon-wrap" aria-hidden="true">
+      <Fragment set:html={icons[iconName] ?? ""} />
+    </div>
+    <h3 class="card-title">{title}</h3>
   </div>
-  <h3 class="card-title">{title}</h3>
   <p class="card-desc">{description}</p>
   {gentuNote && (
     <div class="gentu-note">
@@ -67,11 +69,16 @@ const { iconName, title, description, gentuNote, href } = Astro.props;
   .card:hover::after {
     transform: translateX(100%);
   }
+  .card-head {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
   .icon-wrap {
-    width: 48px;
-    height: 48px;
+    width: 36px;
+    height: 36px;
     border-radius: 0.5rem;
-    padding: 10px;
+    padding: 8px;
     background: var(--gradient-brand);
     display: flex;
     align-items: center;
@@ -92,7 +99,7 @@ const { iconName, title, description, gentuNote, href } = Astro.props;
     font-size: var(--text-base);
     font-weight: var(--weight-semibold);
     color: var(--color-primary);
-    margin: 0.75rem 0 0;
+    margin: 0;
     letter-spacing: normal;
   }
   .card-desc {

@@ -32,4 +32,9 @@ export const CONTENT_ICONS = [
   { title: 'Check Circle',  value: 'check-circle'  },
   { title: 'Target',        value: 'target'        },
   { title: 'Refresh',       value: 'refresh'       },
+  // Virtual reception
+  { title: 'Headset',       value: 'headset'       },
+  { title: 'User Plus',     value: 'user-plus'     },
+  { title: 'List Ordered',  value: 'list-ordered'  },
+  { title: 'Moon',          value: 'moon'          },
 ]

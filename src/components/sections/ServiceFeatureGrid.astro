@@ -22,13 +22,13 @@ const { eyebrow, heading, intro, features } = Astro.props;
     <div class="feature-grid">
       {features.map((feature, i) => (
         <div class={`feature-card${i === 0 ? " feature-card--hero" : ""}`} data-num={String(i + 1).padStart(2, "0")}>
-          <div class="feature-icon" aria-hidden="true">
-            <Fragment set:html={icons[feature.iconName] ?? ""} />
-          </div>
-          <div class="feature-text">
+          <div class="feature-head">
+            <div class="feature-icon" aria-hidden="true">
+              <Fragment set:html={icons[feature.iconName] ?? ""} />
+            </div>
             <h3 class="feature-title">{feature.title}</h3>
-            <p class="feature-body">{feature.body}</p>
           </div>
+          <p class="feature-body">{feature.body}</p>
         </div>
       ))}
     </div>
@@ -113,13 +113,20 @@ const { eyebrow, heading, intro, features } = Astro.props;
     padding: 2rem;
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
+    gap: 0.875rem;
     position: relative;
     overflow: hidden;
     transition:
       transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
       box-shadow 0.28s cubic-bezier(0.22, 1, 0.36, 1);
     box-shadow: 0 4px 24px rgba(0, 50, 125, 0.06);
+  }
+
+  /* ── Icon + title row ────────────────────────────────── */
+  .feature-head {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
   }
   .feature-card::before {
     content: attr(data-num);
@@ -158,13 +165,16 @@ const { eyebrow, heading, intro, features } = Astro.props;
     bottom: -1rem;
     right: 2rem;
   }
+  .feature-card--hero .feature-head {
+    align-items: flex-start;
+    flex-shrink: 0;
+  }
   .feature-card--hero .feature-icon {
     background: rgba(255, 255, 255, 0.15);
     border: 1px solid rgba(255, 255, 255, 0.2);
-    width: 72px;
-    height: 72px;
-    padding: 18px;
-    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    padding: 9px;
   }
   .feature-card--hero .feature-title {
     color: #fff;
@@ -173,6 +183,8 @@ const { eyebrow, heading, intro, features } = Astro.props;
   .feature-card--hero .feature-body {
     color: rgba(255, 255, 255, 0.78);
     font-size: var(--text-base);
+    flex: 1;
+    align-self: center;
   }
   .feature-card--hero:hover {
     transform: translateY(-3px);
@@ -181,10 +193,10 @@ const { eyebrow, heading, intro, features } = Astro.props;
 
   /* ── Icon ────────────────────────────────────────────── */
   .feature-icon {
-    width: 56px;
-    height: 56px;
-    border-radius: 1rem;
-    padding: 13px;
+    width: 36px;
+    height: 36px;
+    border-radius: 0.625rem;
+    padding: 8px;
     background: var(--gradient-brand);
     display: flex;
     align-items: center;
@@ -195,16 +207,9 @@ const { eyebrow, heading, intro, features } = Astro.props;
       transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
       box-shadow 0.32s cubic-bezier(0.22, 1, 0.36, 1);
   }
-  .feature-card:not(.feature-card--hero):hover .feature-icon {
-    transform: translateY(-3px);
-    box-shadow:
-      0 0 0 4px rgba(0, 193, 253, 0.18),
-      0 8px 20px rgba(0, 193, 253, 0.28);
-  }
   .feature-icon svg { width: 100%; height: 100%; }
 
   /* ── Text ────────────────────────────────────────────── */
-  .feature-text { display: flex; flex-direction: column; gap: 0.5rem; }
   .feature-title {
     font-size: var(--text-lg);
     font-weight: var(--weight-semibold);
