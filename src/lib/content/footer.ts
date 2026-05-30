@@ -32,7 +32,6 @@ export const footerContent: FooterContent = {
   // ── Always in code — structural/legal ────────────────────────────────
   company: [
     { label: "Why MedZo",      href: "/#why-medzo"    },
-    { label: "Testimonials",   href: "/#testimonials" },
     { label: "FAQ",            href: "/faq"           },
     { label: "Book a Consult", href: "/contact"       },
   ],

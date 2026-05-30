@@ -208,12 +208,6 @@ const { heading, services, bridge } = Astro.props;
 	}
 
 	/* ── Responsive ───────────────────────────────────── */
-	@media (max-width: 1400px) {
-		.section-bridge {
-			display: none !important;
-		}
-	}
-
 	@media (max-width: 1024px) {
 		.service-list {
 			gap: 2rem;
@@ -232,6 +226,9 @@ const { heading, services, bridge } = Astro.props;
 			grid-template-columns: 1fr;
 			gap: 2.5rem;
 			margin-top: 3rem;
+		}
+		.section-bridge {
+			display: none;
 		}
 	}
 

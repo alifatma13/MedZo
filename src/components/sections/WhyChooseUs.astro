@@ -81,7 +81,7 @@ const rightItems = items.slice(halfLen);
 
 <style>
 	.why {
-		background: oklch(97% 0.01 220);
+		background: oklch(99% 0.005 220);
 		padding: 0 0 4rem;
 		position: relative;
 	}
@@ -112,7 +112,7 @@ const rightItems = items.slice(halfLen);
 	.metric-value {
 		font-size: clamp(2.5rem, 5vw, 3.75rem);
 		font-weight: var(--weight-extrabold);
-		color: #fff;
+		color: oklch(99% 0.005 220);
 		line-height: 1;
 		margin: 0;
 		letter-spacing: var(--tracking-tight);
@@ -131,53 +131,68 @@ const rightItems = items.slice(halfLen);
 	.radial-section {
 		max-width: 1280px;
 		margin: 0 auto;
-		padding: 4rem clamp(1.5rem, 8%, 6rem);
+		padding: 5rem clamp(1.5rem, 8%, 6rem) 5.5rem;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		gap: 3rem;
+		gap: 2rem;
 	}
 	.section-title {
-		font-size: clamp(1.5rem, 3vw, var(--text-4xl));
-		font-weight: var(--weight-semibold);
+		font-size: clamp(1.75rem, 3.5vw, var(--text-4xl));
+		font-weight: var(--weight-extrabold);
 		color: var(--color-primary);
 		letter-spacing: var(--tracking-tight);
+		line-height: 1.15;
 		margin: 0;
 		text-align: center;
 		max-width: 28ch;
 	}
 
-	/* ── Three-column radial grid ── */
+	/* ── Radial grid ── */
 	.radial-grid {
 		display: grid;
-		grid-template-columns: 1fr 210px 1fr;
+		grid-template-columns: 1fr 340px 1fr;
 		gap: 2.5rem;
-		align-items: center;
+		align-items: stretch;
 		width: 100%;
+		position: relative;
 	}
+
+	/* Faint radial glow anchored at the hub center */
+	.radial-grid::before {
+		content: '';
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		width: 380px;
+		height: 380px;
+		border-radius: 50%;
+		background: radial-gradient(circle, oklch(91% 0.04 220 / 0.35) 0%, transparent 52%);
+		pointer-events: none;
+		z-index: 0;
+	}
+
 	.radial-col {
 		list-style: none;
 		margin: 0;
 		padding: 0;
 		display: flex;
 		flex-direction: column;
+		justify-content: space-between;
+		position: relative;
+		z-index: 1;
 	}
 	.radial-item {
-		padding: 0.875rem 0;
-		border-bottom: 1px solid oklch(90% 0.02 220);
-	}
-	.radial-item:first-child { padding-top: 0; }
-	.radial-item:last-child { border-bottom: none; padding-bottom: 0; }
-
-	/* Truncate descriptions to 2 lines */
-	.radial-col :global(.item-desc) {
-		display: -webkit-box;
-		-webkit-line-clamp: 2;
-		-webkit-box-orient: vertical;
-		overflow: hidden;
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		padding: 1.25rem 0;
+		position: relative;
 	}
 
-	/* Left column faces the hub: icon on the right edge, text right-aligned */
+	/* Left column: icon on right edge, text right-aligned toward hub */
 	.radial-left :global(.why-item) { flex-direction: row-reverse; }
 	.radial-left :global(.content)  { align-items: flex-end; }
 	.radial-left :global(.item-title),
@@ -188,24 +203,40 @@ const rightItems = items.slice(halfLen);
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		position: relative;
+		z-index: 1;
+	}
+	.radial-hub::before {
+		content: '';
+		position: absolute;
+		width: 400px;
+		height: 480px;
+		border-radius: 50%;
+		background: oklch(88% 0.008 220 / 0.55);
+		filter: blur(28px);
+		pointer-events: none;
+		z-index: 0;
 	}
 	.hub-ring {
-		width: 200px;
-		height: 200px;
+		width: 320px;
+		height: 400px;
 		border-radius: 50%;
-		background: var(--gradient-brand);
-		padding: 5px;
+		background: transparent;
+		padding: 0;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		box-shadow: 0 8px 32px oklch(40% 0.15 230 / 0.2);
+		box-shadow: 0 16px 48px oklch(35% 0.12 230 / 0.2);
 		flex-shrink: 0;
+		position: relative;
+		z-index: 1;
 	}
 	.hub-inner {
 		width: 100%;
 		height: 100%;
 		border-radius: 50%;
 		overflow: hidden;
+		background: var(--color-primary);
 	}
 	.hub-img {
 		width: 100%;
@@ -220,18 +251,19 @@ const rightItems = items.slice(halfLen);
 			grid-template-columns: 1fr;
 			gap: 0;
 		}
+		.radial-grid::before { display: none; }
 		.radial-hub { display: none; }
+		.radial-item {
+			padding: 0.875rem 0;
+			border-bottom: 1px solid oklch(90% 0.02 220);
+		}
+		.radial-item:first-child { padding-top: 0; }
+		.radial-item:last-child { border-bottom: none; padding-bottom: 0; }
 		/* Un-reverse left items when the hub is gone */
 		.radial-left :global(.why-item) { flex-direction: row; }
 		.radial-left :global(.content)  { align-items: flex-start; }
 		.radial-left :global(.item-title),
 		.radial-left :global(.item-desc) { text-align: left; }
-		/* Un-clamp descriptions on single-column layout */
-		.radial-col :global(.item-desc) {
-			display: block;
-			-webkit-line-clamp: unset;
-			overflow: visible;
-		}
 	}
 
 	@media (max-width: 900px) {
@@ -258,7 +290,7 @@ const rightItems = items.slice(halfLen);
 	}
 
 	@media (prefers-reduced-motion: no-preference) {
-		.section-title { clip-path: inset(0 0 100% 0); }
+		.section-title,
 		.hub-ring,
 		.radial-item { opacity: 0; }
 	}
@@ -267,9 +299,20 @@ const rightItems = items.slice(halfLen);
 <script>
 	import { animate, inView, stagger } from "motion";
 
+	let stopMetrics: (() => void) | null = null;
+	let stopRadial: (() => void) | null = null;
+
 	document.addEventListener("astro:page-load", () => {
+		// Clean up observers from previous navigation
+		if (stopMetrics) { stopMetrics(); stopMetrics = null; }
+		if (stopRadial) { stopRadial(); stopRadial = null; }
+
+		// Clear inline styles Motion left on the previous visit so CSS opacity: 0 takes effect
+		document.querySelectorAll<HTMLElement>(".why .hub-ring, .why .section-title, .why .radial-item")
+			.forEach((el) => { el.style.opacity = ""; el.style.transform = ""; });
+
 		// ── Count-up animation for metrics ──
-		inView(".why .metrics-bar", () => {
+		stopMetrics = inView(".why .metrics-bar", () => {
 			const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 			document.querySelectorAll<HTMLElement>(".why .count").forEach((el) => {
 				const target = parseFloat(el.dataset.target ?? "0");
@@ -288,7 +331,7 @@ const rightItems = items.slice(halfLen);
 		});
 
 		if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-			inView(".why .radial-section", () => {
+			stopRadial = inView(".why .radial-section", () => {
 				const hub = document.querySelector<HTMLElement>(".why .hub-ring");
 				const title = document.querySelector<HTMLElement>(".why .section-title");
 				const items = document.querySelectorAll<HTMLElement>(".why .radial-item");
@@ -301,7 +344,7 @@ const rightItems = items.slice(halfLen);
 				if (title)
 					(animate as any)(
 						title,
-						{ clipPath: ["inset(0 0 100% 0)", "inset(0 0 0% 0)"], y: [20, 0] },
+						{ opacity: [0, 1], y: [20, 0] },
 						{ duration: 0.65, delay: 0.1, easing: [0.22, 1, 0.36, 1] },
 					);
 				if (items.length)
