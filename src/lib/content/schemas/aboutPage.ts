@@ -166,6 +166,24 @@ export const aboutPage = defineType({
       ],
     }),
 
+    // ── Team section ─────────────────────────────────────────
+    defineField({
+      name: 'teamSectionHeading',
+      title: 'Team Section Heading',
+      type: 'string',
+      group: 'credentials',
+      description: 'e.g. "Meet the team"',
+      validation: (r) => r.required(),
+    }),
+    defineField({
+      name: 'teamSectionBody',
+      title: 'Team Section Body',
+      type: 'text',
+      rows: 3,
+      group: 'credentials',
+      validation: (r) => r.required(),
+    }),
+
     // ── Credentials ──────────────────────────────────────────
     defineField({
       name: 'credentialsHeading',

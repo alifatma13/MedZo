@@ -9,7 +9,6 @@ import TeamSection from "../components/sections/TeamSection.astro";
 import CredentialsSection from "../components/sections/CredentialsSection.astro";
 import { getAboutPage } from "../lib/api/aboutPage";
 import { getTeamMembers } from "../lib/api/team";
-import { teamHeading, teamBody } from "../lib/content/team";
 
 const [data, teamMembers] = await Promise.all([
   getAboutPage(),
@@ -50,8 +49,8 @@ const heroParagraphs = (data.heroBody ?? "").split("\n\n").filter(Boolean);
     <div class="nb-blob nb-blob-2" aria-hidden="true"></div>
     <div class="nb-overlay" aria-hidden="true"></div>
     <TeamSection
-      heading={teamHeading}
-      body={teamBody}
+      heading={data.teamSectionHeading}
+      body={data.teamSectionBody}
       members={teamMembers ?? []}
     />
     <CredentialsSection

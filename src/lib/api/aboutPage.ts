@@ -17,6 +17,8 @@ export const ABOUT_PAGE_QUERY = defineQuery(`
     missionBody,
     valuesHeading,
     valuesItems[]{ _key, "icon": iconName, title, body },
+    teamSectionHeading,
+    teamSectionBody,
     credentialsHeading,
     credentialsItems,
     ctaHeading,
