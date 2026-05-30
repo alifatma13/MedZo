@@ -3,7 +3,7 @@
 import Button from "../ui/Button.astro";
 import type { FinalCta } from "../../types/FinalCta";
 interface Props extends FinalCta {}
-const { heading, buttonLabel, buttonHref } = Astro.props;
+const { heading, subheading, buttonLabel, buttonHref } = Astro.props;
 ---
 
 <section class="final-cta" id="contact">
@@ -12,6 +12,7 @@ const { heading, buttonLabel, buttonHref } = Astro.props;
 	<div class="blob blob-2" aria-hidden="true"></div>
 	<div class="container">
 		<h2 class="cta-heading">{heading}</h2>
+		{subheading && <p class="cta-subheading">{subheading}</p>}
 		<Button label={buttonLabel} href={buttonHref} variant="accent" />
 	</div>
 </section>
@@ -69,6 +70,13 @@ const { heading, buttonLabel, buttonHref } = Astro.props;
 		max-width: 72rem;
 		line-height: 1.2;
 	}
+	.cta-subheading {
+		font-size: clamp(1rem, 1.5vw, 1.25rem);
+		color: oklch(92% 0.01 220 / 0.85);
+		line-height: 1.6;
+		margin: 0;
+		max-width: 56ch;
+	}
 	@media (max-width: 768px) {
 		.final-cta {
 			padding: 4rem clamp(1.5rem, 5%, 3rem);
@@ -81,6 +89,7 @@ const { heading, buttonLabel, buttonHref } = Astro.props;
 	}
 	@media (prefers-reduced-motion: no-preference) {
 		.cta-heading,
+		.cta-subheading,
 		.btn {
 			opacity: 0;
 		}
@@ -99,9 +108,14 @@ const { heading, buttonLabel, buttonHref } = Astro.props;
 					{ duration: 0.6, easing: [0.22, 1, 0.36, 1] },
 				);
 				(animate as any)(
+					".final-cta .cta-subheading",
+					{ opacity: [0, 1], y: [16, 0] },
+					{ duration: 0.5, delay: 0.15, easing: [0.22, 1, 0.36, 1] },
+				);
+				(animate as any)(
 					".final-cta .btn",
 					{ opacity: [0, 1], y: [16, 0] },
-					{ duration: 0.5, delay: 0.25, easing: [0.22, 1, 0.36, 1] },
+					{ duration: 0.5, delay: 0.3, easing: [0.22, 1, 0.36, 1] },
 				);
 			});
 		}

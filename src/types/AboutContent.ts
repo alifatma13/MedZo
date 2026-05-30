@@ -52,6 +52,7 @@ export interface AboutContent {
 		members: TeamMember[];
 	};
 	cta: {
+		heading?: string;
 		body: string;
 		buttonLabel: string;
 		buttonHref: string;

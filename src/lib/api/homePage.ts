@@ -29,6 +29,7 @@ export const HOME_PAGE_QUERY = defineQuery(`
     testimonialsHeading,
     testimonialsViewMoreLabel,
     finalCtaHeading,
+    finalCtaSubheading,
     finalCtaButtonLabel,
     seoTitle,
     seoDescription,

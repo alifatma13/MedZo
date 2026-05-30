@@ -55,6 +55,7 @@ const heroParagraphs = (data.heroBody ?? "").split("\n\n").filter(Boolean);
       members={teamMembers ?? []}
     />
     <CredentialsSection
+      ctaHeading={data.ctaHeading ?? undefined}
       ctaBody={data.ctaBody}
       ctaButtonLabel={data.ctaButtonLabel}
       ctaButtonHref="/contact"

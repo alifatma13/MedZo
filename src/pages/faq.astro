@@ -21,6 +21,7 @@ if (!homeData) throw new Error("Home page not found in Sanity. Publish the Home 
   <FAQSection heading="Frequently Asked Questions" faqs={faqs ?? []} />
   <FinalCTA
     heading={homeData.finalCtaHeading}
+    subheading={homeData.finalCtaSubheading ?? undefined}
     buttonLabel={homeData.finalCtaButtonLabel}
     buttonHref="/contact"
   />

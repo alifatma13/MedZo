@@ -82,6 +82,7 @@ export const about: AboutContent = {
   },
 
   cta: {
+    heading: "Ready to find out if we are the right fit?",
     body: "If you would like to find out whether we are the right fit for your clinic, book a free, no-pressure conversation.",
     buttonLabel: "Book a conversation with MedZo",
     buttonHref: "/contact",

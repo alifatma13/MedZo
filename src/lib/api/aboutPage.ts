@@ -19,6 +19,7 @@ export const ABOUT_PAGE_QUERY = defineQuery(`
     valuesItems[]{ _key, "icon": iconName, title, body },
     credentialsHeading,
     credentialsItems,
+    ctaHeading,
     ctaBody,
     ctaButtonLabel,
     seoTitle,

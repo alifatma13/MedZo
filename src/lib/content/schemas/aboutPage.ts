@@ -186,6 +186,14 @@ export const aboutPage = defineType({
 
     // ── CTA ──────────────────────────────────────────────────
     defineField({
+      name: 'ctaHeading',
+      title: 'CTA Heading',
+      type: 'string',
+      group: 'cta',
+      description: 'Short heading above the supporting copy.',
+      validation: (r) => r.required(),
+    }),
+    defineField({
       name: 'ctaBody',
       title: 'CTA Body',
       type: 'text',

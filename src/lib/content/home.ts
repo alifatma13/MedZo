@@ -125,6 +125,7 @@ export const home: HomeContent = {
 
   finalCta: {
     heading: "Take the admin off your plate.",
+    subheading: "Find out what your practice could look like with the right support.",
     buttonLabel: "Book a free consult",
     buttonHref: "/contact",
   },

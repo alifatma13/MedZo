@@ -346,6 +346,13 @@ export const homePage = defineType({
       validation: (r) => r.required(),
     }),
     defineField({
+      name: 'finalCtaSubheading',
+      title: 'Final CTA Subheading',
+      type: 'string',
+      group: 'finalCta',
+      description: 'Optional supporting line beneath the heading.',
+    }),
+    defineField({
       name: 'finalCtaButtonLabel',
       title: 'Final CTA Button Label',
       type: 'string',
