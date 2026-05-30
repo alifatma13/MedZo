@@ -69,6 +69,11 @@ const { heading, buttonLabel, buttonHref } = Astro.props;
 		max-width: 72rem;
 		line-height: 1.2;
 	}
+	@media (max-width: 768px) {
+		.final-cta {
+			padding: 4rem clamp(1.5rem, 5%, 3rem);
+		}
+	}
 	@media (max-width: 640px) {
 		.final-cta {
 			padding: 4rem 1.5rem;

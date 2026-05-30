@@ -230,6 +230,10 @@ const { eyebrow, heading, intro, features } = Astro.props;
     .feature-grid { grid-template-columns: repeat(2, 1fr); }
     .feature-card--hero { flex-direction: column; gap: 1.5rem; padding: 2rem; }
   }
+  @media (max-width: 768px) {
+    .svc-features { padding: 4rem clamp(1.5rem, 5%, 2.5rem); }
+    .container { gap: 2.5rem; }
+  }
   @media (max-width: 600px) {
     .svc-features { padding: 4rem clamp(1.5rem, 5%, 2rem); }
     .container { max-width: none; gap: 2.5rem; }

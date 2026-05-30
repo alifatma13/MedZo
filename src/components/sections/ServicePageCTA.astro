@@ -61,6 +61,9 @@ const { heading, body, ctaLabel, ctaHref } = Astro.props;
     margin: 0;
     max-width: 48ch;
   }
+  @media (max-width: 768px) {
+    .svc-cta { padding: 4rem clamp(1.5rem, 5%, 3rem); }
+  }
   @media (max-width: 640px) {
     .svc-cta { padding: 4rem 1.5rem; }
     .container { padding: 0; }
