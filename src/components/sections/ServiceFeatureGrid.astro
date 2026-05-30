@@ -65,13 +65,12 @@ const { eyebrow, heading, intro, features } = Astro.props;
 
   /* ── Section header ──────────────────────────────────── */
   .section-header {
-    text-align: center;
+    text-align: left;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     gap: 1rem;
-    max-width: 600px;
-    margin: 0 auto;
+    max-width: 700px;
   }
   .section-eyebrow {
     font-size: var(--text-xs);
@@ -109,7 +108,7 @@ const { eyebrow, heading, intro, features } = Astro.props;
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     border: 1px solid rgba(255, 255, 255, 0.9);
-    border-radius: 1.5rem;
+    border-radius: 0.75rem;
     padding: 2rem;
     display: flex;
     flex-direction: column;
@@ -119,7 +118,7 @@ const { eyebrow, heading, intro, features } = Astro.props;
     transition:
       transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
       box-shadow 0.28s cubic-bezier(0.22, 1, 0.36, 1);
-    box-shadow: 0 4px 24px rgba(0, 50, 125, 0.06);
+    box-shadow: 0 2px 8px rgba(0, 50, 125, 0.05);
   }
 
   /* ── Icon + title row ────────────────────────────────── */
@@ -142,10 +141,10 @@ const { eyebrow, heading, intro, features } = Astro.props;
     letter-spacing: -0.05em;
   }
   .feature-card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-3px);
     box-shadow:
-      0 20px 48px rgba(0, 50, 125, 0.1),
-      0 4px 12px rgba(0, 193, 253, 0.08);
+      0 8px 24px rgba(0, 50, 125, 0.08),
+      0 2px 8px rgba(0, 193, 253, 0.06);
   }
 
   /* ── Hero card (first) ───────────────────────────────── */
@@ -157,7 +156,7 @@ const { eyebrow, heading, intro, features } = Astro.props;
     background: linear-gradient(135deg, var(--color-primary) 0%, color-mix(in srgb, var(--color-accent) 25%, var(--color-primary)) 100%);
     border: none;
     padding: 2.5rem 3rem;
-    box-shadow: 0 12px 48px rgba(0, 50, 125, 0.25);
+    box-shadow: 0 4px 16px rgba(0, 50, 125, 0.15);
   }
   .feature-card--hero::before {
     color: rgba(255, 255, 255, 0.06);
@@ -187,8 +186,8 @@ const { eyebrow, heading, intro, features } = Astro.props;
     align-self: center;
   }
   .feature-card--hero:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 20px 60px rgba(0, 50, 125, 0.35);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0, 50, 125, 0.22);
   }
 
   /* ── Icon ────────────────────────────────────────────── */
