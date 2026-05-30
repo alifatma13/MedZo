@@ -12,8 +12,6 @@ const { heading, body, ctaLabel, ctaHref } = Astro.props;
 
 <section class="svc-cta">
   <div class="gradient-overlay" aria-hidden="true"></div>
-  <div class="blob blob-1" aria-hidden="true"></div>
-  <div class="blob blob-2" aria-hidden="true"></div>
   <div class="container">
     <h2 class="cta-heading">{heading}</h2>
     <p class="cta-body">{body}</p>
@@ -36,25 +34,6 @@ const { heading, body, ctaLabel, ctaHref } = Astro.props;
     background: radial-gradient(ellipse at center, #fff 0%, transparent 70%);
     pointer-events: none;
   }
-  .blob {
-    position: absolute;
-    border-radius: 50%;
-    pointer-events: none;
-  }
-  .blob-1 {
-    width: 500px;
-    height: 500px;
-    top: -120px;
-    right: -80px;
-    background: radial-gradient(circle, rgba(0, 193, 253, 0.35) 0%, transparent 65%);
-  }
-  .blob-2 {
-    width: 380px;
-    height: 380px;
-    bottom: -100px;
-    left: -60px;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.14) 0%, transparent 65%);
-  }
   .container {
     position: relative;
     z-index: 1;
@@ -68,12 +47,12 @@ const { heading, body, ctaLabel, ctaHref } = Astro.props;
   }
   .cta-heading {
     font-size: clamp(1.75rem, 3.5vw, 3rem);
-    font-weight: var(--weight-bold);
+    font-weight: var(--weight-extrabold);
     color: oklch(98% 0.006 220);
-    letter-spacing: var(--tracking-tight);
+    letter-spacing: -0.03em;
     margin: 0;
-    max-width: 72rem;
-    line-height: 1.2;
+    max-width: 26ch;
+    line-height: 1.1;
   }
   .cta-body {
     font-size: var(--text-lg);

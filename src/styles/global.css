@@ -134,7 +134,7 @@ html {
   -moz-osx-font-smoothing: grayscale;
   scrollbar-gutter: stable;
   /* Offset anchor-link scroll targets below the sticky nav (≈76px) + breathing room */
-  scroll-padding-top: 7rem;
+  scroll-padding-top: 5rem;
 }
 
 body {

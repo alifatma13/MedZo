@@ -98,8 +98,8 @@ const { label, heading, intro, ctaLabel, ctaHref, heroImageUrl } = Astro.props;
     font-size: clamp(2rem, 4vw, 3rem);
     font-weight: var(--weight-extrabold);
     color: var(--color-primary);
-    line-height: var(--leading-tight);
-    letter-spacing: var(--tracking-tight);
+    line-height: 1.08;
+    letter-spacing: -0.03em;
     margin: 0;
   }
   .hero-intro {
@@ -107,7 +107,7 @@ const { label, heading, intro, ctaLabel, ctaHref, heroImageUrl } = Astro.props;
     color: var(--color-text-body);
     line-height: var(--leading-normal);
     margin: 0;
-    max-width: 520px;
+    max-width: 52ch;
   }
   .hero-actions {
     display: flex;

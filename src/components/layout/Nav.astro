@@ -644,6 +644,10 @@ function isLinkActive(href: string): boolean {
 	.drawer-nav {
 		flex: 1;
 		overflow-y: auto;
+		scrollbar-width: none;
+	}
+	.drawer-nav::-webkit-scrollbar {
+		display: none;
 	}
 	.drawer-links {
 		list-style: none;
@@ -714,7 +718,7 @@ function isLinkActive(href: string): boolean {
 		transition: max-height 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 	}
 	.drawer-sub[aria-hidden="false"] {
-		max-height: 300px;
+		max-height: 500px;
 	}
 	.drawer-sub-link {
 		font-size: var(--text-sm);

@@ -8,7 +8,7 @@ import { SITE_NAME } from "./site";
 export const navBrand: NavBrand = {
   wordmark: SITE_NAME,
   tagline: "Care Streamlined",
-  drawerTagline: "Care Streamlined.",
+  drawerTagline: "Care Streamlined",
   logoAlt: "MedZo logo",
   ariaOpenMenu: "Open menu",
   ariaCloseMenu: "Close menu",
