@@ -58,6 +58,7 @@ const serviceCards = (services ?? []).map((s) => ({
     services={serviceCards}
     bridge={{ text: data.servicesBridgeText, href: "#how-it-works", ariaLabel: "See our process" }}
   />
+  <SpecialtyTicker intro={data.tickerIntro} specialties={data.tickerSpecialties ?? []} />
   <HowItWorksSection
     eyebrow={data.howItWorksEyebrow}
     heading={data.howItWorksHeading}
@@ -71,12 +72,13 @@ const serviceCards = (services ?? []).map((s) => ({
     whyImageUrl={whyImageUrl}
     metrics={data.whyMetrics ?? []}
   />
-  <SpecialtyTicker intro={data.tickerIntro} specialties={data.tickerSpecialties ?? []} />
-  <TestimonialsSection
-    heading={data.testimonialsHeading}
-    testimonials={testimonials ?? []}
-    viewMore={{ label: data.testimonialsViewMoreLabel, href: "#contact" }}
-  />
+  {data.testimonialsVisible !== false && (
+    <TestimonialsSection
+      heading={data.testimonialsHeading}
+      testimonials={testimonials ?? []}
+      viewMore={{ label: data.testimonialsViewMoreLabel, href: "#contact" }}
+    />
+  )}
   <FinalCTA
     heading={data.finalCtaHeading}
     buttonLabel={data.finalCtaButtonLabel}

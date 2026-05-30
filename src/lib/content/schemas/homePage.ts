@@ -314,6 +314,14 @@ export const homePage = defineType({
 
     // ── Testimonials ─────────────────────────────────────────
     defineField({
+      name: 'testimonialsVisible',
+      title: 'Show Testimonials Section',
+      type: 'boolean',
+      group: 'testimonials',
+      description: 'Toggle the entire testimonials section on or off.',
+      initialValue: true,
+    }),
+    defineField({
       name: 'testimonialsHeading',
       title: 'Testimonials Section Heading',
       type: 'string',

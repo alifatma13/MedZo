@@ -17,7 +17,7 @@ export const about: AboutContent = {
 
   founder: {
     sectionHeading: "Meet Zohra",
-    intro: "A visionary with over a decade of experience inside Australian healthcare, not consulting to it, but working in it.",
+    intro: "A qualified doctor with a Master's in Advanced Health Services Management and over a decade of experience working inside Australian healthcare.",
     name: "Dr. Zohra",
     role: "CEO, Founder & Director",
     bio: [

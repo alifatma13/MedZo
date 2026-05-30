@@ -25,6 +25,7 @@ export const HOME_PAGE_QUERY = defineQuery(`
     whyImage { asset->{ _id, url, metadata { lqip, dimensions } }, hotspot, crop, alt },
     whyMetrics[]{ _key, value, suffix, label },
     whyItems[]{ _key, iconName, title, description },
+    testimonialsVisible,
     testimonialsHeading,
     testimonialsViewMoreLabel,
     finalCtaHeading,

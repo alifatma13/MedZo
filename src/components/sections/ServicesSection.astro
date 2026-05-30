@@ -26,9 +26,6 @@ const { heading, services, bridge } = Astro.props;
 			{
 				services.map((service, i) => (
 					<li class="service-col">
-						<span class="col-num" aria-hidden="true">
-							{(i + 1).toString().padStart(2, "0")}
-						</span>
 						<div class="col-body">
 							<h3 class="col-title">{service.title}</h3>
 							<p class="col-desc">{service.description}</p>
@@ -126,20 +123,6 @@ const { heading, services, bridge } = Astro.props;
 	}
 	.service-col:hover {
 		border-color: var(--color-primary);
-	}
-
-	.col-num {
-		position: absolute;
-		bottom: -0.5rem;
-		right: -0.5rem;
-		font-size: clamp(6rem, 9vw, 9rem);
-		font-weight: var(--weight-extrabold);
-		color: var(--color-primary);
-		opacity: 0.05;
-		line-height: 1;
-		letter-spacing: var(--tracking-tight);
-		pointer-events: none;
-		user-select: none;
 	}
 
 	.col-body {
