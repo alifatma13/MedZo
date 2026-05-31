@@ -23,12 +23,12 @@ export default defineConfig({
       dataset: env.PUBLIC_SANITY_DATASET,
       // Studio served at yoursite.com/studio — protected by Sanity auth (login required).
       studioBasePath: '/studio',
-      // useCdn: false keeps data fresh during development; enable for production reads.
-      useCdn: false,
+      // Use CDN in production for faster reads; bypass in dev for fresh data.
+      useCdn: process.env.NODE_ENV === 'production',
     }),
   ],
   build: {
-    inlineStylesheets: "always",
+    inlineStylesheets: "auto",
   },
   image: {
     remotePatterns: [

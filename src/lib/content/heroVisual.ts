@@ -30,8 +30,8 @@ export const heroVisual: HeroVisual = {
     months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
   },
   profile: {
-    initials: "SJ",
-    name: "Sarah Jones",
+    initials: "PM",
+    name: "Practice Manager",
     role: "Practice manager",
     rating: "4.9",
   },
