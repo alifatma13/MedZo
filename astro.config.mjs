@@ -12,7 +12,7 @@ export default defineConfig({
   site: "https://medzo.com.au",
   integrations: [
     sitemap({
-      filter: (page) => !page.includes("/404") && !page.includes("/studio"),
+      filter: (page) => !page.includes("/404"),
     }),
     sanity({
       projectId: env.PUBLIC_SANITY_PROJECT_ID,
