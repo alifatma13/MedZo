@@ -8,7 +8,7 @@
 //   //   • Serves WebP automatically
 //   //   • Honours the hotspot focal point set in Studio
 //   //   • Is correctly sized for the target element
-import imageUrlBuilder from '@sanity/image-url'
+import { createImageUrlBuilder as imageUrlBuilder } from '@sanity/image-url'
 import type { SanityImageSource } from '@sanity/image-url'
 
 const builder = imageUrlBuilder({
