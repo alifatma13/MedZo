@@ -9,6 +9,7 @@ import TeamSection from "../components/sections/TeamSection.astro";
 import CredentialsSection from "../components/sections/CredentialsSection.astro";
 import { getAboutPage } from "../lib/api/aboutPage";
 import { getTeamMembers } from "../lib/api/team";
+import type { SanityImage } from "../types/sanity";
 
 const [data, teamMembers] = await Promise.all([
   getAboutPage(),
@@ -22,26 +23,45 @@ const founderBio = (data.founderBio ?? "").split("\n\n").filter(Boolean);
 
 // heroParagraphs: split heroBody on double-newlines for AboutHeroSection
 const heroParagraphs = (data.heroBody ?? "").split("\n\n").filter(Boolean);
+
+// Normalize valuesItems — all sub-fields are string | null in the generated type
+const values = (data.valuesItems ?? []).map((v) => ({
+  title: v.title ?? "",
+  body:  v.body ?? "",
+  icon:  v.icon ?? undefined,
+}));
+
+// Normalize team members — cast photo shape, which is runtime-compatible with SanityImage
+const members = (teamMembers ?? []).map((m) => ({
+  _id:   m._id,
+  name:  m.name ?? "",
+  role:  m.role ?? "",
+  bio:   m.bio ?? "",
+  photo: (m.photo as unknown as SanityImage | null) ?? null,
+}));
+
+// Cast founderPhoto — runtime shape is compatible with SanityImage
+const founderPhoto = (data.founderPhoto as unknown as SanityImage | null) ?? null;
 ---
 
 <Layout title={data.seoTitle ?? undefined} description={data.seoDescription ?? undefined}>
   <AboutHeroSection
     title=""
-    heading={data.heroHeading}
+    heading={data.heroHeading ?? ""}
     paragraphs={heroParagraphs}
   />
   <FounderSection
     founder={{
-      sectionHeading: data.founderSectionHeading,
-      intro: data.founderIntro,
-      name: data.founderName,
-      role: data.founderRole,
-      bio: founderBio,
-      photo: data.founderPhoto ?? null,
+      sectionHeading: data.founderSectionHeading ?? "",
+      intro:          data.founderIntro ?? "",
+      name:           data.founderName ?? "",
+      role:           data.founderRole ?? "",
+      bio:            founderBio,
+      photo:          founderPhoto,
     }}
   />
-  <MissionSection heading={data.missionHeading} body={data.missionBody} />
-  <ValuesSection heading={data.valuesHeading} items={data.valuesItems ?? []} />
+  <MissionSection heading={data.missionHeading ?? ""} body={data.missionBody ?? ""} />
+  <ValuesSection heading={data.valuesHeading ?? ""} items={values} />
 
   <!-- Team + CTA share one navy canvas with blobs spanning both -->
   <div class="navy-band">
@@ -49,14 +69,14 @@ const heroParagraphs = (data.heroBody ?? "").split("\n\n").filter(Boolean);
     <div class="nb-blob nb-blob-2" aria-hidden="true"></div>
     <div class="nb-overlay" aria-hidden="true"></div>
     <TeamSection
-      heading={data.teamSectionHeading}
-      body={data.teamSectionBody}
-      members={teamMembers ?? []}
+      heading={data.teamSectionHeading ?? ""}
+      body={data.teamSectionBody ?? ""}
+      members={members}
     />
     <CredentialsSection
       ctaHeading={data.ctaHeading ?? undefined}
-      ctaBody={data.ctaBody}
-      ctaButtonLabel={data.ctaButtonLabel}
+      ctaBody={data.ctaBody ?? ""}
+      ctaButtonLabel={data.ctaButtonLabel ?? ""}
       ctaButtonHref="/contact"
     />
   </div>

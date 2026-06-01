@@ -13,18 +13,27 @@ if (!data) throw new Error("Contact page not found in Sanity. Publish the Contac
 
 // hero trust points from Sanity; fall back to empty array so ContactIntroSection never receives undefined
 const heroData = {
-  heading:        data.heroHeading,
-  body:           data.heroBody,
+  heading:        data.heroHeading ?? "",
+  body:           data.heroBody ?? "",
   trust:          data.heroTrustPoints ?? [],
   trustAriaLabel: contact.hero.trustAriaLabel, // static UI string — stays in code
 };
+
+// Normalize office locations — all sub-fields are string | null in the generated type
+const offices = (data.officeLocations ?? []).map((o) => ({
+  state:   o.state ?? "",
+  suburb:  o.suburb ?? "",
+  address: o.address ?? "",
+  phone:   o.phone ?? "",
+  email:   o.email ?? "",
+}));
 ---
 
 <Layout title={data.seoTitle ?? undefined} description={data.seoDescription ?? undefined}>
   <ContactIntroSection hero={heroData} form={contact.form} />
   <OfficesSection
-    heading={data.officesHeading}
-    body={data.officesBody}
-    locations={data.officeLocations ?? []}
+    heading={data.officesHeading ?? ""}
+    body={data.officesBody ?? ""}
+    locations={offices}
   />
 </Layout>

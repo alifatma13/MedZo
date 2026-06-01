@@ -14,7 +14,10 @@ const [faqs, homeData] = await Promise.all([
 
 if (!homeData) throw new Error("Home page not found in Sanity. Publish the Home Page document in Studio.");
 
-const faqItems = faqs ?? [];
+const faqItems = (faqs ?? []).map((f) => ({
+  question: f.question ?? "",
+  answer:   f.answer ?? "",
+}));
 const faqJsonLd = faqItems.length > 0 ? buildFaqSchema(faqItems) : null;
 ---
 
@@ -27,9 +30,9 @@ const faqJsonLd = faqItems.length > 0 ? buildFaqSchema(faqItems) : null;
   )}
   <FAQSection heading="Frequently Asked Questions" faqs={faqItems} />
   <FinalCTA
-    heading={homeData.finalCtaHeading}
+    heading={homeData.finalCtaHeading ?? ""}
     subheading={homeData.finalCtaSubheading ?? undefined}
-    buttonLabel={homeData.finalCtaButtonLabel}
+    buttonLabel={homeData.finalCtaButtonLabel ?? ""}
     buttonHref="/contact"
   />
 </Layout>

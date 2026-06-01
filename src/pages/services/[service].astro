@@ -21,45 +21,55 @@ const page = await getServiceBySlug(service);
 
 if (!page) throw new Error(`Service "${service}" not found in Sanity. Publish the service document in Studio.`);
 
-const heroImageUrl = urlFor(page.heroImage).width(900).height(675).fit("crop").crop("top").format("webp").url();
+// as any: generated type has nullable asset sub-fields that urlFor's strict SanityImageSource doesn't accept
+const heroImageUrl = page.heroImage
+  ? urlFor(page.heroImage as any).width(900).height(675).fit("crop").crop("top").format("webp").url()
+  : "";
+
+// Normalize features — all sub-fields are string | null in the generated type
+const features = (page.features ?? []).map((f) => ({
+  iconName: f.iconName ?? "",
+  title:    f.title ?? "",
+  body:     f.body ?? "",
+}));
 
 const serviceUrl = `https://${SITE_DOMAIN}/services/${service}`;
 const serviceJsonLd = buildServiceSchema(
-  page.title,
-  page.seoDescription ?? page.heroIntro,
+  page.title ?? "",
+  page.seoDescription ?? page.heroIntro ?? "",
   serviceUrl,
 );
 const breadcrumbJsonLd = buildBreadcrumbSchema([
   { name: "Home", url: `https://${SITE_DOMAIN}` },
-  { name: page.title, url: serviceUrl },
+  { name: page.title ?? "", url: serviceUrl },
 ]);
 ---
 
 <Layout
-  title={page.seoTitle ?? page.title}
+  title={page.seoTitle ?? page.title ?? undefined}
   description={page.seoDescription ?? undefined}
   navBg="#fff"
 >
   <script is:inline slot="head" type="application/ld+json" set:html={JSON.stringify(serviceJsonLd)} />
   <script is:inline slot="head" type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
   <ServicePageHero
-    label={page.heroLabel}
-    heading={page.heroHeading}
-    intro={page.heroIntro}
-    ctaLabel={page.heroCtaLabel}
+    label={page.heroLabel ?? ""}
+    heading={page.heroHeading ?? ""}
+    intro={page.heroIntro ?? ""}
+    ctaLabel={page.heroCtaLabel ?? ""}
     ctaHref="/contact"
     heroImageUrl={heroImageUrl}
   />
   <ServiceFeatureGrid
     eyebrow={ui.featuresEyebrow}
-    heading={page.featuresHeading}
-    intro={page.featuresIntro}
-    features={page.features ?? []}
+    heading={page.featuresHeading ?? ""}
+    intro={page.featuresIntro ?? ""}
+    features={features}
   />
   <ServicePageCTA
-    heading={page.ctaHeading}
-    body={page.ctaBody}
-    ctaLabel={page.ctaLabel}
+    heading={page.ctaHeading ?? ""}
+    body={page.ctaBody ?? ""}
+    ctaLabel={page.ctaLabel ?? ""}
     ctaHref="/contact"
   />
 </Layout>

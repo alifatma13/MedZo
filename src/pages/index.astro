@@ -21,16 +21,46 @@ const [data, services, testimonials] = await Promise.all([
 
 if (!data) throw new Error("Home page not found in Sanity. Publish the Home Page document in Studio.");
 
-// Compute image URLs via Sanity CDN transformations
-const heroImageUrl = urlFor(data.heroImage).width(960).height(620).fit("crop").format("webp").quality(82).url();
-const whyImageUrl  = urlFor(data.whyImage).width(960).height(640).fit("crop").format("webp").quality(80).url();
+// Guard image URLs — heroImage/whyImage are optional in the schema
+// as any: generated type has nullable asset sub-fields that urlFor's strict SanityImageSource doesn't accept
+const heroImageUrl = data.heroImage
+  ? urlFor(data.heroImage as any).width(960).height(620).fit("crop").format("webp").quality(82).url()
+  : "";
+const whyImageUrl = data.whyImage
+  ? urlFor(data.whyImage as any).width(960).height(640).fit("crop").format("webp").quality(80).url()
+  : "";
 
-// Map Sanity services to the ServiceCard shape ServicesSection expects
+// Normalize arrays — Sanity returns all sub-fields as string | null
 const serviceCards = (services ?? []).map((s) => ({
-  iconName:    s.cardIconName,
-  title:       s.title,
-  description: s.description,
-  href:        s.href,
+  iconName:    s.cardIconName ?? "",
+  title:       s.title ?? "",
+  description: s.description ?? "",
+  href:        s.href ?? undefined,
+}));
+
+const howItWorksSteps = (data.howItWorksSteps ?? []).map((s) => ({
+  stepLabel:   s.stepLabel ?? "",
+  title:       s.title ?? "",
+  description: s.description ?? "",
+  bullets:     s.bullets ?? [],
+}));
+
+const whyItems = (data.whyItems ?? []).map((i) => ({
+  iconName:    i.iconName ?? "",
+  title:       i.title ?? "",
+  description: i.description ?? "",
+}));
+
+const whyMetrics = (data.whyMetrics ?? []).map((m) => ({
+  value:  m.value ?? 0,
+  suffix: m.suffix ?? "",
+  label:  m.label ?? "",
+}));
+
+const normalizedTestimonials = (testimonials ?? []).map((t) => ({
+  quote: t.quote ?? "",
+  name:  t.name ?? "",
+  role:  t.role ?? "",
 }));
 ---
 
@@ -46,43 +76,43 @@ const serviceCards = (services ?? []).map((s) => ({
     type="image/webp"
   />
   <HeroSection
-    heading={data.heroHeading}
-    subheading={data.heroSubheading}
-    body={data.heroBody}
-    ctaPrimary={{ label: data.heroPrimaryCtaLabel, href: "/contact" }}
-    ctaSecondary={{ label: data.heroSecondaryCtaLabel, href: "#services" }}
+    heading={data.heroHeading ?? ""}
+    subheading={data.heroSubheading ?? ""}
+    body={data.heroBody ?? ""}
+    ctaPrimary={{ label: data.heroPrimaryCtaLabel ?? "", href: "/contact" }}
+    ctaSecondary={{ label: data.heroSecondaryCtaLabel ?? "", href: "#services" }}
     heroImageUrl={heroImageUrl}
   />
   <ServicesSection
-    heading={{ eyebrow: data.servicesEyebrow, title: data.servicesTitle, body: data.servicesBody }}
+    heading={{ eyebrow: data.servicesEyebrow ?? undefined, title: data.servicesTitle ?? "", body: data.servicesBody ?? "" }}
     services={serviceCards}
-    bridge={{ text: data.servicesBridgeText, href: "#how-it-works", ariaLabel: "See our process" }}
+    bridge={{ text: data.servicesBridgeText ?? "", href: "#how-it-works", ariaLabel: "See our process" }}
   />
-  <SpecialtyTicker intro={data.tickerIntro} specialties={data.tickerSpecialties ?? []} />
+  <SpecialtyTicker intro={data.tickerIntro ?? ""} specialties={data.tickerSpecialties ?? []} />
   <HowItWorksSection
-    eyebrow={data.howItWorksEyebrow}
-    heading={data.howItWorksHeading}
-    subheading={data.howItWorksSubheading}
-    steps={data.howItWorksSteps ?? []}
+    eyebrow={data.howItWorksEyebrow ?? ""}
+    heading={data.howItWorksHeading ?? ""}
+    subheading={data.howItWorksSubheading ?? ""}
+    steps={howItWorksSteps}
   />
   <WhyChooseUs
-    heading={data.whyHeading}
-    items={data.whyItems ?? []}
+    heading={data.whyHeading ?? ""}
+    items={whyItems}
     imageAlt={data.whyImage?.alt ?? "MedZo team working with a medical practice"}
     whyImageUrl={whyImageUrl}
-    metrics={data.whyMetrics ?? []}
+    metrics={whyMetrics}
   />
   {data.testimonialsVisible !== false && (
     <TestimonialsSection
-      heading={data.testimonialsHeading}
-      testimonials={testimonials ?? []}
-      viewMore={{ label: data.testimonialsViewMoreLabel, href: "#contact" }}
+      heading={data.testimonialsHeading ?? ""}
+      testimonials={normalizedTestimonials}
+      viewMore={{ label: data.testimonialsViewMoreLabel ?? "", href: "#contact" }}
     />
   )}
   <FinalCTA
-    heading={data.finalCtaHeading}
+    heading={data.finalCtaHeading ?? ""}
     subheading={data.finalCtaSubheading ?? undefined}
-    buttonLabel={data.finalCtaButtonLabel}
+    buttonLabel={data.finalCtaButtonLabel ?? ""}
     buttonHref="/contact"
   />
 </Layout>
