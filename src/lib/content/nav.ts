@@ -2,7 +2,7 @@
 // navLinks has been removed — top-level links now come from siteSettings.navigation[] in Sanity
 // and services dropdown children come from the service collection in Sanity.
 // Only structural identity strings and the Services parent label stay here.
-import type { NavBrand } from "../../types/NavLink";
+import type { NavBrand } from "../../types/layout";
 import { SITE_NAME } from "./site";
 
 export const navBrand: NavBrand = {

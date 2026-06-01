@@ -1,7 +1,7 @@
 // footer.ts — developer-owned footer strings only.
 // CMS-managed fields (tagline, contact email/location, acknowledgement, services)
 // are fetched exclusively from Sanity — edit them in Sanity Studio.
-import type { FooterContent } from "../../types/FooterContent";
+import type { FooterContent } from "../../types/layout";
 import { SITE_NAME } from "./site";
 
 export const footerContent: FooterContent = {

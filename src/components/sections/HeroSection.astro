@@ -3,7 +3,7 @@
 // heroImageUrl is a Sanity CDN URL computed in the page via urlFor(data.heroImage).
 import { Image } from "astro:assets";
 import Button from "../ui/Button.astro";
-import type { HeroContent } from "../../types/HeroContent";
+import type { HeroContent } from "../../types/pages";
 import { icons } from "../../lib/utils/icons";
 import { heroVisual as visual } from "../../lib/content/heroVisual";
 interface Props extends HeroContent {

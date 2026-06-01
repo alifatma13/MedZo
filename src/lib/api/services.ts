@@ -3,7 +3,7 @@
 // getServiceBySlug() is used by the /services/[service] dynamic route.
 import { defineQuery } from 'groq'
 import { sanityClient } from './sanity'
-import type { SanityImage } from '../../types/SanityImage'
+import type { SanityImage } from '../../types/sanity'
 
 // ── Result types ─────────────────────────────────────────────────────────────
 

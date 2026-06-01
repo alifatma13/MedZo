@@ -9,7 +9,7 @@ import { navCta, navBrand, navServicesItem } from "../../lib/content/nav";
 import { icons } from "../../lib/utils/icons";
 import { getSiteSettings } from "../../lib/api/siteSettings";
 import { getServices } from "../../lib/api/services";
-import type { NavLink } from "../../types/NavLink";
+import type { NavLink } from "../../types/layout";
 
 const [siteSettings, sanityServices] = await Promise.all([
   getSiteSettings(),

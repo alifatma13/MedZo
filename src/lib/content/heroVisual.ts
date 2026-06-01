@@ -1,6 +1,6 @@
 // heroVisual.ts — decorative UI mock data for the hero dashboard widget.
 // This is NOT CMS content — these values are illustrative and not managed by editors.
-import type { HeroVisual } from "../../types/HeroContent";
+import type { HeroVisual } from "../../types/pages";
 
 export const heroVisual: HeroVisual = {
   appointments: {

@@ -1,6 +1,5 @@
-// SanityImage.ts — shared type for Sanity image fields with resolved asset metadata.
-// GROQ projection used to produce this shape:
-//   field { asset->{ _id, url, metadata { lqip, dimensions } }, hotspot, crop, alt }
+// Sanity image field with resolved asset metadata.
+// GROQ projection: field { asset->{ _id, url, metadata { lqip, dimensions } }, hotspot, crop, alt }
 
 export interface SanityImageDimensions {
   width: number;

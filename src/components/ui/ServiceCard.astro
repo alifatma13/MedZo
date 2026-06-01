@@ -2,7 +2,7 @@
 // ServiceCard.astro — icon + title + description card used in the ServicesSection grid.
 import { icons } from "../../lib/utils/icons";
 import { ui } from "../../lib/content/ui";
-import type { ServiceCard } from "../../types/ServiceCard";
+import type { ServiceCard } from "../../types/services";
 interface Props extends ServiceCard {}
 const { iconName, title, description, gentuNote, href } = Astro.props;
 ---

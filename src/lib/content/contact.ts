@@ -1,7 +1,7 @@
 // contact.ts — developer-owned contact page strings only.
 // CMS-managed fields (hero heading/body, trust points, office locations)
 // are fetched exclusively from Sanity — edit them in Sanity Studio.
-import type { ContactContent } from "../../types/ContactContent";
+import type { ContactContent } from "../../types/pages";
 
 export const contact: ContactContent = {
 	hero: {

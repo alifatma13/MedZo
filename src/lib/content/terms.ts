@@ -1,5 +1,5 @@
 // terms.ts — full Terms of Service content: meta tags, intro, and all policy sections.
-import type { PolicyContent } from "../../types/PolicyContent";
+import type { PolicyContent } from "../../types/pages";
 import { BACK_TO_HOME, SITE_DOMAIN } from "./site";
 
 export const terms: PolicyContent = {

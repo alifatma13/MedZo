@@ -1,4 +1,13 @@
-// ServicePage.ts — shape of a full service detail page. Maps 1-to-1 to future CMS fields.
+// Service card and full service detail page types.
+
+export interface ServiceCard {
+  iconName: string;
+  title: string;
+  description: string;
+  gentuNote?: string;
+  href?: string;
+}
+
 export interface ServiceFeature {
   iconName: string;
   title: string;

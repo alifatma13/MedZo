@@ -1,5 +1,5 @@
 // privacy.ts — full Privacy Policy content: meta tags, intro, policy sections, and FAQs.
-import type { PolicyContent } from "../../types/PolicyContent";
+import type { PolicyContent } from "../../types/pages";
 import { BACK_TO_HOME, SITE_DOMAIN } from "./site";
 
 export const privacy: PolicyContent = {
