@@ -9,7 +9,7 @@ export const siteSchema = {
   description: "End-to-end medical practice management across Australia. Billing, compliance, scheduling, and operations for GPs, specialists, and allied health clinics.",
   logo: `https://${SITE_DOMAIN}/favicon.png`,
   image: `https://${SITE_DOMAIN}/og-image.png`,
-  telephone: "+61-1300-000-000",
+  telephone: "+61478811242",
   email: "info@medzo.com.au",
   address: {
     "@type": "PostalAddress",

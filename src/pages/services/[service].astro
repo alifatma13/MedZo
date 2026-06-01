@@ -19,7 +19,7 @@ const page = await getServiceBySlug(service);
 
 if (!page) throw new Error(`Service "${service}" not found in Sanity. Publish the service document in Studio.`);
 
-const heroImageUrl = urlFor(page.heroImage).width(900).height(600).fit("crop").format("webp").url();
+const heroImageUrl = urlFor(page.heroImage).width(900).height(675).fit("crop").crop("top").format("webp").url();
 ---
 
 <Layout

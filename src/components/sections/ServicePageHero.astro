@@ -43,7 +43,7 @@ const { label, heading, intro, ctaLabel, ctaHref, heroImageUrl } = Astro.props;
           alt=""
           class="hero-img"
           width={900}
-          height={600}
+          height={675}
         />
         <!-- Decorative trust chip (aria-hidden — purely visual) -->
         <div class="vis-badge" aria-hidden="true">
@@ -198,6 +198,7 @@ const { label, heading, intro, ctaLabel, ctaHref, heroImageUrl } = Astro.props;
     position: relative;
     z-index: 1;
     width: 100%;
+    aspect-ratio: 4 / 3;
     border-radius: 1.5rem;
     overflow: hidden;
     box-shadow:
@@ -208,7 +209,9 @@ const { label, heading, intro, ctaLabel, ctaHref, heroImageUrl } = Astro.props;
 
   .hero-img {
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 10%;
     display: block;
   }
 

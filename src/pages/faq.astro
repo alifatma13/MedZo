@@ -15,8 +15,8 @@ if (!homeData) throw new Error("Home page not found in Sanity. Publish the Home 
 ---
 
 <Layout
-  title={homeData.seoTitle ?? undefined}
-  description={homeData.seoDescription ?? undefined}
+  title="Frequently Asked Questions | MedZo"
+  description="Answers to common questions about MedZo's medical practice management, billing, virtual reception and recruitment services across Australia."
 >
   <FAQSection heading="Frequently Asked Questions" faqs={faqs ?? []} />
   <FinalCTA
