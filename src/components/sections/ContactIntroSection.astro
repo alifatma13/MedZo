@@ -423,8 +423,10 @@ const e = f.errors;
 
 <script is:inline>
 	(() => {
+		// Strips < > to prevent HTML injection before validation
 		const sanitise = (val) => val.replace(/[<>]/g, "").trim();
 
+		// Rejects SQLi, XSS, and common injection patterns before the payload reaches Web3Forms
 		const isSuspicious = (val) =>
 			[
 				/'\s*(OR|AND)\s+['"\d]/i,
@@ -437,6 +439,7 @@ const e = f.errors;
 				/data:[^,]*base64/i,
 			].some((p) => p.test(val));
 
+		// Returns an error string for a field, or "" if valid
 		const validate = (name, value, err) => {
 			const v = sanitise(value);
 			if (isSuspicious(v)) return err.suspicious;
@@ -457,6 +460,7 @@ const e = f.errors;
 			return "";
 		};
 
+		// Applies invalid/valid CSS class and updates the field's error element
 		const setError = (input, msg) => {
 			const errorEl = document.getElementById(input.id + "-error");
 			if (errorEl) errorEl.textContent = msg;
@@ -464,6 +468,7 @@ const e = f.errors;
 			input.classList.toggle("valid", !msg && input.value.trim() !== "");
 		};
 
+		// Wires up blur/input validation and async submit to Web3Forms; safe to call multiple times
 		const initContactForm = () => {
 			const formEl = document.querySelector(".contact-intro .form");
 			const successEl = document.querySelector(".contact-intro .success-msg");
@@ -491,6 +496,7 @@ const e = f.errors;
 				suspicious: d.errSuspicious || "",
 			};
 
+			// Validates on blur; re-validates on input only if field is already in error state
 			const fields = Array.from(formEl.querySelectorAll(".input, .textarea"));
 			fields.forEach((field) => {
 				field.addEventListener("blur", () =>
@@ -506,6 +512,7 @@ const e = f.errors;
 			const submitErrorEl = formEl.querySelector(".submit-error");
 			const originalLabel = submitBtn ? submitBtn.textContent : "";
 
+			// Validates all fields, then POSTs to Web3Forms; shows inline error banner on failure
 			formEl.addEventListener("submit", async (e) => {
 				e.preventDefault();
 				let hasError = false;
@@ -537,6 +544,7 @@ const e = f.errors;
 			});
 		};
 
+		// Bootstraps on both initial load and ClientRouter navigations
 		document.addEventListener("astro:page-load", initContactForm);
 		if (document.readyState !== "loading") {
 			initContactForm();

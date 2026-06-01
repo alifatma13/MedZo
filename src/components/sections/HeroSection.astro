@@ -722,7 +722,7 @@ const headingLines = heading.split("\n");
 		]).then(() => {
 			const easeOut = "cubic-bezier(0.22, 1, 0.36, 1)";
 
-			// Word-by-word stagger
+			// Animate each heading word rising up from behind its mask clip
 			document
 				.querySelectorAll<HTMLElement>(".hero .word-inner")
 				.forEach((el, i) => {
@@ -735,7 +735,7 @@ const headingLines = heading.split("\n");
 					);
 				});
 
-			// Body paragraphs stagger
+			// Body paragraphs stagger in after the heading finishes
 			document
 				.querySelectorAll<HTMLElement>(".hero .body-first, .hero .body-second")
 				.forEach((el, i) => {
@@ -753,7 +753,7 @@ const headingLines = heading.split("\n");
 					);
 				});
 
-			// CTA row
+			// CTA row fades in last in the text sequence
 			document.querySelector<HTMLElement>(".hero .cta-row")?.animate(
 				[
 					{ opacity: 0, transform: "translateY(16px)" },
@@ -762,7 +762,7 @@ const headingLines = heading.split("\n");
 				{ duration: 500, delay: 750, easing: "ease-out", fill: "forwards" },
 			);
 
-			// Visual column
+			// Dashboard visual slides in from the right concurrently with the text
 			document.querySelector<HTMLElement>(".hero .visual-col")?.animate(
 				[
 					{ opacity: 0, transform: "translateX(32px)" },

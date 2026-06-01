@@ -121,11 +121,13 @@ const { metrics } = Astro.props;
 				);
 			}
 
+			// Animate each counter element from 0 to its target value
 			document
 				.querySelectorAll<HTMLElement>(".metrics .count")
 				.forEach((el) => {
 					const target = parseFloat(el.dataset.target ?? "0");
 					const suffix = el.dataset.suffix ?? "";
+					// Numbers >= 1000 use locale-formatted strings (e.g. "1,000")
 					const isLarge = target >= 1000;
 
 					const format = (v: number) =>
@@ -133,6 +135,7 @@ const { metrics } = Astro.props;
 							? Math.round(v).toLocaleString("en-AU")
 							: Math.round(v).toString();
 
+					// Skip animation and show final value immediately for reduced-motion
 					if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
 						el.textContent = format(target);
 						return;

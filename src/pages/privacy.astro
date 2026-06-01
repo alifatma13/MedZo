@@ -4,6 +4,7 @@ import Layout from "../layouts/Layout.astro";
 import FAQItem from "../components/ui/FAQItem.astro";
 import { privacy } from "../lib/content/privacy";
 
+// Converts a section heading into a URL-safe anchor id (strips leading numerals)
 function toId(heading: string) {
 	return heading
 		.replace(/^\d+\.\s*/, "")
@@ -12,6 +13,7 @@ function toId(heading: string) {
 		.replace(/^-|-$/g, "");
 }
 
+// Strips the leading "1. " ordinal prefix from a heading for display in the sidebar
 function toLabel(heading: string) {
 	return heading.replace(/^\d+\.\s*/, "");
 }
@@ -342,11 +344,12 @@ function toLabel(heading: string) {
 
 <script>
 	document.addEventListener("astro:page-load", () => {
-		// Active sidebar link on scroll
+		// Active sidebar link on scroll — highlights the link matching the visible section
 		const links = document.querySelectorAll<HTMLAnchorElement>(".policy .sidebar-link");
 		const sections = document.querySelectorAll<HTMLElement>(".policy .section, .faq-block");
 
 		if (links.length && sections.length) {
+			// rootMargin shrinks the intersection zone so only the section near the top activates
 			const observer = new IntersectionObserver(
 				(entries) => {
 					entries.forEach((entry) => {
@@ -363,7 +366,7 @@ function toLabel(heading: string) {
 			sections.forEach((s) => observer.observe(s));
 		}
 
-		// Smooth scroll for sidebar links
+		// Smooth scroll for sidebar links — overrides default anchor jump
 		document.querySelectorAll<HTMLAnchorElement>(".policy .sidebar-link").forEach((link) => {
 			link.addEventListener("click", (e) => {
 				e.preventDefault();
@@ -373,7 +376,7 @@ function toLabel(heading: string) {
 			});
 		});
 
-		// FAQ accordion
+		// FAQ accordion — collapses siblings before opening the clicked item
 		const policyFaqItems = document.querySelectorAll<HTMLElement>(".policy .faq-item");
 		policyFaqItems.forEach((item) => {
 			const trigger = item.querySelector<HTMLButtonElement>(".faq-trigger");
@@ -383,6 +386,7 @@ function toLabel(heading: string) {
 			trigger.addEventListener("click", () => {
 				const isOpen = trigger.getAttribute("aria-expanded") === "true";
 
+				// Collapse every other open item first
 				policyFaqItems.forEach((other) => {
 					const t = other.querySelector<HTMLButtonElement>(".faq-trigger");
 					const p = other.querySelector<HTMLElement>(".faq-panel");

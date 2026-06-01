@@ -21,11 +21,13 @@ interface Props {
 }
 const { heading, body, members } = Astro.props;
 
+// Extracts first and last initials for the avatar fallback when no photo is available
 function initials(name: string): string {
 	const parts = name.trim().split(/\s+/);
 	return (parts[0][0] + (parts[parts.length - 1][0] ?? "")).toUpperCase();
 }
 
+// Abbreviates last name to an initial so long names fit the narrow card width
 function shortenName(name: string): string {
 	const parts = name.trim().split(/\s+/);
 	if (parts.length === 1) return parts[0];
@@ -373,6 +375,7 @@ function shortenName(name: string): string {
 
 		// Shuffle card order — different every visit (already a delight; preserve it)
 		if (track) {
+			// Fisher-Yates shuffle so cards appear in a random order each page load
 			const cards = [...track.children];
 			for (let i = cards.length - 1; i > 0; i--) {
 				const j = Math.floor(Math.random() * (i + 1));
@@ -382,7 +385,7 @@ function shortenName(name: string): string {
 			track.scrollLeft = 0;
 		}
 
-		// Read more toggle
+		// Read more toggle — expands/collapses the bio and swaps the button label
 		document.querySelectorAll<HTMLButtonElement>(".team .read-more").forEach((btn) => {
 			const bio = btn.previousElementSibling as HTMLElement;
 			btn.addEventListener("click", () => {
@@ -392,9 +395,10 @@ function shortenName(name: string): string {
 			});
 		});
 
-		// Arrow scroll
+		// Arrow scroll — advances or rewinds the carousel by one card width
 		if (track && prevBtn && nextBtn) {
 			const SCROLL_AMOUNT = 295;
+			// Disable arrows at the start/end of the scroll range
 			const updateArrows = () => {
 				prevBtn.disabled = track.scrollLeft <= 0;
 				nextBtn.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 1;
@@ -406,6 +410,7 @@ function shortenName(name: string): string {
 				track.scrollBy({ left: SCROLL_AMOUNT, behavior: "smooth" });
 			});
 			track.addEventListener("scroll", updateArrows, { passive: true });
+			// Set initial arrow states before the user scrolls
 			updateArrows();
 		}
 

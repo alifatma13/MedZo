@@ -838,6 +838,7 @@ function isLinkActive(href: string): boolean {
 		const closeBtn = document.getElementById("drawer-close-btn");
 		const drawerLinks = drawer?.querySelectorAll(".drawer-link:not(.drawer-toggle), .drawer-cta");
 
+		// Adds .scrolled to header after 10px scroll for shadow/background change
 		if (_scrollHandler) window.removeEventListener("scroll", _scrollHandler);
 		_scrollHandler = () => {
 			header?.classList.toggle("scrolled", window.scrollY > 10);
@@ -845,6 +846,7 @@ function isLinkActive(href: string): boolean {
 		window.addEventListener("scroll", _scrollHandler, { passive: true });
 
 		// ── Mobile drawer ────────────────────────────────────
+		// Opens drawer, locks scroll, moves focus to first link
 		function openDrawer() {
 			drawer?.classList.add("is-open");
 			backdrop?.classList.add("is-open");
@@ -857,6 +859,7 @@ function isLinkActive(href: string): boolean {
 			}, 50);
 		}
 
+		// Closes drawer, restores scroll, returns focus to hamburger
 		function closeDrawer() {
 			drawer?.classList.remove("is-open");
 			backdrop?.classList.remove("is-open");
@@ -891,11 +894,13 @@ function isLinkActive(href: string): boolean {
 			let hideTimer: ReturnType<typeof setTimeout> | null = null;
 			const toggleBtn = item.querySelector<HTMLButtonElement>(".dropdown-toggle");
 
+			// Shows dropdown panel; clears any pending hide timer
 			function openDropdown() {
 				if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
 				item.classList.add("is-open");
 				toggleBtn?.setAttribute("aria-expanded", "true");
 			}
+			// Hides dropdown panel and resets aria-expanded
 			function closeDropdown() {
 				item.classList.remove("is-open");
 				toggleBtn?.setAttribute("aria-expanded", "false");
@@ -913,7 +918,7 @@ function isLinkActive(href: string): boolean {
 			});
 		});
 
-		// ── Keyboard: close dropdown on Escape ───────────────
+		// ── Keyboard: Escape closes drawer/dropdown; Tab is trapped inside open drawer ──
 		if (_keydownHandler) document.removeEventListener("keydown", _keydownHandler);
 		_keydownHandler = (e: KeyboardEvent) => {
 			if (e.key === "Escape") {

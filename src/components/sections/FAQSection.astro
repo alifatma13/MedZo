@@ -79,9 +79,11 @@ const { heading, faqs } = Astro.props;
 			const panel = item.querySelector<HTMLElement>(".faq-panel");
 			if (!trigger || !panel) return;
 
+			// Toggle the clicked item and collapse any currently open sibling
 			trigger.addEventListener("click", () => {
 				const isOpen = trigger.getAttribute("aria-expanded") === "true";
 
+				// Collapse every other open item before opening the clicked one
 				items.forEach((other) => {
 					const t = other.querySelector<HTMLButtonElement>(".faq-trigger");
 					const p = other.querySelector<HTMLElement>(".faq-panel");

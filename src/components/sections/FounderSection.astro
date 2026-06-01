@@ -292,7 +292,7 @@ const { founder } = Astro.props;
 				{ duration: 0.5, delay: 0.68, easing: [0.22, 1, 0.36, 1] },
 			);
 
-			// Bio paragraphs stagger in
+			// Each bio paragraph staggers in individually after the intro
 			const bios = document.querySelectorAll<HTMLElement>(".founder .bio");
 			bios.forEach((bio, i) => {
 				(animate as any)(

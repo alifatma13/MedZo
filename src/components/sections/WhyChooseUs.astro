@@ -306,6 +306,7 @@ const rightItems = items.slice(halfLen);
 <script>
 	import { animate, inView, stagger } from "motion";
 
+	// Module-level vars so each navigation cancels the previous inView observers
 	let stopMetrics: (() => void) | null = null;
 	let stopRadial: (() => void) | null = null;
 
@@ -324,9 +325,11 @@ const rightItems = items.slice(halfLen);
 			document.querySelectorAll<HTMLElement>(".why .count").forEach((el) => {
 				const target = parseFloat(el.dataset.target ?? "0");
 				const suffix = el.dataset.suffix ?? "";
+				// Numbers >= 1000 use locale-formatted strings (e.g. "1,000")
 				const isLarge = target >= 1000;
 				const format = (v: number) =>
 					isLarge ? Math.round(v).toLocaleString("en-AU") : Math.round(v).toString();
+				// Show final value immediately when motion is reduced
 				if (reduced) { el.textContent = format(target) + suffix; return; }
 				el.textContent = format(0) + suffix;
 				(animate as any)(0, target, {
@@ -338,6 +341,7 @@ const rightItems = items.slice(halfLen);
 		});
 
 		if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+			// Animate the hub image and orbiting items when the radial layout scrolls into view
 			stopRadial = inView(".why .radial-section", () => {
 				const hub = document.querySelector<HTMLElement>(".why .hub-ring");
 				const title = document.querySelector<HTMLElement>(".why .section-title");
