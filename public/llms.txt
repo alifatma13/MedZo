@@ -1,0 +1,49 @@
+# MedZo — Medical Practice Management for Australian Clinics
+
+MedZo provides end-to-end medical practice management services across Australia.
+We handle billing, Medicare compliance, scheduling, virtual reception, and
+healthcare administration so GPs, specialists, allied health, and dental clinics
+can focus on patient care.
+
+## Who we serve
+
+- General Practitioners (GPs) and GP clinics
+- Medical specialists
+- Allied health practices (physiotherapy, psychology, occupational therapy)
+- Dental clinics
+- Multidisciplinary clinics
+- Telehealth providers
+
+## Services
+
+- Medical Billing and Medicare Claims: end-to-end billing management, Medicare bulk billing, private health fund claims, and revenue cycle optimisation
+- Compliance and Accreditation: RACGP, AGPAL, and healthcare regulatory compliance support
+- Virtual Reception: professional phone answering, appointment booking, and patient communication
+- Practice Scheduling and Operations: diary management, workflow optimisation, and day-to-day administrative support
+- Recruitment: healthcare-specific staff sourcing for clinical and administrative roles across Australia
+
+## Why practices choose MedZo
+
+- Dedicated healthcare administration specialists — not a generic outsourcing provider
+- Deep knowledge of Australian Medicare, DVA, and private health billing rules
+- Scalable support that grows with the practice
+- Reduces administrative overhead and billing errors
+- Lets clinical staff focus on patient care instead of paperwork
+
+## Location and availability
+
+Australian-owned and operated. Serving medical practices nationally across all states and territories.
+
+## Contact
+
+Website: https://medzo.com.au
+Email: info@medzo.com.au
+Phone: +61 478 811 242
+
+## Key pages
+
+- Homepage: https://medzo.com.au
+- Services overview: https://medzo.com.au/#services
+- About: https://medzo.com.au/about
+- FAQ: https://medzo.com.au/faq
+- Contact / Book a consult: https://medzo.com.au/contact

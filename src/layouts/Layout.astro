@@ -10,7 +10,7 @@ import { ClientRouter } from "astro:transitions";
 import Nav from "../components/layout/Nav.astro";
 import Footer from "../components/layout/Footer.astro";
 import { layoutContent } from "../lib/content/layout";
-import { siteSchema } from "../lib/content/schema";
+import { siteSchema, websiteSchema } from "../lib/content/schema";
 import { SITE_NAME, defaultMeta } from "../lib/content/site";
 
 interface Props {
@@ -32,6 +32,10 @@ const ogImageAbsolute = new URL(ogImage, Astro.site ?? Astro.url.origin).href;
 
 const jsonLd = {
 	...siteSchema,
+	url: Astro.url.origin,
+};
+const websiteJsonLd = {
+	...websiteSchema,
 	url: Astro.url.origin,
 };
 ---
@@ -77,6 +81,11 @@ const jsonLd = {
 			is:inline
 			type="application/ld+json"
 			set:html={JSON.stringify(jsonLd)}
+		/>
+		<script
+			is:inline
+			type="application/ld+json"
+			set:html={JSON.stringify(websiteJsonLd)}
 		/>
 	</head>
 	<body>

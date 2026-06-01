@@ -8,6 +8,8 @@ import ServicePageCTA from "../../components/sections/ServicePageCTA.astro";
 import { getServiceSlugs, getServiceBySlug } from "../../lib/api/services";
 import { urlFor } from "../../lib/utils/sanityImage";
 import { ui } from "../../lib/content/ui";
+import { buildServiceSchema, buildBreadcrumbSchema } from "../../lib/content/schema";
+import { SITE_DOMAIN } from "../../lib/content/site";
 
 export async function getStaticPaths() {
   const slugs = await getServiceSlugs();
@@ -20,6 +22,17 @@ const page = await getServiceBySlug(service);
 if (!page) throw new Error(`Service "${service}" not found in Sanity. Publish the service document in Studio.`);
 
 const heroImageUrl = urlFor(page.heroImage).width(900).height(675).fit("crop").crop("top").format("webp").url();
+
+const serviceUrl = `https://${SITE_DOMAIN}/services/${service}`;
+const serviceJsonLd = buildServiceSchema(
+  page.title,
+  page.seoDescription ?? page.heroIntro,
+  serviceUrl,
+);
+const breadcrumbJsonLd = buildBreadcrumbSchema([
+  { name: "Home", url: `https://${SITE_DOMAIN}` },
+  { name: page.title, url: serviceUrl },
+]);
 ---
 
 <Layout
@@ -27,6 +40,8 @@ const heroImageUrl = urlFor(page.heroImage).width(900).height(675).fit("crop").c
   description={page.seoDescription ?? undefined}
   navBg="#fff"
 >
+  <script is:inline slot="head" type="application/ld+json" set:html={JSON.stringify(serviceJsonLd)} />
+  <script is:inline slot="head" type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
   <ServicePageHero
     label={page.heroLabel}
     heading={page.heroHeading}

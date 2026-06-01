@@ -5,6 +5,7 @@ import FAQSection from "../components/sections/FAQSection.astro";
 import FinalCTA from "../components/sections/FinalCTA.astro";
 import { getFaqs } from "../lib/api/faq";
 import { getHomePage } from "../lib/api/homePage";
+import { buildFaqSchema } from "../lib/content/schema";
 
 const [faqs, homeData] = await Promise.all([
   getFaqs(),
@@ -12,13 +13,19 @@ const [faqs, homeData] = await Promise.all([
 ]);
 
 if (!homeData) throw new Error("Home page not found in Sanity. Publish the Home Page document in Studio.");
+
+const faqItems = faqs ?? [];
+const faqJsonLd = faqItems.length > 0 ? buildFaqSchema(faqItems) : null;
 ---
 
 <Layout
   title="Frequently Asked Questions | MedZo"
   description="Answers to common questions about MedZo's medical practice management, billing, virtual reception and recruitment services across Australia."
 >
-  <FAQSection heading="Frequently Asked Questions" faqs={faqs ?? []} />
+  {faqJsonLd && (
+    <script is:inline slot="head" type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  )}
+  <FAQSection heading="Frequently Asked Questions" faqs={faqItems} />
   <FinalCTA
     heading={homeData.finalCtaHeading}
     subheading={homeData.finalCtaSubheading ?? undefined}
