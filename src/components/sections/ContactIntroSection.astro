@@ -513,9 +513,15 @@ const e = f.errors;
 			const submitErrorEl = formEl.querySelector(".submit-error");
 			const originalLabel = submitBtn ? submitBtn.textContent : "";
 
+			let lastSubmit = 0;
+
 			// Validates all fields, then POSTs to Web3Forms; shows inline error banner on failure
 			formEl.addEventListener("submit", async (e) => {
 				e.preventDefault();
+
+				// Block re-submission within 60 seconds of the last successful send
+				if (Date.now() - lastSubmit < 60_000) return;
+
 				let hasError = false;
 				fields.forEach((field) => {
 					const msg = validate(field.name, field.value, err);
@@ -536,6 +542,7 @@ const e = f.errors;
 					});
 					const result = await res.json();
 					if (!result.success) throw new Error(result.message || "Submit failed");
+					lastSubmit = Date.now();
 					formEl.hidden = true;
 					successEl.hidden = false;
 				} catch (_) {

@@ -1,13 +1,9 @@
 # build output
 dist/
-# generated types
 .astro/
+
+# generated files
 schema.json
-.agents/
-
-dist/
-.astro/
-
 
 # dependencies
 node_modules/
@@ -18,9 +14,9 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-
 # environment variables
 .env
+.env.local
 .env.production
 
 # macOS-specific files
@@ -30,14 +26,13 @@ pnpm-debug.log*
 Thumbs.db
 desktop.ini
 
-# VS Code
+# editors
 .vscode/
-
-# JetBrains
 .idea/
 
-# Netlify
+# hosting
 .netlify/
 
-# Claude Code
+# tooling
 .claude/
+.agents/
