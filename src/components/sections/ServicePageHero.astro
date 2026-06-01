@@ -89,6 +89,7 @@ const { label, heading, intro, ctaLabel, ctaHref, heroImageUrl } = Astro.props;
     transition: color 0.15s;
   }
   .crumb-link:hover { color: var(--color-primary); }
+  .crumb-link:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; border-radius: 2px; }
   .crumb-sep { color: var(--color-text-body); opacity: 0.5; }
   .crumb-current {
     color: var(--color-accent-text);

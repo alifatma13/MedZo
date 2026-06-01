@@ -65,7 +65,7 @@ const e = f.errors;
 			>
 				<input type="hidden" name="access_key" value={import.meta.env.PUBLIC_WEB3FORMS_KEY} />
 				<input type="hidden" name="redirect" value={`${Astro.url.origin}/contact?success=1`} />
-				<input type="checkbox" name="botcheck" style="display:none" tabindex="-1" aria-hidden="true" />
+				<input type="checkbox" name="botcheck" class="botcheck" tabindex="-1" aria-hidden="true" />
 				<div class="field">
 					<label for="cf-name" class="field-label">
 						{f.name.label}<span class="required" aria-hidden="true">*</span>
@@ -153,6 +153,7 @@ const e = f.errors;
 
 <style>
 	/* ── Section ── */
+	.botcheck { display: none; }
 	.contact-intro {
 		position: relative;
 		background: var(--color-bg-hero);
