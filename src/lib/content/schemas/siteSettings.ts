@@ -45,7 +45,7 @@ export const siteSettings = defineType({
       name: 'contactEmail',
       title: 'Contact Email',
       type: 'string',
-      description: 'Shown in the footer. e.g. "hello@medzo.com.au"',
+      description: 'Shown in the footer. e.g. "info@medzo.com.au"',
       validation: (r) => r.required().email(),
     }),
     defineField({

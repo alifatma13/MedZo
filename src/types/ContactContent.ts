@@ -1,4 +1,6 @@
-// ContactContent.ts — type definitions for all content on the /contact page (hero, form, offices).
+// ContactContent.ts — developer-owned contact page types only.
+// CMS-managed fields (hero heading/body, trust points, offices) live in Sanity.
+
 export interface Office {
 	state: string;
 	suburb: string;
@@ -27,7 +29,6 @@ export interface ContactFormFields {
 	message: { label: string; placeholder: string };
 	defaultSubject: string;
 	submit: string;
-	/** Button label shown while the form is submitting. */
 	sendingLabel: string;
 	errors: ContactFormErrors;
 	successHeading: string;
@@ -35,8 +36,6 @@ export interface ContactFormFields {
 }
 
 export interface ContactContent {
-	meta: { title: string; description: string };
-	hero: { heading: string; body: string; trust: string[]; trustAriaLabel: string };
+	hero: { trustAriaLabel: string };
 	form: { heading: string; body: string; fields: ContactFormFields };
-	offices: { heading: string; body: string; locations: Office[] };
 }

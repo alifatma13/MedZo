@@ -1,4 +1,5 @@
-// FooterContent.ts — types for the site footer: link columns, contact details, legal copy, and brand strings.
+// FooterContent.ts — developer-owned footer fields only.
+// CMS-managed fields (tagline, services, contact, acknowledgement) live in Sanity.
 export interface FooterLink {
   label: string;
   href: string;
@@ -11,12 +12,8 @@ export interface FooterColumnHeadings {
 }
 
 export interface FooterContent {
-  tagline: string;
   columnHeadings: FooterColumnHeadings;
-  services: FooterLink[];
   company: FooterLink[];
-  contact: { email: string; location: string };
-  acknowledgement: string;
   copyright: string;
   legalLinks: FooterLink[];
   logoAlt: string;

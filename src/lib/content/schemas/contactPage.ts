@@ -104,7 +104,7 @@ export const contactPage = defineType({
               name: 'email',
               title: 'Email Address',
               type: 'string',
-              description: 'Optional. e.g. "nsw@medzo.com.au"',
+              description: 'Optional. e.g. "info@medzo.com.au"',
               validation: (r) => r.email(),
             }),
           ],

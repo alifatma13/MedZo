@@ -16,14 +16,12 @@ const [siteSettings, sanityServices] = await Promise.all([
 // Services list for the footer column — title + href from Sanity
 const footerServices = (sanityServices ?? []).map((s) => ({ label: s.title, href: s.href }));
 
-// Dynamic fields from Sanity with static fallbacks for graceful degradation during local dev
-const tagline         = siteSettings?.footerTagline         ?? footerContent.tagline;
-const contactEmail    = siteSettings?.contactEmail          ?? footerContent.contact.email;
-const contactLocation = siteSettings?.contactLocation       ?? footerContent.contact.location;
-const acknowledgement = siteSettings?.acknowledgementText   ?? footerContent.acknowledgement;
+const tagline         = siteSettings?.footerTagline     ?? "";
+const contactEmail    = siteSettings?.contactEmail      ?? "";
+const contactLocation = siteSettings?.contactLocation   ?? "";
+const acknowledgement = siteSettings?.acknowledgementText ?? "";
 
-// Services column: prefer Sanity list; fall back to static list while content is being entered
-const serviceLinks = footerServices.length > 0 ? footerServices : footerContent.services;
+const serviceLinks = footerServices;
 
 const year = new Date().getFullYear();
 ---

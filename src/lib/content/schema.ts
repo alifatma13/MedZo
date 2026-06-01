@@ -10,7 +10,7 @@ export const siteSchema = {
   logo: `https://${SITE_DOMAIN}/favicon.png`,
   image: `https://${SITE_DOMAIN}/og-image.png`,
   telephone: "+61-1300-000-000",
-  email: "hello@medzo.com.au",
+  email: "info@medzo.com.au",
   address: {
     "@type": "PostalAddress",
     addressCountry: "AU",
