@@ -80,12 +80,12 @@ const websiteJsonLd = {
 		<script
 			is:inline
 			type="application/ld+json"
-			set:html={JSON.stringify(jsonLd)}
+			set:html={JSON.stringify(jsonLd).replace(/<\/script>/gi, "<\\/script>")}
 		/>
 		<script
 			is:inline
 			type="application/ld+json"
-			set:html={JSON.stringify(websiteJsonLd)}
+			set:html={JSON.stringify(websiteJsonLd).replace(/<\/script>/gi, "<\\/script>")}
 		/>
 	</head>
 	<body>
