@@ -37,7 +37,7 @@ export const terms: PolicyContent = {
     },
     {
       heading: "Contact",
-      body: `Questions about these terms? Email hello@${SITE_DOMAIN}.`,
+      body: `Questions about these terms? Email info@${SITE_DOMAIN}.`,
     },
   ],
 };

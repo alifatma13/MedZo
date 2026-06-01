@@ -790,6 +790,11 @@ function isLinkActive(href: string): boolean {
 			display: flex;
 		}
 	}
+	@media (max-width: 480px) {
+		.nav-inner {
+			padding: 0 1rem;
+		}
+	}
 
 	@media (prefers-reduced-motion: no-preference) {
 		@keyframes dropdown-item-in {
