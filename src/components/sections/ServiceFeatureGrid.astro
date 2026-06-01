@@ -165,7 +165,7 @@ const { eyebrow, heading, intro, features } = Astro.props;
     right: 2rem;
   }
   .feature-card--hero .feature-head {
-    align-items: flex-start;
+    align-items: center;
     flex-shrink: 0;
   }
   .feature-card--hero .feature-icon {
@@ -228,7 +228,8 @@ const { eyebrow, heading, intro, features } = Astro.props;
   /* Tablet: collapse to 2-column — 3-col at ≤1024px gives ~209px inner text width */
   @media (max-width: 1024px) {
     .feature-grid { grid-template-columns: repeat(2, 1fr); }
-    .feature-card--hero { flex-direction: column; gap: 1.5rem; padding: 2rem; }
+    .feature-card--hero { flex-direction: column; align-items: flex-start; gap: 1.5rem; padding: 2rem; }
+    .feature-card--hero .feature-head { width: 100%; align-items: center; }
   }
   @media (max-width: 768px) {
     .svc-features { padding: 4rem clamp(1.5rem, 5%, 2.5rem); }
