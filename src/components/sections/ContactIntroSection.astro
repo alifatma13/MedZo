@@ -422,6 +422,7 @@ const e = f.errors;
 </style>
 
 <script is:inline>
+	// Validates and submits the contact form via Web3Forms with XSS and SQL injection sanitization.
 	(() => {
 		// Strips < > to prevent HTML injection before validation
 		const sanitise = (val) => val.replace(/[<>]/g, "").trim();

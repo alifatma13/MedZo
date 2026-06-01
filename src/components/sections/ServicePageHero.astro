@@ -275,6 +275,7 @@ const { label, heading, intro, ctaLabel, ctaHref, heroImageUrl } = Astro.props;
 </style>
 
 <script>
+  // Page-load sequential slide-in for the breadcrumb, heading, intro, actions, and hero visual.
   import { animate } from "motion";
 
   document.addEventListener("astro:page-load", () => {

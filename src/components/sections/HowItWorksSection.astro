@@ -284,6 +284,7 @@ const { eyebrow, heading, subheading, steps } = Astro.props;
 </style>
 
 <script>
+	// Scroll-triggered fade-in for the section header and staggered step cards.
 	import { animate, inView, stagger } from "motion";
 
 	document.addEventListener("astro:page-load", () => {

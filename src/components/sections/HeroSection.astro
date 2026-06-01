@@ -712,6 +712,7 @@ const headingLines = heading.split("\n");
 </style>
 
 <script>
+	// Page-load entrance via Web Animations API: per-word rise, body stagger, CTA fade-in, visual slide-in.
 	document.addEventListener("astro:page-load", () => {
 		if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 

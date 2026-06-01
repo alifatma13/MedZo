@@ -78,6 +78,7 @@ const { heading, body, ctaLabel, ctaHref } = Astro.props;
 </style>
 
 <script>
+  // Scroll-triggered staggered fade-in for the CTA heading, body, and button.
   import { animate, inView } from "motion";
 
   document.addEventListener("astro:page-load", () => {

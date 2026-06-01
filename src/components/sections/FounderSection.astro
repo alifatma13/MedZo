@@ -249,6 +249,7 @@ const { founder } = Astro.props;
 </style>
 
 <script>
+	// Scroll-triggered sequential entrance: portrait slides in, then text elements and bio paragraphs stagger.
 	import { animate, inView } from "motion";
 
 	document.addEventListener("astro:page-load", () => {

@@ -262,6 +262,7 @@ const { heading, services, bridge } = Astro.props;
 </style>
 
 <script>
+	// Scroll-triggered staggered reveal: eyebrow, title clip-wipe, body, then service columns.
 	import { animate, inView, stagger } from "motion";
 
 	document.addEventListener("astro:page-load", () => {

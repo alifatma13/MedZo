@@ -144,6 +144,7 @@ const { heading, items } = Astro.props;
 </style>
 
 <script>
+	// Scroll-triggered fade-in for the heading and staggered value list items.
 	import { animate, inView, stagger } from "motion";
 
 	document.addEventListener("astro:page-load", () => {

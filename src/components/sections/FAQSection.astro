@@ -68,6 +68,7 @@ const { heading, faqs } = Astro.props;
 </style>
 
 <script>
+	// Accordion open/close with animated height transitions and scroll-triggered staggered entrance.
 	import { animate, inView, stagger } from "motion";
 
 	document.addEventListener("astro:page-load", () => {

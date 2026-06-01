@@ -266,6 +266,7 @@ const { eyebrow, heading, intro, features } = Astro.props;
 </style>
 
 <script>
+  // Scroll-triggered staggered reveal for the eyebrow, heading, intro, and feature cards.
   import { animate, inView, stagger } from "motion";
 
   document.addEventListener("astro:page-load", () => {

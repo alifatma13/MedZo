@@ -212,6 +212,7 @@ const { heading, body, locations } = Astro.props;
 </style>
 
 <script>
+	// Scroll-triggered staggered fade-in for the section title, body, and office cards.
 	import { animate, inView, stagger } from "motion";
 	document.addEventListener("astro:page-load", () => {
 		if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
