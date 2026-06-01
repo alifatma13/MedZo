@@ -10,7 +10,7 @@ const env = loadEnv('', process.cwd(), '');
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://medzoweb.netlify.app",
+  site: "https://medzo.com.au",
   integrations: [
     sitemap({
       filter: (page) => !page.includes("/404") && !page.includes("/studio"),

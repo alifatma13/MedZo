@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /404
 
-Sitemap: https://medzoweb.netlify.app/sitemap-index.xml
+Sitemap: https://medzo.com.au/sitemap-index.xml
