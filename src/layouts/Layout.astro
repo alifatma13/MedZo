@@ -23,7 +23,7 @@ interface Props {
 const {
 	title = defaultMeta.title,
 	description = defaultMeta.description,
-	ogImage = "/og-image.png",
+	ogImage = "/og-image.webp",
 	navBg,
 } = Astro.props;
 
@@ -44,6 +44,7 @@ const websiteJsonLd = {
 	<head>
 		<ClientRouter />
 		<slot name="head" />
+		<link rel="preconnect" href="https://cdn.sanity.io" />
 		<link rel="preload" href={interFontUrl} as="font" type="font/woff2" crossorigin />
 		<link rel="preload" href={jakartaFontUrl} as="font" type="font/woff2" crossorigin />
 		<meta charset="utf-8" />

@@ -8,7 +8,7 @@ export const siteSchema = {
   url: `https://${SITE_DOMAIN}`,
   description: "End-to-end medical practice management across Australia. Billing, compliance, scheduling, and operations for GPs, specialists, and allied health clinics.",
   logo: `https://${SITE_DOMAIN}/favicon.png`,
-  image: `https://${SITE_DOMAIN}/og-image.png`,
+  image: `https://${SITE_DOMAIN}/og-image.webp`,
   telephone: "+61478811242",
   email: "info@medzo.com.au",
   address: {
