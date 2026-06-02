@@ -11,7 +11,6 @@ const { heading, paragraphs } = Astro.props;
 <section class="about-hero">
 	<div class="inner">
 		<div class="heading-col">
-			<div class="accent-bar" aria-hidden="true"></div>
 			<h1 class="heading">{heading}</h1>
 		</div>
 		<div class="body-col">
@@ -38,18 +37,22 @@ const { heading, paragraphs } = Astro.props;
 		flex-direction: column;
 		gap: 1.75rem;
 	}
-	.accent-bar {
-		width: 3rem;
-		height: 2px;
-		background: var(--color-accent);
-	}
-	.heading {
+.heading {
 		font-size: clamp(2.25rem, 4.5vw, 3.75rem);
 		font-weight: var(--weight-extrabold);
 		color: oklch(98% 0.006 220);
 		letter-spacing: var(--tracking-tight);
 		line-height: 1.08;
 		margin: 0;
+	}
+	.heading::after {
+		content: '';
+		display: block;
+		margin-top: 1.25rem;
+		width: 3rem;
+		height: 4px;
+		border-radius: 2px;
+		background: var(--color-highlight);
 	}
 	.body-col {
 		display: flex;
@@ -84,7 +87,6 @@ const { heading, paragraphs } = Astro.props;
 
 	/* no-flash: initial states for animated elements */
 	@media (prefers-reduced-motion: no-preference) {
-		.accent-bar,
 		.heading,
 		.body-col {
 			opacity: 0;
@@ -99,11 +101,6 @@ const { heading, paragraphs } = Astro.props;
 	document.addEventListener("astro:page-load", () => {
 		if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-		(animate as any)(
-			".about-hero .accent-bar",
-			{ opacity: [0, 1] },
-			{ duration: 0.35, easing: [0.22, 1, 0.36, 1] },
-		);
 		(animate as any)(
 			".about-hero .heading",
 			{ opacity: [0, 1], y: [28, 0] },

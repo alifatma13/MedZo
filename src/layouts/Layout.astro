@@ -4,8 +4,11 @@ import "../styles/global.css";
 import "../styles/fonts-inter.css";
 import "../styles/fonts-jakarta.css";
 import "../styles/fonts-podkova.css";
+import "../styles/fonts-bitter.css";
 import interFontUrl from "@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url";
 import jakartaFontUrl from "@fontsource-variable/plus-jakarta-sans/files/plus-jakarta-sans-latin-wght-normal.woff2?url";
+import bitterFontUrl from "@fontsource-variable/bitter/files/bitter-latin-wght-normal.woff2?url";
+import bitterItalicFontUrl from "@fontsource-variable/bitter/files/bitter-latin-wght-italic.woff2?url";
 import { ClientRouter } from "astro:transitions";
 import Nav from "../components/layout/Nav.astro";
 import Footer from "../components/layout/Footer.astro";
@@ -47,6 +50,8 @@ const websiteJsonLd = {
 		<link rel="preconnect" href="https://cdn.sanity.io" />
 		<link rel="preload" href={interFontUrl} as="font" type="font/woff2" crossorigin />
 		<link rel="preload" href={jakartaFontUrl} as="font" type="font/woff2" crossorigin />
+		<link rel="preload" href={bitterFontUrl} as="font" type="font/woff2" crossorigin />
+		<link rel="preload" href={bitterItalicFontUrl} as="font" type="font/woff2" crossorigin />
 		<meta charset="utf-8" />
 		<link rel="icon" href="/favicon.ico" sizes="32x32" />
 		<link rel="icon" type="image/png" href="/favicon.png" sizes="32x32" />
