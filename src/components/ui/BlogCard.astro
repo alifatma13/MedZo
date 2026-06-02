@@ -22,9 +22,11 @@ const date = post.publishedAt
       year: "numeric",
     })
   : null;
+
+const cardId = `card-title-${post.href.replace(/[^a-zA-Z0-9]/g, "-").replace(/^-+/, "")}`;
 ---
 
-<article class="blog-card">
+<article class="blog-card" aria-labelledby={cardId}>
   <a href={post.href} class="card-link" tabindex="-1" aria-hidden="true">
     <div class="card-image-wrap">
       {imageUrl ? (
@@ -50,13 +52,13 @@ const date = post.publishedAt
       {date && <time class="card-date" datetime={post.publishedAt}>{date}</time>}
     </div>
 
-    <h2 class="card-title">
+    <h2 class="card-title" id={cardId}>
       <a href={post.href} class="card-title-link">{post.title}</a>
     </h2>
 
     {post.excerpt && <p class="card-excerpt">{post.excerpt}</p>}
 
-    <a href={post.href} class="card-read-more" aria-label={`Read ${post.title}`}>
+    <a href={post.href} class="card-read-more" aria-hidden="true" tabindex="-1">
       Read article
       <span class="read-more-arrow" aria-hidden="true">&#8594;</span>
     </a>
