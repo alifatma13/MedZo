@@ -1,0 +1,189 @@
+---
+// BlogCard.astro — renders a single blog post preview card for the Insights listing.
+import type { SanityBlogCard } from "../../types/blog";
+import { urlFor } from "../../lib/utils/sanityImage";
+
+interface Props {
+  post: SanityBlogCard;
+}
+
+const { post } = Astro.props;
+
+const imageUrl = post.coverImage
+  ? urlFor(post.coverImage as any).width(720).height(480).fit("crop").format("webp").url()
+  : null;
+
+const lqip = post.coverImage?.asset?.metadata?.lqip ?? null;
+
+const date = post.publishedAt
+  ? new Date(post.publishedAt).toLocaleDateString("en-AU", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    })
+  : null;
+---
+
+<article class="blog-card">
+  <a href={post.href} class="card-link" tabindex="-1" aria-hidden="true">
+    <div class="card-image-wrap">
+      {imageUrl ? (
+        <img
+          src={imageUrl}
+          alt={post.coverImage?.alt ?? post.title}
+          class="card-image"
+          loading="lazy"
+          decoding="async"
+          style={lqip ? `background-image: url('${lqip}'); background-size: cover;` : undefined}
+          width="720"
+          height="480"
+        />
+      ) : (
+        <div class="card-image-placeholder" aria-hidden="true"></div>
+      )}
+    </div>
+  </a>
+
+  <div class="card-body">
+    <div class="card-meta">
+      {post.category && <span class="card-category">{post.category}</span>}
+      {date && <time class="card-date" datetime={post.publishedAt}>{date}</time>}
+    </div>
+
+    <h2 class="card-title">
+      <a href={post.href} class="card-title-link">{post.title}</a>
+    </h2>
+
+    {post.excerpt && <p class="card-excerpt">{post.excerpt}</p>}
+
+    <a href={post.href} class="card-read-more" aria-label={`Read ${post.title}`}>
+      Read article
+      <span class="read-more-arrow" aria-hidden="true">&#8594;</span>
+    </a>
+  </div>
+</article>
+
+<style>
+  .blog-card {
+    background: oklch(99.5% 0.003 240);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    border: 1px solid oklch(91% 0.01 230);
+    box-shadow: 0 2px 16px oklch(30% 0.06 240 / 0.07);
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.2s cubic-bezier(0.22, 1, 0.36, 1), transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .blog-card:hover {
+    box-shadow: 0 10px 40px oklch(30% 0.06 240 / 0.13);
+    transform: translateY(-3px);
+  }
+  .card-link {
+    display: block;
+  }
+  .card-image-wrap {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    background: oklch(93% 0.015 225);
+  }
+  .card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .blog-card:hover .card-image {
+    transform: scale(1.04);
+  }
+  .card-image-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, oklch(88% 0.04 235), oklch(80% 0.07 225));
+  }
+  .card-body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    flex: 1;
+  }
+  .card-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+  .card-category {
+    font-size: var(--text-xs);
+    font-weight: var(--weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--color-primary);
+    background: oklch(94% 0.018 240);
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+  }
+  .card-date {
+    font-size: var(--text-sm);
+    color: oklch(55% 0.025 240);
+  }
+  .card-title {
+    font-size: var(--text-xl);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-tight);
+    margin: 0;
+    color: var(--color-text-heading);
+    text-wrap: balance;
+  }
+  .card-title-link {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .card-title-link:hover {
+    color: var(--color-primary);
+  }
+  .card-title-link:focus-visible {
+    outline: 2px solid var(--color-accent);
+    border-radius: 2px;
+  }
+  .card-excerpt {
+    font-size: var(--text-base);
+    color: oklch(45% 0.02 240);
+    line-height: var(--leading-normal);
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-wrap: pretty;
+  }
+  .card-read-more {
+    margin-top: auto;
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    color: var(--color-primary);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    transition: gap 0.2s cubic-bezier(0.22, 1, 0.36, 1), color 0.15s;
+  }
+  .card-read-more:hover {
+    gap: 0.625rem;
+    color: var(--color-accent);
+  }
+  .card-read-more:focus-visible {
+    outline: 2px solid var(--color-accent);
+    border-radius: 2px;
+  }
+  .read-more-arrow {
+    display: inline-block;
+    transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .card-read-more:hover .read-more-arrow {
+    transform: translateX(3px);
+  }
+</style>

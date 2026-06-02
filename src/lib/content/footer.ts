@@ -1,6 +1,7 @@
 // footer.ts — developer-owned footer strings only.
 // CMS-managed fields (tagline, contact email/location, acknowledgement, services)
 // are fetched exclusively from Sanity — edit them in Sanity Studio.
+// The Insights link is toggled via "Show Insights (Blog)" in Sanity Site Settings.
 import type { FooterContent } from "../../types/layout";
 import { SITE_NAME } from "./site";
 

@@ -97,6 +97,7 @@ const siteSettings = defineType({
     defineField({ name: 'contactEmail', type: 'string', title: 'Contact Email' }),
     defineField({ name: 'contactLocation', type: 'string', title: 'Contact Location' }),
     defineField({ name: 'acknowledgementText', type: 'text', title: 'Acknowledgement Text' }),
+    defineField({ name: 'blogEnabled', type: 'boolean', title: 'Show Insights (Blog)', initialValue: false }),
     defineField({
       name: 'navigation', type: 'array', title: 'Navigation Links',
       of: [defineArrayMember({
@@ -295,6 +296,31 @@ const teamMember = defineType({
   ],
 })
 
+const blogPost = defineType({
+  name: 'blogPost',
+  type: 'document',
+  title: 'Blog Post',
+  fields: [
+    defineField({ name: 'title', type: 'string', title: 'Title' }),
+    defineField({ name: 'slug', type: 'slug', title: 'Slug', options: { source: 'title' } }),
+    defineField({ name: 'publishedAt', type: 'datetime', title: 'Published At' }),
+    defineField({ name: 'author', type: 'string', title: 'Author' }),
+    defineField({ name: 'category', type: 'string', title: 'Category' }),
+    defineField({ name: 'excerpt', type: 'text', title: 'Excerpt', rows: 3 }),
+    defineField({
+      name: 'coverImage', type: 'image', title: 'Cover Image',
+      options: { hotspot: true },
+      fields: [defineField({ name: 'alt', type: 'string', title: 'Alt Text' })],
+    }),
+    defineField({
+      name: 'body', type: 'array', title: 'Body',
+      of: [defineArrayMember({ type: 'block' })],
+    }),
+    defineField({ name: 'seoTitle', type: 'string', title: 'SEO Title' }),
+    defineField({ name: 'seoDescription', type: 'string', title: 'SEO Description' }),
+  ],
+})
+
 // ── Config ────────────────────────────────────────────────────────────────────
 
 export default defineConfig({
@@ -316,6 +342,7 @@ export default defineConfig({
       testimonial,
       faqItem,
       teamMember,
+      blogPost,
     ],
   },
 })

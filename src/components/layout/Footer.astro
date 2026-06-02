@@ -16,10 +16,11 @@ const [siteSettings, sanityServices] = await Promise.all([
 // Services list for the footer column — title + href from Sanity
 const footerServices = (sanityServices ?? []).map((s) => ({ label: s.title, href: s.href }));
 
-const tagline         = siteSettings?.footerTagline     ?? "";
-const contactEmail    = siteSettings?.contactEmail      ?? "";
-const contactLocation = siteSettings?.contactLocation   ?? "";
+const tagline         = siteSettings?.footerTagline      ?? "";
+const contactEmail    = siteSettings?.contactEmail       ?? "";
+const contactLocation = siteSettings?.contactLocation    ?? "";
 const acknowledgement = siteSettings?.acknowledgementText ?? "";
+const blogEnabled     = siteSettings?.blogEnabled        ?? false;
 
 const serviceLinks = footerServices;
 
@@ -64,7 +65,10 @@ const year = new Date().getFullYear();
 			<p class="col-heading">{footerContent.columnHeadings.company}</p>
 			<ul class="link-list">
 				{
-					footerContent.company.map((c) => (
+					[
+						...footerContent.company,
+						...(blogEnabled ? [{ label: "Insights", href: "/insights" }] : []),
+					].map((c) => (
 						<li>
 							<a href={c.href} class="footer-link">
 								{c.label}

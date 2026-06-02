@@ -1,0 +1,171 @@
+---
+// BlogListSection.astro — full-width insights listing: header banner + post grid.
+import BlogCard from "../ui/BlogCard.astro";
+import type { SanityBlogCard } from "../../types/blog";
+
+interface Props {
+  heading: string;
+  subheading: string;
+  body: string;
+  posts: SanityBlogCard[];
+}
+
+const { heading, subheading, body, posts } = Astro.props;
+---
+
+<section class="insights-section" aria-labelledby="insights-heading">
+  <div class="insights-banner">
+    <div class="banner-inner">
+      <h1 id="insights-heading" class="banner-heading">{heading}</h1>
+      <p class="banner-sub">{subheading}</p>
+      <p class="banner-body">{body}</p>
+    </div>
+  </div>
+
+  <div class="insights-cards">
+    <div class="cards-inner">
+      {posts.length > 0 ? (
+        <ul class="post-grid" role="list">
+          {posts.map((post) => (
+            <li class="post-item">
+              <BlogCard post={post} />
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p class="empty-state" role="status">No articles published yet. Check back soon.</p>
+      )}
+    </div>
+  </div>
+</section>
+
+<style>
+  .insights-banner {
+    background: var(--color-primary);
+    padding: clamp(4rem, 8vw, 6rem) clamp(1.5rem, 8%, 6rem) clamp(3rem, 5vw, 4.5rem);
+  }
+  .banner-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .banner-heading {
+    font-family: var(--font-wordmark);
+    font-size: clamp(3rem, 6vw, 5rem);
+    font-weight: var(--weight-bold);
+    color: oklch(98% 0.005 240);
+    line-height: 1.1;
+    letter-spacing: var(--tracking-tight);
+    margin: 0 0 1.5rem;
+    text-wrap: balance;
+  }
+  .banner-heading::after {
+    content: '';
+    display: block;
+    margin-top: 0.7rem;
+    width: 3rem;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--color-highlight);
+  }
+  .banner-sub {
+    font-size: var(--text-lg);
+    font-weight: var(--weight-medium);
+    color: oklch(96% 0.004 240 / 0.82);
+    max-width: 46rem;
+    margin: 0 0 0.875rem;
+    line-height: 1.68;
+    letter-spacing: 0.01em;
+  }
+  .banner-body {
+    font-size: var(--text-base);
+    font-weight: var(--weight-medium);
+    color: oklch(96% 0.004 240 / 0.58);
+    max-width: 46rem;
+    margin: 0;
+    line-height: var(--leading-normal);
+    letter-spacing: 0.01em;
+  }
+  .insights-cards {
+    background: var(--color-bg-hero);
+    padding: clamp(3rem, 5vw, 4.5rem) clamp(1.5rem, 8%, 6rem) clamp(4rem, 6vw, 6rem);
+  }
+  .cards-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .post-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .post-item {
+    display: flex;
+  }
+  .post-item > :global(.blog-card) {
+    width: 100%;
+  }
+  .empty-state {
+    text-align: center;
+    font-size: var(--text-lg);
+    color: oklch(55% 0.025 240);
+    padding: 5rem 0;
+    margin: 0;
+  }
+  @media (max-width: 1024px) {
+    .post-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 640px) {
+    .post-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .banner-heading,
+    .banner-sub,
+    .banner-body,
+    .post-item {
+      opacity: 0;
+    }
+  }
+</style>
+
+<script>
+  import { animate, stagger } from "motion";
+
+  document.addEventListener("astro:page-load", () => {
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      (animate as any)(
+        ".banner-heading",
+        { opacity: [0, 1], y: [24, 0] },
+        { duration: 0.55, easing: [0.22, 1, 0.36, 1] },
+      );
+
+      (animate as any)(
+        ".banner-sub",
+        { opacity: [0, 1], y: [16, 0] },
+        { duration: 0.5, easing: [0.22, 1, 0.36, 1], delay: 0.2 },
+      );
+
+      (animate as any)(
+        ".banner-body",
+        { opacity: [0, 1], y: [16, 0] },
+        { duration: 0.5, easing: [0.22, 1, 0.36, 1], delay: 0.32 },
+      );
+
+      const items = document.querySelectorAll(".post-item");
+      if (items.length > 0) {
+        (animate as any)(
+          ".post-item",
+          { opacity: [0, 1], y: [28, 0] },
+          { duration: 0.5, easing: [0.22, 1, 0.36, 1], delay: stagger(0.08) },
+        );
+      }
+    }
+  });
+</script>

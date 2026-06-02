@@ -1,0 +1,27 @@
+---
+// insights.astro — Insights (blog) listing page.
+// All blog posts come from the blogPost collection in Sanity.
+import Layout from "../layouts/Layout.astro";
+import BlogListSection from "../components/sections/BlogListSection.astro";
+import { getBlogPosts } from "../lib/api/blog";
+
+const posts = await getBlogPosts();
+
+const content = {
+  heading: "Insights",
+  subheading: "Practical guidance, industry news, and expert perspectives on medical practice management.",
+  body: "At MedZo, we believe that well-informed practice owners make better decisions. Our Insights brings together practical articles, industry updates, and real-world guidance from our team, covering everything from billing and compliance to staff wellbeing and growth. We are constantly working on new content to help your practice run smarter, so check back regularly.",
+};
+---
+
+<Layout
+  title="Insights | MedZo"
+  description={content.subheading}
+>
+  <BlogListSection
+    heading={content.heading}
+    subheading={content.subheading}
+    body={content.body}
+    posts={posts ?? []}
+  />
+</Layout>

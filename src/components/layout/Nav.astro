@@ -5,7 +5,7 @@
 // CTA button, brand strings, and the Services parent label stay hardcoded in nav.ts.
 import { Image } from "astro:assets";
 import logoImg from "../../res/logo.webp";
-import { navCta, navBrand, navServicesItem } from "../../lib/content/nav";
+import { navCta, navBrand, navServicesItem, blogNavItem } from "../../lib/content/nav";
 import { icons } from "../../lib/utils/icons";
 import { getSiteSettings } from "../../lib/api/siteSettings";
 import { getServices } from "../../lib/api/services";
@@ -31,9 +31,12 @@ const topLevelLinks = (siteSettings?.navigation ?? []).filter(
   (l) => l.isVisible !== false
 );
 
+const blogEnabled = siteSettings?.blogEnabled ?? false;
+
 const navLinks: NavLink[] = [
   { label: navServicesItem.label, href: navServicesItem.href, children: servicesChildren },
   ...topLevelLinks,
+  ...(blogEnabled ? [{ label: blogNavItem.label, href: blogNavItem.href }] : []),
 ];
 
 const pathname = Astro.url.pathname;

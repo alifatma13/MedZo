@@ -12,6 +12,7 @@ import {
   UsersIcon,
   StarFilledIcon,
   HelpCircleIcon,
+  EditIcon,
 } from '@sanity/icons'
 
 export const structure: StructureResolver = (S) =>
@@ -77,4 +78,8 @@ export const structure: StructureResolver = (S) =>
       S.documentTypeListItem('faqItem')
         .title('FAQ')
         .icon(HelpCircleIcon),
+
+      S.documentTypeListItem('blogPost')
+        .title('Blog Posts')
+        .icon(EditIcon),
     ])

@@ -11,6 +11,7 @@ export interface SanitySiteSettings {
   contactEmail?: string;
   contactLocation?: string;
   acknowledgementText?: string;
+  blogEnabled?: boolean;
   navigation?: Array<{ _key: string; label: string; href: string; isVisible?: boolean }>;
 }
 
@@ -22,6 +23,7 @@ export const SITE_SETTINGS_QUERY = defineQuery(`
     contactEmail,
     contactLocation,
     acknowledgementText,
+    blogEnabled,
     navigation[]{ _key, label, href, isVisible },
   }
 `)
