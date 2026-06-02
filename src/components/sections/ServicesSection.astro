@@ -146,7 +146,9 @@ const { heading, services, bridge } = Astro.props;
 		display: inline-flex;
 		align-items: center;
 		gap: 0.4rem;
-		margin-top: 1.75rem;
+		margin-top: 1.25rem;
+		padding-block: 0.5rem;
+		min-height: 44px;
 		font-size: var(--text-sm);
 		font-weight: var(--weight-semibold);
 		color: var(--color-accent-text);
@@ -174,16 +176,14 @@ const { heading, services, bridge } = Astro.props;
 		flex-direction: column;
 		align-items: center;
 		gap: 0.4rem;
-		padding-top: 4rem;
+		margin-top: 4rem;
+		padding-block: 0.75rem;
+		min-height: 44px;
 		text-decoration: none;
-		color: var(--color-text-body);
-		opacity: 0.55;
-		transition:
-			opacity 0.18s ease,
-			color 0.18s ease;
+		color: #5a5e6b;
+		transition: color 0.18s ease;
 	}
 	.section-bridge:hover {
-		opacity: 1;
 		color: var(--color-primary);
 	}
 	.section-bridge:focus-visible {

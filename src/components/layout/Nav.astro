@@ -305,6 +305,8 @@ function isLinkActive(href: string): boolean {
 		display: flex;
 		align-items: center;
 		gap: 0.25rem;
+		min-height: 44px;
+		padding-inline: 0.25rem;
 	}
 	.nav-link::after {
 		content: "";
@@ -330,7 +332,9 @@ function isLinkActive(href: string): boolean {
 		background: none;
 		border: none;
 		cursor: pointer;
-		padding: 0.2rem 0.25rem;
+		padding: 0.25rem 0.5rem;
+		min-width: 44px;
+		min-height: 44px;
 		color: var(--color-text-heading);
 		border-radius: 2px;
 		flex-shrink: 0;
