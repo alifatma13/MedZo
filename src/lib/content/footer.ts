@@ -13,6 +13,7 @@ export const footerContent: FooterContent = {
   company: [
     { label: "Why MedZo",      href: "/#why-medzo" },
     { label: "FAQ",            href: "/faq"         },
+    { label: "Careers",        href: "/careers"     },
     { label: "Book a Consult", href: "/contact"     },
   ],
   copyright: "MedZo. All rights reserved.",

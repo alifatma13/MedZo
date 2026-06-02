@@ -1,0 +1,26 @@
+---
+// careers.astro — careers page. Content managed in Sanity Studio under "Careers Page".
+// Link appears in the footer Company column only — not in the top navigation.
+import Layout from "../layouts/Layout.astro";
+import CareersHeroSection from "../components/sections/CareersHeroSection.astro";
+import CareersApplySection from "../components/sections/CareersApplySection.astro";
+import { getCareersPage } from "../lib/api/careersPage";
+
+const data = await getCareersPage();
+
+if (!data) throw new Error("Careers page not found in Sanity. Publish the Careers Page document in Studio.");
+---
+
+<Layout title={data.seoTitle ?? undefined} description={data.seoDescription ?? undefined}>
+  <CareersHeroSection
+    heading={data.heroHeading ?? ""}
+    body={data.heroBody ?? ""}
+  />
+  <CareersApplySection
+    whyHeading={data.whyHeading ?? ""}
+    whyBody={data.whyBody ?? ""}
+    applyHeading={data.applyHeading ?? ""}
+    applyBody={data.applyBody ?? ""}
+    applicationEmail={data.applicationEmail ?? ""}
+  />
+</Layout>

@@ -1,0 +1,104 @@
+---
+// CareersHeroSection.astro — full-width hero for the careers page.
+interface Props {
+  heading: string;
+  body: string;
+}
+const { heading, body } = Astro.props;
+---
+
+<section class="careers-hero">
+  <div class="container">
+    <span class="eyebrow">Careers at MedZo</span>
+    <h1 class="heading">{heading}</h1>
+    <p class="body">{body}</p>
+  </div>
+</section>
+
+<style>
+  .careers-hero {
+    background: var(--color-bg-hero);
+    padding: clamp(5rem, 8vw, 8rem) clamp(1.5rem, 8%, 6rem) clamp(4rem, 6vw, 6rem);
+  }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .eyebrow {
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--color-accent-text);
+  }
+  .heading {
+    font-size: clamp(1.875rem, 5vw, 3.5rem);
+    font-weight: var(--weight-extrabold);
+    color: var(--color-primary);
+    letter-spacing: -0.03em;
+    line-height: 1.08;
+    margin: 0;
+  }
+  .body {
+    font-size: var(--text-lg);
+    color: var(--color-text-body);
+    line-height: var(--leading-normal);
+    margin: 0;
+    max-width: 65ch;
+  }
+
+  @media (max-width: 768px) {
+    .careers-hero {
+      padding: 4rem 1.5rem 3rem;
+    }
+    .body {
+      font-size: var(--text-base);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .careers-hero {
+      padding: 3rem 1.25rem 2.5rem;
+    }
+    .container {
+      gap: 1rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .eyebrow,
+    .body {
+      opacity: 0;
+    }
+    .heading {
+      clip-path: inset(0 0 100% 0);
+    }
+  }
+</style>
+
+<script>
+  import { animate } from "motion";
+
+  document.addEventListener("astro:page-load", () => {
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      (animate as any)(
+        ".careers-hero .eyebrow",
+        { opacity: [0, 1], y: [8, 0] },
+        { duration: 0.4, easing: [0.22, 1, 0.36, 1] },
+      );
+      (animate as any)(
+        ".careers-hero .heading",
+        { clipPath: ["inset(0 0 100% 0)", "inset(0 0 0% 0)"], y: [20, 0] },
+        { duration: 0.65, delay: 0.06, easing: [0.22, 1, 0.36, 1] },
+      );
+      (animate as any)(
+        ".careers-hero .body",
+        { opacity: [0, 1], y: [12, 0] },
+        { duration: 0.5, delay: 0.2, easing: [0.22, 1, 0.36, 1] },
+      );
+    }
+  });
+</script>

@@ -1,0 +1,176 @@
+---
+// CareersApplySection.astro — two-column section: why join us + how to apply with email CTA.
+interface Props {
+  whyHeading: string;
+  whyBody: string;
+  applyHeading: string;
+  applyBody: string;
+  applicationEmail: string;
+}
+const { whyHeading, whyBody, applyHeading, applyBody, applicationEmail } = Astro.props;
+---
+
+<section class="careers-apply">
+  <div class="container">
+    <div class="col col--why">
+      <h2 class="col-heading">{whyHeading}</h2>
+      <p class="col-body">{whyBody}</p>
+    </div>
+
+    <div class="col col--apply">
+      <h2 class="col-heading">{applyHeading}</h2>
+      <p class="col-body">{applyBody}</p>
+      <div class="apply-cta">
+        <p class="apply-instruction">Send your cover letter and resume to:</p>
+        <a
+          href={`mailto:${applicationEmail}`}
+          class="apply-email-btn"
+          aria-label={`Email your application to ${applicationEmail}`}
+        >
+          {applicationEmail}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .careers-apply {
+    background: #fff;
+    padding: clamp(4rem, 8vw, 8rem) clamp(1.5rem, 8%, 6rem);
+  }
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2.5rem, 5vw, 5rem);
+    align-items: start;
+  }
+  .col {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .col--apply {
+    border-left: 2px solid var(--color-accent);
+    padding-left: clamp(1.5rem, 3vw, 3rem);
+  }
+  .col-heading {
+    font-size: clamp(1.25rem, 2.5vw, var(--text-2xl));
+    font-weight: var(--weight-bold);
+    color: var(--color-primary);
+    letter-spacing: -0.02em;
+    line-height: var(--leading-snug);
+    margin: 0;
+  }
+  .col-body {
+    font-size: var(--text-base);
+    color: var(--color-text-body);
+    line-height: var(--leading-normal);
+    margin: 0;
+  }
+  .apply-cta {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .apply-instruction {
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    color: var(--color-text-body);
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+  }
+  .apply-email-btn {
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+    background: var(--gradient-brand);
+    color: #fff;
+    padding: 0.875rem 1.75rem;
+    border-radius: 0.625rem;
+    font-size: var(--text-base);
+    font-weight: var(--weight-bold);
+    text-decoration: none;
+    word-break: break-all;
+    box-shadow: 0 4px 12px rgba(0, 50, 125, 0.2);
+    transition:
+      transform 0.18s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .apply-email-btn:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 24px rgba(0, 50, 125, 0.25);
+  }
+  .apply-email-btn:focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  /* Tablet — reduce gap, keep two columns */
+  @media (max-width: 1024px) {
+    .container {
+      gap: 2.5rem;
+    }
+  }
+
+  /* Stack columns below 768px */
+  @media (max-width: 768px) {
+    .container {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+    .col--apply {
+      border-left: none;
+      border-top: 2px solid var(--color-accent);
+      padding-left: 0;
+      padding-top: 2rem;
+    }
+    .apply-email-btn {
+      align-self: stretch;
+      justify-content: center;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .careers-apply {
+      padding: 3rem 1.25rem;
+    }
+    .col-body {
+      font-size: var(--text-sm);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .apply-email-btn { transition: none; }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .col {
+      opacity: 0;
+    }
+  }
+</style>
+
+<script>
+  import { animate, inView, stagger } from "motion";
+
+  document.addEventListener("astro:page-load", () => {
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      inView(".careers-apply", () => {
+        (animate as any)(
+          ".careers-apply .col",
+          { opacity: [0, 1], y: [28, 0] },
+          {
+            duration: 0.55,
+            delay: (stagger as any)(0.12),
+            easing: [0.22, 1, 0.36, 1],
+          },
+        );
+      });
+    }
+  });
+</script>
