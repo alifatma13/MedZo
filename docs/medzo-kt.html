@@ -1,0 +1,2875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MedZo — Knowledge Transfer Document</title>
+  <style>
+    /* ── Reset & tokens ─────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:        #2563eb;
+      --blue-light:  #eff6ff;
+      --blue-mid:    #bfdbfe;
+      --indigo:      #4f46e5;
+      --green:       #16a34a;
+      --green-light: #f0fdf4;
+      --amber:       #d97706;
+      --amber-light: #fffbeb;
+      --red:         #dc2626;
+      --red-light:   #fef2f2;
+      --purple:      #7c3aed;
+      --purple-light:#f5f3ff;
+      --gray-50:     #f9fafb;
+      --gray-100:    #f3f4f6;
+      --gray-200:    #e5e7eb;
+      --gray-300:    #d1d5db;
+      --gray-500:    #6b7280;
+      --gray-600:    #4b5563;
+      --gray-700:    #374151;
+      --gray-800:    #1f2937;
+      --gray-900:    #111827;
+      --font:        system-ui, -apple-system, "Segoe UI", sans-serif;
+      --mono:        "Cascadia Code", "Fira Code", "Courier New", monospace;
+      --radius:      8px;
+      --shadow:      0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+      --shadow-md:   0 4px 6px -1px rgba(0,0,0,.1), 0 2px 4px -2px rgba(0,0,0,.1);
+    }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: var(--font);
+      color: var(--gray-800);
+      background: var(--gray-50);
+      line-height: 1.65;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ── Sidebar ────────────────────────────────────── */
+    .sidebar {
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      width: 260px;
+      background: white;
+      border-right: 1px solid var(--gray-200);
+      overflow-y: auto;
+      padding: 24px 0;
+      z-index: 100;
+    }
+
+    .sidebar-logo {
+      padding: 0 20px 20px;
+      border-bottom: 1px solid var(--gray-200);
+      margin-bottom: 16px;
+    }
+
+    .sidebar-logo .wordmark {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--blue);
+      letter-spacing: -0.5px;
+    }
+
+    .sidebar-logo .doc-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--gray-500);
+      margin-top: 2px;
+    }
+
+    .sidebar nav ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidebar nav li a {
+      display: block;
+      padding: 6px 20px;
+      font-size: 0.82rem;
+      color: var(--gray-600);
+      text-decoration: none;
+      border-left: 2px solid transparent;
+      transition: all 0.15s;
+    }
+
+    .sidebar nav li a:hover {
+      color: var(--blue);
+      background: var(--blue-light);
+      border-left-color: var(--blue);
+    }
+
+    .sidebar nav .group-label {
+      padding: 12px 20px 4px;
+      font-size: 0.68rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--gray-500);
+    }
+
+    /* ── Main content ───────────────────────────────── */
+    .main {
+      margin-left: 260px;
+      padding: 48px 60px 96px;
+      max-width: 980px;
+      width: 100%;
+    }
+
+    /* ── Page header ────────────────────────────────── */
+    .page-header {
+      margin-bottom: 48px;
+      padding-bottom: 32px;
+      border-bottom: 2px solid var(--gray-200);
+    }
+
+    .page-header .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--blue-light);
+      color: var(--blue);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+    }
+
+    .page-header h1 {
+      font-size: 2.25rem;
+      font-weight: 800;
+      color: var(--gray-900);
+      letter-spacing: -1px;
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+
+    .page-header .subtitle {
+      font-size: 1.05rem;
+      color: var(--gray-600);
+      max-width: 600px;
+    }
+
+    .meta-row {
+      display: flex;
+      gap: 24px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .meta-item {
+      font-size: 0.8rem;
+      color: var(--gray-500);
+    }
+
+    .meta-item strong {
+      color: var(--gray-700);
+    }
+
+    /* ── Section headings ───────────────────────────── */
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--gray-900);
+      letter-spacing: -0.5px;
+      margin: 56px 0 16px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--gray-200);
+      scroll-margin-top: 24px;
+    }
+
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--gray-800);
+      margin: 32px 0 10px;
+      scroll-margin-top: 24px;
+    }
+
+    h4 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--gray-700);
+      margin: 20px 0 8px;
+    }
+
+    p { margin-bottom: 14px; color: var(--gray-700); }
+
+    /* ── Cards & callouts ───────────────────────────── */
+    .card {
+      background: white;
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .callout {
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      margin: 20px 0;
+      font-size: 0.88rem;
+      display: flex;
+      gap: 10px;
+    }
+
+    .callout-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+
+    .callout.info    { background: var(--blue-light);   border-left: 3px solid var(--blue);   color: #1e40af; }
+    .callout.warning { background: var(--amber-light);  border-left: 3px solid var(--amber);  color: #92400e; }
+    .callout.danger  { background: var(--red-light);    border-left: 3px solid var(--red);    color: #991b1b; }
+    .callout.success { background: var(--green-light);  border-left: 3px solid var(--green);  color: #14532d; }
+
+    /* ── Code blocks ────────────────────────────────── */
+    pre {
+      background: var(--gray-900);
+      color: #e2e8f0;
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      overflow-x: auto;
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      line-height: 1.6;
+      margin: 12px 0 20px;
+    }
+
+    pre .comment  { color: #64748b; }
+    pre .keyword  { color: #93c5fd; }
+    pre .string   { color: #86efac; }
+    pre .type     { color: #fde68a; }
+    pre .fn       { color: #c4b5fd; }
+    pre .var      { color: #f9a8d4; }
+
+    code {
+      font-family: var(--mono);
+      font-size: 0.82em;
+      background: var(--gray-100);
+      color: var(--indigo);
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid var(--gray-200);
+    }
+
+    pre code {
+      background: none;
+      color: inherit;
+      padding: 0;
+      border: none;
+      font-size: inherit;
+    }
+
+    /* ── Tables ─────────────────────────────────────── */
+    .table-wrap { overflow-x: auto; margin: 16px 0 24px; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+
+    th {
+      background: var(--gray-100);
+      text-align: left;
+      padding: 10px 14px;
+      font-weight: 600;
+      color: var(--gray-700);
+      border-bottom: 2px solid var(--gray-200);
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 9px 14px;
+      border-bottom: 1px solid var(--gray-200);
+      color: var(--gray-700);
+      vertical-align: top;
+    }
+
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--gray-50); }
+
+    /* ── Grid layouts ───────────────────────────────── */
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 16px 0; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 16px 0; }
+
+    @media (max-width: 800px) {
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    }
+
+    /* ── Stat cards ─────────────────────────────────── */
+    .stat-card {
+      background: white;
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      text-align: center;
+    }
+
+    .stat-card .value {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--blue);
+      line-height: 1;
+    }
+
+    .stat-card .label {
+      font-size: 0.78rem;
+      color: var(--gray-500);
+      margin-top: 4px;
+    }
+
+    /* ── Directory tree ─────────────────────────────── */
+    .tree {
+      background: var(--gray-900);
+      color: #e2e8f0;
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      font-family: var(--mono);
+      font-size: 0.81rem;
+      line-height: 1.8;
+      overflow-x: auto;
+      margin: 12px 0 20px;
+      white-space: pre;
+    }
+
+    .tree .dir   { color: #93c5fd; font-weight: 600; }
+    .tree .file  { color: #e2e8f0; }
+    .tree .note  { color: #64748b; }
+    .tree .badge { color: #86efac; }
+
+    /* ── Tag pills ──────────────────────────────────── */
+    .tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 20px;
+      margin: 2px;
+    }
+
+    .tag-blue   { background: var(--blue-light);   color: var(--blue); }
+    .tag-green  { background: var(--green-light);  color: var(--green); }
+    .tag-amber  { background: var(--amber-light);  color: var(--amber); }
+    .tag-purple { background: var(--purple-light); color: var(--purple); }
+    .tag-red    { background: var(--red-light);    color: var(--red); }
+
+    /* ── Checklist ──────────────────────────────────── */
+    .checklist { list-style: none; padding: 0; }
+
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 6px 0;
+      font-size: 0.88rem;
+      color: var(--gray-700);
+      border-bottom: 1px solid var(--gray-100);
+    }
+
+    .checklist li:last-child { border-bottom: none; }
+
+    .checklist .check {
+      width: 18px; height: 18px;
+      background: var(--green);
+      color: white;
+      border-radius: 50%;
+      font-size: 0.65rem;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .checklist .warn {
+      width: 18px; height: 18px;
+      background: var(--amber);
+      color: white;
+      border-radius: 50%;
+      font-size: 0.65rem;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* ── Divider ────────────────────────────────────── */
+    hr { border: none; border-top: 1px solid var(--gray-200); margin: 32px 0; }
+
+    /* ── Section anchor offset ──────────────────────── */
+    section { scroll-margin-top: 24px; }
+
+    /* ── Responsive ─────────────────────────────────── */
+    @media (max-width: 900px) {
+      .sidebar { display: none; }
+      .main { margin-left: 0; padding: 32px 24px 64px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════════
+     SIDEBAR
+══════════════════════════════════════════════════════════════ -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="wordmark">MedZo</div>
+    <div class="doc-label">Knowledge Transfer</div>
+  </div>
+  <nav>
+    <ul>
+      <li class="group-label">Overview</li>
+      <li><a href="#overview">Project Overview</a></li>
+      <li><a href="#stack">Tech Stack</a></li>
+      <li><a href="#stats">At a Glance</a></li>
+
+      <li class="group-label">Architecture</li>
+      <li><a href="#directory">Directory Structure</a></li>
+      <li><a href="#layers">Layer Rules</a></li>
+      <li><a href="#pages">Pages &amp; Routes</a></li>
+      <li><a href="#components">Component Catalogue</a></li>
+
+      <li class="group-label">Content Systems</li>
+      <li><a href="#content-strategy">Strategy</a></li>
+      <li><a href="#sanity">Sanity CMS</a></li>
+      <li><a href="#static-content">Static Content Files</a></li>
+      <li><a href="#icons">SVG Icon Registry</a></li>
+
+      <li class="group-label">Type System</li>
+      <li><a href="#types">TypeScript Types</a></li>
+      <li><a href="#data-fetching">Data Fetching</a></li>
+
+      <li class="group-label">Standards</li>
+      <li><a href="#accessibility">Accessibility</a></li>
+      <li><a href="#animations">Animations</a></li>
+      <li><a href="#no-hardcoding">No-Hardcoding Rule</a></li>
+      <li><a href="#cms-readiness">CMS Readiness</a></li>
+      <li><a href="#naming">Naming Conventions</a></li>
+
+      <li class="group-label">Sanity Guide</li>
+      <li><a href="#sanity-editable">What Editors Can Change</a></li>
+      <li><a href="#sanity-dev-only">Dev-Only Changes</a></li>
+      <li><a href="#sanity-seo">SEO</a></li>
+      <li><a href="#sanity-content-change">Making a Content Change</a></li>
+      <li><a href="#sanity-new-page">Adding a New Page</a></li>
+
+      <li class="group-label">Integrations</li>
+      <li><a href="#web3forms">Web3Forms</a></li>
+
+      <li class="group-label">Support Reference</li>
+      <li><a href="#local-setup">Local Dev Setup</a></li>
+      <li><a href="#git">Git &amp; Version Control</a></li>
+      <li><a href="#accounts">Third-Party Accounts</a></li>
+      <li><a href="#public-folder">Public Folder</a></li>
+      <li><a href="#troubleshooting">Troubleshooting</a></li>
+      <li><a href="#limitations">Known Limitations</a></li>
+
+      <li class="group-label">Operations</li>
+      <li><a href="#deployment">Deployment</a></li>
+      <li><a href="#commands">Key Commands</a></li>
+      <li><a href="#env">Environment Variables</a></li>
+    </ul>
+  </nav>
+</aside>
+
+<!-- ════════════════════════════════════════════════════════════
+     MAIN
+══════════════════════════════════════════════════════════════ -->
+<main class="main">
+
+  <!-- PAGE HEADER -->
+  <header class="page-header">
+    <div class="badge">&#128196; KT Document</div>
+    <h1>MedZo — Engineering Knowledge Transfer</h1>
+    <p class="subtitle">
+      Complete system design, architecture decisions, content patterns,
+      accessibility standards, and operational guide for the MedZo
+      marketing website.
+    </p>
+    <div class="meta-row">
+      <span class="meta-item"><strong>Domain:</strong> medzo.com.au</span>
+      <span class="meta-item"><strong>Stack:</strong> Astro 6 + Sanity + TypeScript</span>
+      <span class="meta-item"><strong>Hosting:</strong> Hostinger (static)</span>
+      <span class="meta-item"><strong>CMS:</strong> medzo.sanity.studio</span>
+      <span class="meta-item"><strong>Node:</strong> &ge;22.12.0</span>
+    </div>
+  </header>
+
+  <!-- ──────────────────────────────────────────────────
+       OVERVIEW
+  ────────────────────────────────────────────────── -->
+  <section id="overview">
+    <h2>Project Overview</h2>
+    <p>
+      MedZo is a <strong>static marketing website</strong> for an Australian medical practice
+      management software product. It is built with Astro's static site generation for maximum
+      performance and SEO, driven by Sanity as a headless CMS for all team-managed content,
+      and deployed automatically to Netlify on every push to <code>main</code>.
+    </p>
+    <p>
+      The project's primary architectural goal is <strong>long-term maintainability</strong>:
+      any visible word on the site can be changed by editing only <code>src/lib/content/</code>
+      or via Sanity Studio — no component rewrites required.
+    </p>
+
+    <div class="callout info">
+      <span class="callout-icon">&#8505;&#65039;</span>
+      <div>
+        <strong>Core principle:</strong> If a change requires touching more than two files to
+        update a single piece of copy, the architecture is wrong — fix the structure,
+        not the symptom.
+      </div>
+    </div>
+  </section>
+
+  <!-- ──────────────────────────────────────────────────
+       TECH STACK
+  ────────────────────────────────────────────────── -->
+  <section id="stack">
+    <h2>Tech Stack</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Layer</th>
+            <th>Technology</th>
+            <th>Version</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Framework</td>
+            <td><strong>Astro</strong></td>
+            <td>6.2.1</td>
+            <td>Static site generator; page routing; component model</td>
+          </tr>
+          <tr>
+            <td>Language</td>
+            <td><strong>TypeScript</strong></td>
+            <td>5.x</td>
+            <td>Build-time type safety across all components and content</td>
+          </tr>
+          <tr>
+            <td>CMS</td>
+            <td><strong>Sanity</strong></td>
+            <td>5.27</td>
+            <td>Headless CMS; Studio hosted at medzo.sanity.studio</td>
+          </tr>
+          <tr>
+            <td>Animations</td>
+            <td><strong>motion</strong></td>
+            <td>12.38</td>
+            <td>Framework-agnostic Framer Motion; all entrance &amp; scroll animations</td>
+          </tr>
+          <tr>
+            <td>Fonts</td>
+            <td>Inter, Plus Jakarta Sans, Podkova</td>
+            <td>—</td>
+            <td>Self-hosted via @fontsource-variable (variable fonts)</td>
+          </tr>
+          <tr>
+            <td>Sitemap</td>
+            <td>@astrojs/sitemap</td>
+            <td>3.7.2</td>
+            <td>Auto-generates sitemap.xml; excludes /404</td>
+          </tr>
+          <tr>
+            <td>Hosting</td>
+            <td>Hostinger</td>
+            <td>—</td>
+            <td>Static site hosting; files deployed from <code>./dist/</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ──────────────────────────────────────────────────
+       STATS
+  ────────────────────────────────────────────────── -->
+  <section id="stats">
+    <h2>At a Glance</h2>
+    <div class="grid-3">
+      <div class="stat-card">
+        <div class="value">8</div>
+        <div class="label">Pages (incl. dynamic route)</div>
+      </div>
+      <div class="stat-card">
+        <div class="value">30</div>
+        <div class="label">Components (sections + UI + layout)</div>
+      </div>
+      <div class="stat-card">
+        <div class="value">11</div>
+        <div class="label">Static content files</div>
+      </div>
+      <div class="stat-card">
+        <div class="value">8</div>
+        <div class="label">Sanity API fetchers</div>
+      </div>
+      <div class="stat-card">
+        <div class="value">5</div>
+        <div class="label">TypeScript type files</div>
+      </div>
+      <div class="stat-card">
+        <div class="value">60+</div>
+        <div class="label">SVG icons in registry</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ──────────────────────────────────────────────────
+       DIRECTORY STRUCTURE
+  ────────────────────────────────────────────────── -->
+  <section id="directory">
+    <h2>Directory Structure</h2>
+    <div class="tree">
+<span class="dir">src/</span>
+├── <span class="dir">components/</span>
+│   ├── <span class="dir">layout/</span>     <span class="note"># Page-shell wrappers (Nav, Footer)</span>
+│   ├── <span class="dir">sections/</span>   <span class="note"># Full page blocks — one section per file</span>
+│   └── <span class="dir">ui/</span>         <span class="note"># Primitives: Button, Card, Badge — no business logic</span>
+├── <span class="dir">layouts/</span>
+│   └── <span class="file">Layout.astro</span>  <span class="note"># Head, Nav, Footer, JSON-LD, ClientRouter</span>
+├── <span class="dir">pages/</span>
+│   ├── <span class="file">index.astro</span>     <span class="note"># Home</span>
+│   ├── <span class="file">about.astro</span>     <span class="note"># About</span>
+│   ├── <span class="file">contact.astro</span>   <span class="note"># Contact</span>
+│   ├── <span class="file">faq.astro</span>       <span class="note"># FAQ</span>
+│   ├── <span class="file">privacy.astro</span>   <span class="note"># Privacy policy (static)</span>
+│   ├── <span class="file">terms.astro</span>     <span class="note"># Terms of service (static)</span>
+│   ├── <span class="file">404.astro</span>       <span class="note"># Custom not-found page</span>
+│   └── <span class="dir">services/</span>
+│       └── <span class="file">[service].astro</span> <span class="note"># Dynamic route per Sanity service</span>
+├── <span class="dir">lib/</span>
+│   ├── <span class="dir">api/</span>            <span class="note"># One fetcher file per content type (GROQ queries)</span>
+│   │   ├── <span class="file">sanity.ts</span>   <span class="note"># Pre-configured Sanity client</span>
+│   │   ├── <span class="file">homePage.ts</span>
+│   │   ├── <span class="file">aboutPage.ts</span>
+│   │   ├── <span class="file">contactPage.ts</span>
+│   │   ├── <span class="file">services.ts</span>
+│   │   ├── <span class="file">team.ts</span>
+│   │   ├── <span class="file">testimonials.ts</span>
+│   │   ├── <span class="file">faq.ts</span>
+│   │   └── <span class="file">siteSettings.ts</span>
+│   ├── <span class="dir">content/</span>        <span class="note"># Developer-managed static content (not in CMS)</span>
+│   │   ├── <span class="file">site.ts</span>         <span class="note"># SITE_NAME, SITE_DOMAIN, defaultMeta</span>
+│   │   ├── <span class="file">nav.ts</span>          <span class="note"># Navigation branding &amp; ARIA strings</span>
+│   │   ├── <span class="file">footer.ts</span>       <span class="note"># Footer column headings, legal links</span>
+│   │   ├── <span class="file">layout.ts</span>       <span class="note"># Layout.astro strings (skip-to-content)</span>
+│   │   ├── <span class="file">heroVisual.ts</span>   <span class="note"># Decorative hero mock data</span>
+│   │   ├── <span class="file">schema.ts</span>       <span class="note"># JSON-LD schema builders</span>
+│   │   ├── <span class="file">contact.ts</span>      <span class="note"># Form labels &amp; validation errors</span>
+│   │   ├── <span class="file">privacy.ts</span>      <span class="note"># Full privacy policy text</span>
+│   │   ├── <span class="file">terms.ts</span>        <span class="note"># Full terms of service text</span>
+│   │   ├── <span class="file">notFound.ts</span>     <span class="note"># 404 page text</span>
+│   │   └── <span class="file">ui.ts</span>           <span class="note"># Shared UI labels (ARIA, button text)</span>
+│   └── <span class="dir">utils/</span>
+│       ├── <span class="file">icons.ts</span>        <span class="note"># 60+ SVG icons as keyed string map</span>
+│       └── <span class="file">sanityImage.ts</span>  <span class="note"># urlFor() CDN image builder</span>
+├── <span class="dir">types/</span>
+│   ├── <span class="file">content.ts</span>      <span class="note"># Reusable content building blocks</span>
+│   ├── <span class="file">layout.ts</span>       <span class="note"># Nav &amp; footer types</span>
+│   ├── <span class="file">pages.ts</span>        <span class="note"># Full page content types</span>
+│   ├── <span class="file">sanity.ts</span>       <span class="note"># SanityImage, SanityImageAsset</span>
+│   └── <span class="file">services.ts</span>     <span class="note"># ServiceCard, ServiceFeature</span>
+├── <span class="dir">structure/</span>
+│   └── <span class="file">index.ts</span>        <span class="note"># Sanity Studio navigation structure</span>
+├── <span class="dir">styles/</span>
+│   ├── <span class="file">global.css</span>      <span class="note"># Reset, design tokens, typography scale</span>
+│   ├── <span class="file">fonts-inter.css</span>
+│   ├── <span class="file">fonts-jakarta.css</span>
+│   └── <span class="file">fonts-podkova.css</span>
+└── <span class="dir">res/</span>             <span class="note"># Local raster assets (logo.png, OG image)</span>
+    </div>
+  </section>
+
+  <!-- ──────────────────────────────────────────────────
+       LAYER RULES
+  ────────────────────────────────────────────────── -->
+  <section id="layers">
+    <h2>Layer Rules &amp; Import Policy</h2>
+    <p>
+      Components are divided into three layers. Cross-layer imports break the dependency
+      hierarchy and must never occur:
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Layer</th><th>Folder</th><th>Can import from</th><th>Cannot import from</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="tag tag-purple">ui/</span></td>
+            <td><code>src/components/ui/</code></td>
+            <td><code>src/lib/</code>, <code>src/types/</code></td>
+            <td><code>sections/</code>, <code>layout/</code>, <code>pages/</code></td>
+          </tr>
+          <tr>
+            <td><span class="tag tag-blue">sections/</span></td>
+            <td><code>src/components/sections/</code></td>
+            <td><code>ui/</code>, <code>src/lib/</code>, <code>src/types/</code></td>
+            <td><code>pages/</code>, other <code>sections/</code></td>
+          </tr>
+          <tr>
+            <td><span class="tag tag-green">layout/</span></td>
+            <td><code>src/components/layout/</code></td>
+            <td><code>ui/</code>, <code>src/lib/</code>, <code>src/types/</code></td>
+            <td><code>sections/</code>, <code>pages/</code></td>
+          </tr>
+          <tr>
+            <td><span class="tag tag-amber">pages/</span></td>
+            <td><code>src/pages/</code></td>
+            <td>Everything — orchestrators only</td>
+            <td>No logic; compose only</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout warning">
+      <span class="callout-icon">&#9888;&#65039;</span>
+      <div>
+        Pages are <strong>thin orchestrators only</strong>. No business logic,
+        no inline content strings. Pages import sections and pass data down as props.
+        Data fetching belongs in <code>src/lib/api/</code>.
+      </div>
+    </div>
+  </section>
+
+  <!-- ──────────────────────────────────────────────────
+       PAGES & ROUTES
+  ────────────────────────────────────────────────── -->
+  <section id="pages">
+    <h2>Pages &amp; Routes</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>URL</th><th>File</th><th>Data Source</th><th>Key Sections</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>/</code></td>
+            <td>pages/index.astro</td>
+            <td><span class="tag tag-blue">Sanity</span></td>
+            <td>Hero, Ticker, HowItWorks, Services, Why, Testimonials, FAQ, FinalCTA</td>
+          </tr>
+          <tr>
+            <td><code>/about</code></td>
+            <td>pages/about.astro</td>
+            <td><span class="tag tag-blue">Sanity</span></td>
+            <td>AboutHero, Founder, Mission, Values, Credentials, Team, CEO, Offices</td>
+          </tr>
+          <tr>
+            <td><code>/contact</code></td>
+            <td>pages/contact.astro</td>
+            <td><span class="tag tag-blue">Sanity</span> + <span class="tag tag-green">Code</span></td>
+            <td>ContactIntro (trust badges from Sanity), Contact form (labels from code)</td>
+          </tr>
+          <tr>
+            <td><code>/faq</code></td>
+            <td>pages/faq.astro</td>
+            <td><span class="tag tag-blue">Sanity</span></td>
+            <td>FAQ accordion (items from Sanity collection)</td>
+          </tr>
+          <tr>
+            <td><code>/privacy</code></td>
+            <td>pages/privacy.astro</td>
+            <td><span class="tag tag-green">Code</span></td>
+            <td>Sidebar nav, sections, FAQs — all from privacy.ts</td>
+          </tr>
+          <tr>
+            <td><code>/terms</code></td>
+            <td>pages/terms.astro</td>
+            <td><span class="tag tag-green">Code</span></td>
+            <td>Sidebar nav, sections — all from terms.ts</td>
+          </tr>
+          <tr>
+            <td><code>/services/[slug]</code></td>
+            <td>pages/services/[service].astro</td>
+            <td><span class="tag tag-blue">Sanity</span></td>
+            <td>ServicePageHero, ServiceFeatureGrid, ServicePageCTA</td>
+          </tr>
+          <tr>
+            <td><code>/404</code></td>
+            <td>pages/404.astro</td>
+            <td><span class="tag tag-green">Code</span></td>
+            <td>Custom not-found with link back to home</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ──────────────────────────────────────────────────
+       COMPONENT CATALOGUE
+  ────────────────────────────────────────────────── -->
+  <section id="components">
+    <h2>Component Catalogue</h2>
+
+    <h3>Layout Components</h3>
+    <div class="card">
+      <h4>Nav.astro</h4>
+      <p>Top navigation bar with logo, page links, a services dropdown, and a mobile drawer. Navigation links are fetched from Sanity <code>siteSettings.navigation[]</code>. ARIA strings (open/close menu, dialog role) come from <code>src/lib/content/nav.ts</code>.</p>
+      <h4>Footer.astro</h4>
+      <p>Footer with three link columns (Services, Company, Contact), copyright text, and legal links. Tagline, email, location, and service links come from Sanity. Column headings and legal links come from <code>src/lib/content/footer.ts</code>.</p>
+    </div>
+
+    <h3>Section Components</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Component</th><th>Page</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>HeroSection</td><td>Home</td><td>Above-fold hero with heading, subheading, dual CTA buttons, and decorative stat card</td></tr>
+          <tr><td>SpecialtyTicker</td><td>Home</td><td>Horizontal scrolling ticker of medical specialties</td></tr>
+          <tr><td>HowItWorksSection</td><td>Home</td><td>4-step process with expandable bullet points</td></tr>
+          <tr><td>ServicesSection</td><td>Home</td><td>Sanity-driven grid of service cards</td></tr>
+          <tr><td>WhyChooseUs</td><td>Home</td><td>Metrics strip + why-feature list</td></tr>
+          <tr><td>TestimonialsSection</td><td>Home</td><td>Sanity-driven testimonial carousel with prev/next controls</td></tr>
+          <tr><td>FAQSection</td><td>Home</td><td>Accordion FAQ (Sanity items), generates FAQPage JSON-LD</td></tr>
+          <tr><td>FinalCTA</td><td>Home, Services</td><td>Full-width CTA banner with heading, sub-copy, and button</td></tr>
+          <tr><td>MetricsSection</td><td>Home</td><td>3-column animated metric display</td></tr>
+          <tr><td>AboutHeroSection</td><td>About</td><td>About page hero with heading and paragraph array</td></tr>
+          <tr><td>FounderSection</td><td>About</td><td>Founder biography with Sanity image</td></tr>
+          <tr><td>CEOSection</td><td>About</td><td>CEO profile with Sanity photo</td></tr>
+          <tr><td>MissionSection</td><td>About</td><td>Mission statement block</td></tr>
+          <tr><td>ValuesSection</td><td>About</td><td>Grid of company values</td></tr>
+          <tr><td>CredentialsSection</td><td>About</td><td>Checklist of credentials/certifications</td></tr>
+          <tr><td>TeamSection</td><td>About</td><td>Sanity-driven team member carousel</td></tr>
+          <tr><td>OfficesSection</td><td>About</td><td>Office location cards with map-pin and contact details</td></tr>
+          <tr><td>ContactIntroSection</td><td>Contact</td><td>Trust-point badges (from Sanity) + form intro copy</td></tr>
+          <tr><td>ServicePageHero</td><td>Services/[slug]</td><td>Dynamic hero with service title, description, and icon</td></tr>
+          <tr><td>ServiceFeatureGrid</td><td>Services/[slug]</td><td>Grid of service feature cards (icon, title, body)</td></tr>
+          <tr><td>ServicePageCTA</td><td>Services/[slug]</td><td>Service-specific CTA panel</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>UI Primitive Components</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Component</th><th>Props</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Button.astro</td>
+            <td>label, href, variant, size</td>
+            <td>Variants: primary, secondary. Used for all CTAs. Has :focus-visible ring.</td>
+          </tr>
+          <tr>
+            <td>ServiceCard.astro</td>
+            <td>ServiceCard type</td>
+            <td>Icon (from registry) + title + description + optional Gentu badge</td>
+          </tr>
+          <tr>
+            <td>TestimonialCard.astro</td>
+            <td>TestimonialCard type</td>
+            <td>Quote mark icon + quote text + author attribution</td>
+          </tr>
+          <tr>
+            <td>FAQItem.astro</td>
+            <td>FAQItem type</td>
+            <td>Accordion item. ARIA: button[aria-expanded], [aria-controls], role=region</td>
+          </tr>
+          <tr>
+            <td>WhyItem.astro</td>
+            <td>WhyItem type</td>
+            <td>Icon + title + description row for "Why Choose Us" section</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout info">
+      <span class="callout-icon">&#8505;&#65039;</span>
+      <div>
+        <strong>80-line limit:</strong> Every <code>.astro</code> file targets a maximum of
+        ~80 lines (frontmatter + template + style combined). If a component grows beyond
+        this, extract a sub-component.
+      </div>
+    </div>
+  </section>
+
+  <!-- ──────────────────────────────────────────────────
+       CONTENT STRATEGY
+  ────────────────────────────────────────────────── -->
+  <section id="content-strategy">
+    <h2>Content Management Strategy</h2>
+    <p>
+      MedZo uses a <strong>dual content system</strong>. The split is based on who owns
+      the content and how often it changes:
+    </p>
+    <div class="grid-2">
+      <div class="card">
+        <div class="tag tag-blue" style="margin-bottom:10px">Sanity CMS</div>
+        <p style="margin:0;font-size:.88rem;color:var(--gray-600)">
+          Team-managed content that changes frequently. Edited via Sanity Studio.
+          Fetched at build time via GROQ queries. Requires a Netlify redeploy to go live.
+        </p>
+        <ul style="margin-top:10px;font-size:.82rem;color:var(--gray-700);padding-left:18px">
+          <li>Home, About, Contact, FAQ page content</li>
+          <li>Services collection (dynamic route)</li>
+          <li>Team members, Testimonials</li>
+          <li>Site settings (navigation, footer tagline, social links)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="tag tag-green" style="margin-bottom:10px">src/lib/content/</div>
+        <p style="margin:0;font-size:.88rem;color:var(--gray-600)">
+          Developer-managed static content that rarely changes.
+          Edited in code; deploy on push to main.
+        </p>
+        <ul style="margin-top:10px;font-size:.82rem;color:var(--gray-700);padding-left:18px">
+          <li>Navigation ARIA strings &amp; branding</li>
+          <li>Footer column headings &amp; legal links</li>
+          <li>Privacy policy &amp; Terms of service (full text)</li>
+          <li>404 page text</li>
+          <li>JSON-LD schema builders</li>
+          <li>Form labels &amp; validation error messages</li>
+          <li>Shared UI labels &amp; ARIA strings</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ──────────────────────────────────────────────────
+       SANITY
+  ────────────────────────────────────────────────── -->
+  <section id="sanity">
+    <h2>Sanity CMS</h2>
+
+    <div class="callout info">
+      <span class="callout-icon">&#128274;</span>
+      <div>
+        <strong>Studio URL:</strong>
+        <a href="https://medzo.sanity.studio" target="_blank" rel="noopener">https://medzo.sanity.studio</a>
+        &nbsp;&mdash;&nbsp;
+        <strong>Login email:</strong> admin@medzo.com.au
+      </div>
+    </div>
+
+    <h3>Studio Structure</h3>
+    <p>The Sanity Studio is organised into <strong>Singletons</strong> (one document per type) and <strong>Collections</strong> (multiple documents per type):</p>
+    <div class="grid-2">
+      <div class="card">
+        <h4>Singletons</h4>
+        <ul style="font-size:.85rem;color:var(--gray-700);padding-left:18px">
+          <li><strong>siteSettings</strong> — Global: navigation, footer CMS fields, social links, metadata</li>
+          <li><strong>homePage</strong> — All hero, ticker, how-it-works, services, why, testimonials, FAQ section content</li>
+          <li><strong>aboutPage</strong> — Founder, mission, values, credentials, team, CEO, offices</li>
+          <li><strong>contactPage</strong> — Hero trust-point badges, form intro copy</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>Collections</h4>
+        <ul style="font-size:.85rem;color:var(--gray-700);padding-left:18px">
+          <li><strong>service</strong> — Individual service pages (title, description, features, icon, slug)</li>
+          <li><strong>teamMember</strong> — Team roster (name, role, bio, photo)</li>
+          <li><strong>testimonial</strong> — Customer quotes (quote, name, role)</li>
+          <li><strong>faqItem</strong> — FAQ question/answer pairs</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Sanity Client</h3>
+    <pre><code><span class="comment">// src/lib/api/sanity.ts</span>
+<span class="keyword">import</span> { createClient } <span class="keyword">from</span> <span class="string">"@sanity/client"</span>;
+
+<span class="keyword">export const</span> <span class="var">sanityClient</span> = <span class="fn">createClient</span>({
+  projectId: import.meta.env.<span class="var">PUBLIC_SANITY_PROJECT_ID</span>,
+  dataset:   import.meta.env.<span class="var">PUBLIC_SANITY_DATASET</span>,
+  apiVersion: <span class="string">"2025-05-27"</span>,
+  useCdn: import.meta.env.<span class="var">PROD</span>,  <span class="comment">// CDN in prod, always fresh in dev</span>
+});</code></pre>
+
+    <h3>Fetcher Pattern</h3>
+    <p>Every data type has a dedicated fetcher file in <code>src/lib/api/</code>. The pattern is consistent across all fetchers:</p>
+    <pre><code><span class="comment">// src/lib/api/homePage.ts</span>
+<span class="keyword">import</span> { defineQuery } <span class="keyword">from</span> <span class="string">"groq"</span>;
+<span class="keyword">import</span> { sanityClient } <span class="keyword">from</span> <span class="string">"./sanity"</span>;
+
+<span class="comment">// 1. Define typed GROQ query</span>
+<span class="keyword">export const</span> <span class="var">HOME_PAGE_QUERY</span> = <span class="fn">defineQuery</span>(<span class="string">`
+  *[_type == "homePage"][0]{
+    hero { heading, subheading, ctaPrimary, ctaSecondary },
+    ticker,
+    howItWorks { steps[] { ... } }
+  }
+`</span>);
+
+<span class="comment">// 2. Export async fetcher</span>
+<span class="keyword">export async function</span> <span class="fn">getHomePage</span>() {
+  <span class="keyword">return</span> sanityClient.<span class="fn">fetch</span>(<span class="var">HOME_PAGE_QUERY</span>);
+}</code></pre>
+
+    <h3>Image Helper</h3>
+    <pre><code><span class="comment">// src/lib/utils/sanityImage.ts</span>
+<span class="keyword">import</span> imageUrlBuilder <span class="keyword">from</span> <span class="string">"@sanity/image-url"</span>;
+<span class="keyword">import</span> { sanityClient } <span class="keyword">from</span> <span class="string">"../api/sanity"</span>;
+
+<span class="keyword">const</span> <span class="var">builder</span> = <span class="fn">imageUrlBuilder</span>(sanityClient);
+
+<span class="keyword">export function</span> <span class="fn">urlFor</span>(source) {
+  <span class="keyword">return</span> builder.<span class="fn">image</span>(source);
+}
+
+<span class="comment">// Usage in components:</span>
+<span class="comment">// urlFor(photo).width(400).height(400).fit('crop').url()</span></code></pre>
+
+    <div class="callout warning">
+      <span class="callout-icon">&#9888;&#65039;</span>
+      <div>
+        <strong>Deploy after Sanity edits:</strong> Because the site is statically generated,
+        Sanity content changes require a manual <strong>Netlify redeploy</strong> to go live.
+        A webhook can automate this — not yet configured.
+      </div>
+    </div>
+  </section>
+
+  <!-- ──────────────────────────────────────────────────
+       STATIC CONTENT FILES
+  ────────────────────────────────────────────────── -->
+  <section id="static-content">
+    <h2>Static Content Files</h2>
+    <p>
+      Files in <code>src/lib/content/</code> are the source of truth for all developer-managed
+      copy. Each file exports a typed object or constant. Components import these and pass
+      the values as props — no inline strings in templates.
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>File</th><th>Exports</th><th>What it controls</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>site.ts</code></td>
+            <td>SITE_NAME, SITE_DOMAIN, defaultMeta, BACK_TO_HOME</td>
+            <td>Global constants used in Layout and schema builders</td>
+          </tr>
+          <tr>
+            <td><code>nav.ts</code></td>
+            <td>navBrand, navServicesItem, navCta</td>
+            <td>Navigation wordmark, ARIA open/close strings, CTA label &amp; href</td>
+          </tr>
+          <tr>
+            <td><code>footer.ts</code></td>
+            <td>footerContent</td>
+            <td>Column headings, legal links, copyright text, logo alt</td>
+          </tr>
+          <tr>
+            <td><code>layout.ts</code></td>
+            <td>layoutContent</td>
+            <td>"Skip to content" link text in Layout.astro</td>
+          </tr>
+          <tr>
+            <td><code>heroVisual.ts</code></td>
+            <td>heroVisual</td>
+            <td>Decorative hero stat card mock data</td>
+          </tr>
+          <tr>
+            <td><code>schema.ts</code></td>
+            <td>siteSchema, websiteSchema, buildFaqSchema, buildServiceSchema, buildBreadcrumbSchema</td>
+            <td>JSON-LD structured data injected into &lt;head&gt; on each page</td>
+          </tr>
+          <tr>
+            <td><code>contact.ts</code></td>
+            <td>contact</td>
+            <td>Form field labels, placeholders, submit button text, error messages, success messages</td>
+          </tr>
+          <tr>
+            <td><code>privacy.ts</code></td>
+            <td>privacyContent</td>
+            <td>Full Privacy Policy: 10 sections + 6 FAQs (Australian law references)</td>
+          </tr>
+          <tr>
+            <td><code>terms.ts</code></td>
+            <td>termsContent</td>
+            <td>Full Terms of Service: 7 sections</td>
+          </tr>
+          <tr>
+            <td><code>notFound.ts</code></td>
+            <td>notFoundContent</td>
+            <td>404 page heading, body, and back-to-home link</td>
+          </tr>
+          <tr>
+            <td><code>ui.ts</code></td>
+            <td>ui</td>
+            <td>Shared labels: breadcrumbs, ARIA strings, badge text, "Read more/less"</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ──────────────────────────────────────────────────
+       ICONS
+  ────────────────────────────────────────────────── -->
+  <section id="icons">
+    <h2>SVG Icon Registry</h2>
+    <p>
+      All SVG icons live in <code>src/lib/utils/icons.ts</code> as a keyed string map.
+      No inline SVG is permitted in component templates.
+    </p>
+
+    <h3>Usage Pattern</h3>
+    <pre><code><span class="comment">// In any .astro component</span>
+<span class="keyword">import</span> { icons } <span class="keyword">from</span> <span class="string">"../lib/utils/icons"</span>;
+
+<span class="comment">// Template — renders the SVG string safely</span>
+&lt;Fragment set:html={icons[<span class="string">"calendar"</span>]} /&gt;</code></pre>
+
+    <h3>Adding a New Icon</h3>
+
+    <div class="card">
+      <h4>Step 1 — Get the SVG source</h4>
+      <p style="font-size:.88rem;margin-bottom:0">
+        Copy the raw SVG markup from your source (e.g. Heroicons, Lucide, Phosphor, or a custom export from Figma).
+        Strip any outer <code>&lt;?xml&gt;</code> declaration and any wrapping <code>&lt;html&gt;</code>/<code>&lt;body&gt;</code> tags — keep only the <code>&lt;svg&gt;</code> element and its children.
+      </p>
+    </div>
+
+    <div class="card">
+      <h4>Step 2 — Clean the SVG</h4>
+      <ul style="font-size:.88rem;color:var(--gray-700);padding-left:18px;line-height:2">
+        <li>Remove any hardcoded <code>fill</code> or <code>stroke</code> colour attributes (e.g. <code>fill="#000000"</code>) so the icon inherits <code>currentColor</code> from CSS.</li>
+        <li>Replace them with <code>fill="currentColor"</code> or <code>stroke="currentColor"</code> as appropriate.</li>
+        <li>Remove <code>width</code> and <code>height</code> attributes if present — size is controlled by CSS on the parent element.</li>
+        <li>Make sure a <code>viewBox</code> attribute is present (e.g. <code>viewBox="0 0 24 24"</code>).</li>
+        <li>Add <code>aria-hidden="true"</code> to the <code>&lt;svg&gt;</code> tag — icons are decorative; accessible labels belong on the parent button or link.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h4>Step 3 — Add it to the registry</h4>
+      <p style="font-size:.88rem;color:var(--gray-700);margin-bottom:10px">
+        Open <code>src/lib/utils/icons.ts</code> and add the new entry to the <code>icons</code> map.
+        Use a kebab-case key that describes what the icon looks like, not where it's used.
+      </p>
+      <pre style="margin:0"><code><span class="comment">// src/lib/utils/icons.ts</span>
+<span class="keyword">export const</span> <span class="var">icons</span>: Record&lt;<span class="type">string</span>, <span class="type">string</span>&gt; = {
+  <span class="comment">// ... existing icons ...</span>
+
+  <span class="string">"my-icon"</span>: <span class="string">`&lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    stroke-width="2" aria-hidden="true"&gt;
+    &lt;path d="M5 12h14M12 5l7 7-7 7"/&gt;
+  &lt;/svg&gt;`</span>,
+};</code></pre>
+    </div>
+
+    <div class="card">
+      <h4>Step 4 — Use it in a component</h4>
+      <pre style="margin:0"><code><span class="keyword">import</span> { icons } <span class="keyword">from</span> <span class="string">"../../lib/utils/icons"</span>;
+
+<span class="comment">&lt;!-- Renders the SVG string safely, no XSS risk from internal registry --&gt;</span>
+&lt;Fragment set:html={icons[<span class="string">"my-icon"</span>]} /&gt;</code></pre>
+    </div>
+
+    <div class="callout warning">
+      <span class="callout-icon">&#9888;&#65039;</span>
+      <div>
+        <strong>Never paste an inline <code>&lt;svg&gt;</code> block directly into a component template.</strong>
+        All icons must go through the registry. This keeps icons in one place, makes them
+        reusable, and means any icon can be updated site-wide by editing a single line in
+        <code>icons.ts</code>.
+      </div>
+    </div>
+
+    <h3>Icon Categories</h3>
+    <div class="grid-3" style="margin-top:12px">
+      <div class="card" style="padding:14px">
+        <div class="tag tag-blue" style="margin-bottom:6px">Generic</div>
+        <p style="font-size:.8rem;margin:0;color:var(--gray-600)">monitor, home, users, file, settings, shield, chart-bar, star, check-circle, arrow-right…</p>
+      </div>
+      <div class="card" style="padding:14px">
+        <div class="tag tag-green" style="margin-bottom:6px">Hero</div>
+        <p style="font-size:.8rem;margin:0;color:var(--gray-600)">hero-patients, hero-billing, hero-appointments, hero-compliance…</p>
+      </div>
+      <div class="card" style="padding:14px">
+        <div class="tag tag-amber" style="margin-bottom:6px">Navigation</div>
+        <p style="font-size:.8rem;margin:0;color:var(--gray-600)">nav-close, nav-menu, carousel-prev, carousel-next…</p>
+      </div>
+      <div class="card" style="padding:14px">
+        <div class="tag tag-purple" style="margin-bottom:6px">Services</div>
+        <p style="font-size:.8rem;margin:0;color:var(--gray-600)">calendar, phone-call, credit-card, video, lock, clock, mail-check…</p>
+      </div>
+      <div class="card" style="padding:14px">
+        <div class="tag tag-blue" style="margin-bottom:6px">Contact</div>
+        <p style="font-size:.8rem;margin:0;color:var(--gray-600)">map-pin, phone, mail, fax, linkedin…</p>
+      </div>
+      <div class="card" style="padding:14px">
+        <div class="tag tag-green" style="margin-bottom:6px">Misc</div>
+        <p style="font-size:.8rem;margin:0;color:var(--gray-600)">quote-mark, testimonials-arrow, faq-chevron, cred-check, gentu-logo…</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ──────────────────────────────────────────────────
+       TYPE SYSTEM
+  ────────────────────────────────────────────────── -->
+  <section id="types">
+    <h2>TypeScript Type System</h2>
+    <p>
+      Every piece of content has a matching TypeScript interface in <code>src/types/</code>.
+      Type mismatches are caught at build time by <code>astro check</code>, not at runtime.
+    </p>
+
+    <h3>content.ts — Reusable building blocks</h3>
+    <pre><code><span class="type">SectionHeading</span>   → eyebrow: string, title: string, body?: string
+<span class="type">Metric</span>           → value: string, suffix?: string, label: string
+<span class="type">FinalCta</span>         → heading, subheading, buttonLabel, buttonHref
+<span class="type">TickerContent</span>    → intro: string, specialties: string[]
+<span class="type">HowItWorksStep</span>   → stepLabel, title, description, bullets: string[]
+<span class="type">HowItWorksContent</span>→ eyebrow, heading, subheading, steps: HowItWorksStep[]
+<span class="type">FAQItem</span>          → question: string, answer: string
+<span class="type">WhyItem</span>          → iconName: string, title: string, description: string
+<span class="type">TeamMember</span>       → name, role, bio, imageUrl?, imagePosition?
+<span class="type">TestimonialCard</span>  → quote: string, name: string, role: string</code></pre>
+
+    <h3>layout.ts — Navigation &amp; footer</h3>
+    <pre><code><span class="type">NavDropdownItem</span>    → label, href, description, iconName
+<span class="type">NavLink</span>            → label: string, href: string, children?: NavDropdownItem[]
+<span class="type">NavBrand</span>           → wordmark, tagline, drawerTagline, logoAlt, ariaOpenMenu, ariaCloseMenu, ariaDialog
+<span class="type">FooterLink</span>         → label: string, href: string
+<span class="type">FooterColumnHeadings</span>→ services, company, contact
+<span class="type">FooterContent</span>      → columnHeadings, company[], copyright, legalLinks[], logoAlt, wordmark</code></pre>
+
+    <h3>pages.ts — Full page content shapes</h3>
+    <pre><code><span class="type">HeroContent</span>    → heading, subheading, body, ctaPrimary, ctaSecondary
+<span class="type">HomeContent</span>    → hero, ticker, howItWorks, servicesSection, whySection,
+               →   testimonialsSection, faqSection, finalCta
+<span class="type">AboutContent</span>   → metaTitle, metaDescription, hero{title, heading, paragraphs[]},
+               →   founder, mission, values, credentials, team, cta
+<span class="type">ContactContent</span> → hero, form{heading, body, fields{name, email, phone, message,
+               →   defaultSubject, submit, sendingLabel, errors{...},
+               →   successHeading, successBody}}
+<span class="type">PolicyContent</span>  → metaTitle, metaDescription, title, lastUpdated, intro,
+               →   sidebarAriaLabel, backLink, sections[], faqs?, faqsHeading?</code></pre>
+
+    <h3>Props Interface Pattern</h3>
+    <p>Every component declares its props interface at the top of its frontmatter:</p>
+    <pre><code><span class="comment">// src/components/sections/HeroSection.astro</span>
+---
+<span class="keyword">interface</span> <span class="type">Props</span> {
+  heading:    <span class="type">string</span>;
+  subheading: <span class="type">string</span>;
+  ctaPrimary: <span class="type">{ label: string; href: string }</span>;
+  ctaSecondary?: <span class="type">{ label: string; href: string }</span>;
+}
+
+<span class="keyword">const</span> { heading, subheading, ctaPrimary, ctaSecondary } = Astro.props;
+---</code></pre>
+  </section>
+
+  <!-- ──────────────────────────────────────────────────
+       DATA FETCHING
+  ────────────────────────────────────────────────── -->
+  <section id="data-fetching">
+    <h2>Data Fetching Pattern</h2>
+    <p>
+      All data fetching happens at <strong>build time</strong> inside page frontmatter.
+      Pages call fetchers, then pass the data as props to section components.
+    </p>
+    <pre><code><span class="comment">// src/pages/index.astro (frontmatter)</span>
+---
+<span class="keyword">import</span> { getHomePage } <span class="keyword">from</span> <span class="string">"../lib/api/homePage"</span>;
+<span class="keyword">import</span> { getServices }  <span class="keyword">from</span> <span class="string">"../lib/api/services"</span>;
+<span class="keyword">import</span> HeroSection      <span class="keyword">from</span> <span class="string">"../components/sections/HeroSection.astro"</span>;
+
+<span class="keyword">const</span> [homePage, services] = <span class="keyword">await</span> Promise.<span class="fn">all</span>([
+  <span class="fn">getHomePage</span>(),
+  <span class="fn">getServices</span>(),
+]);
+---
+
+<span class="comment">&lt;!-- Template — thin orchestrator, no logic --&gt;</span>
+&lt;HeroSection {...homePage.hero} /&gt;
+&lt;ServicesSection services={services} /&gt;</code></pre>
+
+    <div class="callout info">
+      <span class="callout-icon">&#8505;&#65039;</span>
+      <div>
+        Run <code>npx astro check</code> before every commit. It type-checks all
+        <code>.astro</code> files including GROQ query return types against component
+        prop interfaces.
+      </div>
+    </div>
+  </section>
+
+  <!-- ──────────────────────────────────────────────────
+       ACCESSIBILITY
+  ────────────────────────────────────────────────── -->
+  <section id="accessibility">
+    <h2>Accessibility</h2>
+
+    <div class="callout success">
+      <span class="callout-icon">&#9989;</span>
+      <div>
+        <strong>Baseline:</strong> WCAG 2.1 AA. Every violation is treated as a bug,
+        not a nice-to-have.
+      </div>
+    </div>
+
+    <h3>Semantic HTML</h3>
+    <ul class="checklist">
+      <li><span class="check">✓</span>Correct elements: <code>&lt;button&gt;</code> for actions, <code>&lt;a&gt;</code> for navigation, landmark elements throughout.</li>
+      <li><span class="check">✓</span>Sequential heading levels (h1 → h2 → h3). Never skip a level for visual style — use CSS instead.</li>
+      <li><span class="check">✓</span>Every page has exactly one <code>&lt;h1&gt;</code>.</li>
+      <li><span class="check">✓</span>Landmark regions: <code>&lt;nav&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;header&gt;</code>, <code>&lt;footer&gt;</code>, <code>&lt;section&gt;</code>, <code>&lt;article&gt;</code>.</li>
+    </ul>
+
+    <h3>Keyboard &amp; Focus</h3>
+    <ul class="checklist">
+      <li><span class="check">✓</span>All interactive elements reachable by keyboard alone (Tab, Shift+Tab, Enter, Space).</li>
+      <li><span class="check">✓</span>Visible <code>:focus-visible</code> ring on all interactive elements. Never removes default outline without replacing it.</li>
+      <li><span class="check">✓</span>Mobile nav drawer traps focus while open; returns focus to trigger on close.</li>
+      <li><span class="check">✓</span>Skip-to-content link in <code>Layout.astro</code> — first focusable element on every page.</li>
+      <li><span class="check">✓</span>No <code>tabindex</code> greater than 0.</li>
+    </ul>
+
+    <h3>ARIA Patterns</h3>
+    <ul class="checklist">
+      <li><span class="check">✓</span>FAQ accordion: <code>button[aria-expanded]</code>, <code>[aria-controls]</code>, <code>role="region"</code> on panel.</li>
+      <li><span class="check">✓</span>Nav drawer: <code>role="dialog"</code>, <code>aria-modal="true"</code>, <code>aria-label</code> from content file.</li>
+      <li><span class="check">✓</span>Carousel controls: <code>aria-label</code> on prev/next buttons from <code>ui.ts</code>.</li>
+      <li><span class="check">✓</span>All ARIA strings come from <code>src/lib/content/</code> — never hardcoded in templates.</li>
+      <li><span class="check">✓</span>Prefer native HTML semantics over ARIA roles. Only add ARIA when native is insufficient.</li>
+    </ul>
+
+    <h3>Images &amp; Media</h3>
+    <ul class="checklist">
+      <li><span class="check">✓</span>Astro <code>&lt;Image /&gt;</code> component used for all raster images (never raw <code>&lt;img&gt;</code>). Auto-optimises and requires <code>alt</code>.</li>
+      <li><span class="check">✓</span>Meaningful <code>alt</code> text on all images. Decorative images: <code>alt=""</code>.</li>
+      <li><span class="check">✓</span>Sanity images use <code>urlFor()</code> with explicit width/height for proper intrinsic sizing.</li>
+    </ul>
+
+    <h3>Forms</h3>
+    <ul class="checklist">
+      <li><span class="check">✓</span>Every input has an associated <code>&lt;label&gt;</code> via <code>for</code>/<code>id</code>.</li>
+      <li><span class="check">✓</span>Error messages programmatically associated via <code>aria-describedby</code>.</li>
+      <li><span class="check">✓</span>Required fields marked with <code>aria-required="true"</code>.</li>
+      <li><span class="check">✓</span>All form labels come from <code>src/lib/content/contact.ts</code> — typed and stable.</li>
+    </ul>
+
+    <h3>Colour &amp; Contrast</h3>
+    <ul class="checklist">
+      <li><span class="check">✓</span>Body text: minimum 4.5:1 contrast ratio.</li>
+      <li><span class="check">✓</span>Large text (&ge;18pt) and UI components: minimum 3:1.</li>
+      <li><span class="warn">!</span>Run a contrast checker before shipping any new colour combination.</li>
+    </ul>
+
+    <h3>Pre-commit Accessibility Checklist</h3>
+    <ul class="checklist">
+      <li><span class="check">✓</span>Keyboard-navigate full page — no traps, no unreachable elements.</li>
+      <li><span class="check">✓</span>Run Axe or Lighthouse — zero critical or serious violations.</li>
+      <li><span class="check">✓</span>Test with NVDA or VoiceOver on the main user flow.</li>
+      <li><span class="check">✓</span>All images have appropriate alt text.</li>
+      <li><span class="check">✓</span>Colour contrast checked for any new palette entries.</li>
+    </ul>
+  </section>
+
+  <!-- ──────────────────────────────────────────────────
+       ANIMATIONS
+  ────────────────────────────────────────────────── -->
+  <section id="animations">
+    <h2>Animations</h2>
+    <p>
+      All animations use the <code>motion</code> package (framework-agnostic Framer Motion).
+      Raw CSS <code>@keyframes</code> are not used for anything beyond the simplest static
+      transitions.
+    </p>
+
+    <h3>Required Script Wrapper</h3>
+    <div class="callout danger">
+      <span class="callout-icon">&#128680;</span>
+      <div>
+        <strong>Every <code>&lt;script&gt;</code> block must wrap all code in <code>astro:page-load</code>.</strong>
+        The site uses <code>ClientRouter</code> for SPA-style navigation. Without this wrapper,
+        animations only fire on the first page load and are invisible on every subsequent navigation.
+      </div>
+    </div>
+    <pre><code>document.<span class="fn">addEventListener</span>(<span class="string">"astro:page-load"</span>, () => {
+  <span class="keyword">if</span> (!window.<span class="fn">matchMedia</span>(<span class="string">"(prefers-reduced-motion: reduce)"</span>).matches) {
+    <span class="comment">// All animate / inView / RAF calls go here</span>
+  }
+});</code></pre>
+
+    <h3>No-Flash Rule</h3>
+    <p>
+      Never animate from <code>opacity: 0</code> in JS without first setting
+      <code>opacity: 0</code> in CSS. Otherwise the browser paints the element visible on
+      frame zero, then the animation snaps it to invisible — causing a visible flash.
+    </p>
+    <pre><code><span class="comment">/* CSS — inside the component's &lt;style&gt; block */</span>
+@media (prefers-reduced-motion: no-preference) {
+  .hero-heading, .card { opacity: 0; }
+}
+
+<span class="comment">/* JS — animate from the CSS initial state */</span>
+(animate <span class="keyword">as</span> any)(
+  <span class="string">".hero-heading"</span>,
+  { opacity: [0, 1], y: [24, 0] },
+  { duration: 0.5, easing: [0.22, 1, 0.36, 1] },
+);</code></pre>
+
+    <h3>Required Animation Patterns</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Pattern</th><th>API</th><th>Duration</th><th>When to use</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Entrance (above fold)</td>
+            <td><code>animate()</code></td>
+            <td>0.4 – 0.7s</td>
+            <td>Every above-the-fold section on load</td>
+          </tr>
+          <tr>
+            <td>Scroll reveal</td>
+            <td><code>inView()</code></td>
+            <td>0.4 – 0.6s</td>
+            <td>Sections below the fold as they enter viewport</td>
+          </tr>
+          <tr>
+            <td>Staggered lists</td>
+            <td><code>stagger(0.08)</code></td>
+            <td>0.4 – 0.5s</td>
+            <td>Any list of cards or items</td>
+          </tr>
+          <tr>
+            <td>Button hover</td>
+            <td><code>animate(scale: 1.04)</code></td>
+            <td>0.15s</td>
+            <td>All CTA buttons</td>
+          </tr>
+          <tr>
+            <td>Page transition</td>
+            <td><code>animate(opacity: [0,1])</code></td>
+            <td>0.35s</td>
+            <td>On every route change (ClientRouter)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>RAF Loops (Canvas / Ticker)</h3>
+    <pre><code><span class="keyword">let</span> <span class="var">rafId</span>: number | <span class="keyword">null</span> = <span class="keyword">null</span>;
+
+document.<span class="fn">addEventListener</span>(<span class="string">"astro:page-load"</span>, () => {
+  <span class="keyword">if</span> (<span class="var">rafId</span> !== <span class="keyword">null</span>) {
+    <span class="fn">cancelAnimationFrame</span>(<span class="var">rafId</span>);   <span class="comment">// prevent duplicate loops on nav</span>
+    <span class="var">rafId</span> = <span class="keyword">null</span>;
+  }
+  <span class="var">rafId</span> = <span class="fn">requestAnimationFrame</span>(draw);
+});</code></pre>
+
+    <h3>Motion TypeScript Cast</h3>
+    <p>
+      The <code>motion</code> package's TypeScript overloads don't cover all valid runtime
+      calls (CSS selector strings, <code>y</code> shorthand, etc.). Use the cast pattern
+      instead of <code>@ts-ignore</code>:
+    </p>
+    <pre><code><span class="comment">// Correct — cast suppresses overload error on the entire call</span>
+(animate <span class="keyword">as</span> any)(<span class="string">".selector"</span>, { opacity: [0, 1], y: [24, 0] }, { duration: 0.5 });
+
+<span class="comment">// Wrong — @ts-ignore only suppresses the line it's on</span>
+<span class="comment">// @ts-ignore</span>
+animate(<span class="string">".selector"</span>, { opacity: [0, 1] }, { duration: 0.5 });</code></pre>
+
+    <h3>Animation Rules Summary</h3>
+    <ul class="checklist">
+      <li><span class="check">✓</span>Prefer spring or custom cubic-bezier easing over linear.</li>
+      <li><span class="check">✓</span>Entrance: 0.4–0.7s. Micro-interactions: 0.1–0.2s.</li>
+      <li><span class="check">✓</span>Always respect <code>prefers-reduced-motion</code> — wrap all animate calls.</li>
+      <li><span class="check">✓</span>Only animate <code>transform</code> and <code>opacity</code> — not layout properties (<code>width</code>, <code>top</code>, etc.).</li>
+      <li><span class="warn">!</span>Never animate from opacity: 0 in JS without matching CSS opacity: 0.</li>
+      <li><span class="warn">!</span>Never place animate/inView calls at the top level of a script block.</li>
+      <li><span class="warn">!</span>Never attach event listeners outside astro:page-load.</li>
+    </ul>
+  </section>
+
+  <!-- ──────────────────────────────────────────────────
+       NO HARDCODING
+  ────────────────────────────────────────────────── -->
+  <section id="no-hardcoding">
+    <h2>No-Hardcoding Rule</h2>
+    <p>
+      Every piece of content in a component template must come from an external source.
+      No exceptions.
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Content Type</th><th>Where it lives</th><th>How to use it</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Text, labels, ARIA strings, hrefs</td>
+            <td><code>src/lib/content/*.ts</code></td>
+            <td>Export typed object; import and pass as props</td>
+          </tr>
+          <tr>
+            <td>SVG icons</td>
+            <td><code>src/lib/utils/icons.ts</code></td>
+            <td><code>icons["key"]</code> → <code>&lt;Fragment set:html={...} /&gt;</code></td>
+          </tr>
+          <tr>
+            <td>Raster images (PNG, JPG, WebP)</td>
+            <td><code>src/res/</code> or Sanity CDN</td>
+            <td>Import the file or use <code>urlFor()</code>; pass via typed prop</td>
+          </tr>
+          <tr>
+            <td>CMS content (team, services, etc.)</td>
+            <td>Sanity Studio</td>
+            <td>Fetch via <code>src/lib/api/*.ts</code>; pass as props</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Violations to Catch Before Committing</h3>
+    <ul class="checklist">
+      <li><span class="warn">!</span>A bare string inside a template tag: <code>&lt;h2&gt;Our Services&lt;/h2&gt;</code> — move to a content file.</li>
+      <li><span class="warn">!</span>An inline <code>&lt;svg&gt;</code> block in a component — move to <code>icons.ts</code>.</li>
+      <li><span class="warn">!</span>A hardcoded <code>src="..."</code> on an <code>&lt;Image /&gt;</code> — import from <code>src/res/</code> or use <code>urlFor()</code>.</li>
+      <li><span class="warn">!</span>A hardcoded <code>href</code>, <code>aria-label</code>, or <code>alt</code> containing real copy — move to a content file.</li>
+      <li><span class="warn">!</span>Em-dashes (—) in copy — use a comma, colon, or rephrase instead.</li>
+    </ul>
+
+    <div class="callout info">
+      <span class="callout-icon">&#8505;&#65039;</span>
+      <div>
+        <strong>The test:</strong> If you can change any visible word or icon on the page by
+        editing only files in <code>src/lib/</code>, <code>src/res/</code>, or Sanity Studio,
+        the component is clean.
+      </div>
+    </div>
+  </section>
+
+  <!-- ──────────────────────────────────────────────────
+       CMS READINESS
+  ────────────────────────────────────────────────── -->
+  <section id="cms-readiness">
+    <h2>CMS Readiness Pattern</h2>
+    <p>
+      Even static content files are written so that migrating to a CMS only requires
+      swapping the data source — no component rewrites.
+    </p>
+
+    <h3>Static Content Object (Today)</h3>
+    <pre><code><span class="comment">// src/lib/content/hero.ts</span>
+<span class="keyword">import type</span> { <span class="type">HeroContent</span> } <span class="keyword">from</span> <span class="string">"../../types/pages"</span>;
+
+<span class="keyword">export const</span> <span class="var">hero</span>: <span class="type">HeroContent</span> = {
+  heading:    <span class="string">"Your heading here"</span>,
+  subheading: <span class="string">"Supporting copy goes here."</span>,
+  ctaLabel:   <span class="string">"Get started"</span>,
+  ctaHref:    <span class="string">"/contact"</span>,
+};</code></pre>
+
+    <h3>After CMS Migration (Future)</h3>
+    <pre><code><span class="comment">// src/lib/api/hero.ts — only this file changes</span>
+<span class="keyword">export async function</span> <span class="fn">getHeroContent</span>(): <span class="type">Promise&lt;HeroContent&gt;</span> {
+  <span class="keyword">return</span> sanityClient.<span class="fn">fetch</span>(<span class="var">HERO_QUERY</span>);
+}
+<span class="comment">// Component and page templates stay identical.</span></code></pre>
+
+    <h3>Content Object Rules</h3>
+    <ul class="checklist">
+      <li><span class="check">✓</span>Every page defines its own content object(s) at the top of the frontmatter.</li>
+      <li><span class="check">✓</span>Field names are stable and descriptive: <code>heading</code>, <code>subheading</code>, <code>ctaLabel</code>, <code>ctaHref</code>, <code>imageUrl</code>.</li>
+      <li><span class="check">✓</span>All content objects have a matching TypeScript interface in <code>src/types/</code>.</li>
+      <li><span class="check">✓</span>Never use array indices to reference content items — use named keys.</li>
+      <li><span class="check">✓</span>Images referenced as URL strings (not <code>import</code> statements) for CDN compatibility.</li>
+      <li><span class="warn">!</span>If a content object is used on more than one page, move it to <code>src/lib/content/</code> immediately.</li>
+    </ul>
+  </section>
+
+  <!-- ──────────────────────────────────────────────────
+       NAMING
+  ────────────────────────────────────────────────── -->
+  <section id="naming">
+    <h2>Naming Conventions</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Item</th><th>Convention</th><th>Example</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Component files</td><td>PascalCase</td><td><code>PricingCard.astro</code></td></tr>
+          <tr><td>Utility files</td><td>camelCase</td><td><code>formatDate.ts</code></td></tr>
+          <tr><td>CSS class names</td><td>kebab-case</td><td><code>.hero-title</code></td></tr>
+          <tr><td>TypeScript interfaces</td><td>PascalCase</td><td><code>Props</code>, <code>BlogPost</code></td></tr>
+          <tr><td>Constants</td><td>SCREAMING_SNAKE_CASE</td><td><code>MAX_ITEMS</code></td></tr>
+          <tr><td>Icon keys</td><td>kebab-case</td><td><code>icons["map-pin"]</code></td></tr>
+          <tr><td>Sanity document types</td><td>camelCase</td><td><code>homePage</code>, <code>faqItem</code></td></tr>
+          <tr><td>CSS custom properties</td><td>kebab-case</td><td><code>--color-primary</code></td></tr>
+          <tr><td>Environment variables</td><td>SCREAMING_SNAKE_CASE prefixed PUBLIC_</td><td><code>PUBLIC_SANITY_PROJECT_ID</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ──────────────────────────────────────────────────
+       DEPLOYMENT
+  ────────────────────────────────────────────────── -->
+  <!-- ──────────────────────────────────────────────────
+       SANITY OPERATIONAL GUIDE
+  ────────────────────────────────────────────────── -->
+  <section id="sanity-editable">
+    <h2>Sanity — What Editors Can Change</h2>
+    <p>
+      All of the following can be updated directly in Sanity Studio at
+      <a href="https://medzo.sanity.studio" target="_blank" rel="noopener">https://medzo.sanity.studio</a>
+      (log in with <strong>admin@medzo.com.au</strong>)
+      without touching any code. After publishing changes, a manual redeploy on Hostinger is
+      required for them to go live (see <a href="#sanity-content-change">Making a Content Change</a>).
+    </p>
+
+    <h3>Site Settings <span class="tag tag-blue">Singleton</span></h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Field</th><th>What it controls</th></tr></thead>
+        <tbody>
+          <tr><td>Navigation links</td><td>The links that appear in the top navigation bar</td></tr>
+          <tr><td>Footer tagline</td><td>The short descriptor line under the logo in the footer</td></tr>
+          <tr><td>Footer email</td><td>Contact email shown in the footer</td></tr>
+          <tr><td>Footer location</td><td>Office location text shown in the footer</td></tr>
+          <tr><td>Footer services links</td><td>Service links listed in the footer Services column</td></tr>
+          <tr><td>Social links</td><td>LinkedIn and any other social profile URLs</td></tr>
+          <tr><td>Global metadata</td><td>Default site title and meta description used as fallback for SEO</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Home Page <span class="tag tag-blue">Singleton</span></h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Section</th><th>Editable fields</th></tr></thead>
+        <tbody>
+          <tr><td>Hero</td><td>Heading, subheading, body text, primary CTA label &amp; link, secondary CTA label &amp; link</td></tr>
+          <tr><td>Specialty Ticker</td><td>Intro text, list of specialties</td></tr>
+          <tr><td>How It Works</td><td>Eyebrow, heading, subheading, each step's label/title/description/bullets</td></tr>
+          <tr><td>Services Section</td><td>Section heading and subheading (individual service cards managed in the Services collection)</td></tr>
+          <tr><td>Why Choose Us</td><td>Heading, metrics (value + label), feature list items (icon, title, description)</td></tr>
+          <tr><td>Testimonials Section</td><td>Section heading (individual testimonials managed in the Testimonials collection)</td></tr>
+          <tr><td>FAQ Section</td><td>Section heading (individual FAQ items managed in the FAQ Items collection)</td></tr>
+          <tr><td>Final CTA</td><td>Heading, subheading, button label &amp; link</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>About Page <span class="tag tag-blue">Singleton</span></h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Section</th><th>Editable fields</th></tr></thead>
+        <tbody>
+          <tr><td>Hero</td><td>Title, heading, paragraph array</td></tr>
+          <tr><td>Founder</td><td>Name, bio, photo (with hotspot/crop)</td></tr>
+          <tr><td>CEO</td><td>Name, role, bio, photo</td></tr>
+          <tr><td>Mission</td><td>Heading, body text</td></tr>
+          <tr><td>Values</td><td>Each value's icon, title, and description</td></tr>
+          <tr><td>Credentials</td><td>Each credential item's text</td></tr>
+          <tr><td>Offices</td><td>Each office's name, address, phone, email</td></tr>
+          <tr><td>CTA</td><td>Heading, button label &amp; link</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Contact Page <span class="tag tag-blue">Singleton</span></h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Field</th><th>What it controls</th></tr></thead>
+        <tbody>
+          <tr><td>Trust badge points</td><td>The short reassurance items shown next to the contact form (e.g. "Responds within 24 hours")</td></tr>
+          <tr><td>Form intro heading &amp; body</td><td>The heading and paragraph above the contact form</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Collections — multiple documents</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Collection</th><th>What editors can do</th><th>Effect on site</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Services</strong></td>
+            <td>Add, edit, or delete service documents. Each document has: title, slug, description, icon name, features (icon, title, body), and CTA text.</td>
+            <td>Each service document generates a page at <code>/services/[slug]</code> and a card in the Services section on the home page.</td>
+          </tr>
+          <tr>
+            <td><strong>Team Members</strong></td>
+            <td>Add, edit, or delete team member documents (name, role, bio, photo with hotspot).</td>
+            <td>Populates the team carousel on the About page.</td>
+          </tr>
+          <tr>
+            <td><strong>Testimonials</strong></td>
+            <td>Add, edit, or delete testimonial documents (quote, author name, role).</td>
+            <td>Populates the testimonials carousel on the home page.</td>
+          </tr>
+          <tr>
+            <td><strong>FAQ Items</strong></td>
+            <td>Add, edit, or delete FAQ documents (question, answer). Order can be set via a sort field.</td>
+            <td>Populates both the FAQ section on the home page and the full <code>/faq</code> page. Also drives the FAQPage JSON-LD structured data.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="sanity-dev-only">
+    <h3>What Editors Cannot Change — Dev Required</h3>
+    <p>The following content lives in code and cannot be edited via Sanity Studio:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Content</th><th>File</th><th>Why it's in code</th></tr></thead>
+        <tbody>
+          <tr><td>Navigation wordmark, ARIA strings</td><td><code>src/lib/content/nav.ts</code></td><td>Developer-controlled branding and accessibility labels</td></tr>
+          <tr><td>Footer column headings, legal links, copyright</td><td><code>src/lib/content/footer.ts</code></td><td>Structural labels that rarely change</td></tr>
+          <tr><td>Full Privacy Policy text</td><td><code>src/lib/content/privacy.ts</code></td><td>Legal document — change requires dev review</td></tr>
+          <tr><td>Full Terms of Service text</td><td><code>src/lib/content/terms.ts</code></td><td>Legal document — change requires dev review</td></tr>
+          <tr><td>Contact form field labels &amp; error messages</td><td><code>src/lib/content/contact.ts</code></td><td>Tied to form validation logic</td></tr>
+          <tr><td>404 page text</td><td><code>src/lib/content/notFound.ts</code></td><td>Simple static page</td></tr>
+          <tr><td>Shared UI labels &amp; ARIA strings</td><td><code>src/lib/content/ui.ts</code></td><td>Accessibility strings used across multiple components</td></tr>
+          <tr><td>JSON-LD structured data</td><td><code>src/lib/content/schema.ts</code></td><td>Schema builders — require dev to add new types</td></tr>
+          <tr><td>SVG icons</td><td><code>src/lib/utils/icons.ts</code></td><td>Icon registry — new icons must be added by a dev</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout warning">
+      <span class="callout-icon">&#9888;&#65039;</span>
+      <div>
+        To update the Privacy Policy or Terms of Service, edit the relevant
+        <code>src/lib/content/</code> file, commit, and redeploy. There is no CMS UI
+        for legal pages.
+      </div>
+    </div>
+  </section>
+
+  <section id="sanity-seo">
+    <h2>Sanity — SEO</h2>
+    <p>
+      Every page on the site outputs a full set of SEO tags — page title, meta description,
+      canonical URL, Open Graph, Twitter Card, and JSON-LD structured data — all driven by
+      <code>src/layouts/Layout.astro</code>. Some fields are editable in Sanity; others are
+      handled automatically or require a developer to change.
+    </p>
+
+    <h3>How it works</h3>
+    <p>
+      Pages pass <code>title</code> and <code>description</code> props to
+      <code>&lt;Layout /&gt;</code>. Layout uses these to populate every meta tag in
+      <code>&lt;head&gt;</code>. If a page does not pass these props, Layout falls back to
+      the global defaults defined in <code>src/lib/content/site.ts</code>.
+    </p>
+    <pre><code><span class="comment">&lt;!-- Every page passes its SEO values like this --&gt;</span>
+&lt;Layout
+  title={page.seoTitle ?? undefined}
+  description={page.seoDescription ?? undefined}
+&gt;</code></pre>
+
+    <h3>What editors can control in Sanity</h3>
+    <p>
+      The following pages have <strong>seoTitle</strong> and <strong>seoDescription</strong>
+      fields directly in their Sanity document. Editing and publishing these fields updates
+      what appears in Google search results and link previews after the next redeploy.
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Page</th><th>Sanity document</th><th>Fields</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Home <code>/</code></td>
+            <td>homePage singleton</td>
+            <td><code>seoTitle</code>, <code>seoDescription</code></td>
+          </tr>
+          <tr>
+            <td>About <code>/about</code></td>
+            <td>aboutPage singleton</td>
+            <td><code>seoTitle</code>, <code>seoDescription</code></td>
+          </tr>
+          <tr>
+            <td>Contact <code>/contact</code></td>
+            <td>contactPage singleton</td>
+            <td><code>seoTitle</code>, <code>seoDescription</code></td>
+          </tr>
+          <tr>
+            <td>Each service <code>/services/[slug]</code></td>
+            <td>service collection document</td>
+            <td><code>seoTitle</code>, <code>seoDescription</code> — set per service</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout info">
+      <span class="callout-icon">&#8505;&#65039;</span>
+      <div>
+        <strong>Recommended lengths:</strong> Page title: 50–60 characters (includes " | MedZo" suffix added by Layout). Meta description: 140–160 characters. Longer values are truncated by Google in search results.
+      </div>
+    </div>
+
+    <h3>Pages with SEO in code (not Sanity)</h3>
+    <p>
+      The following pages are static and their SEO fields live in
+      <code>src/lib/content/</code>. A developer must edit these files to change their titles or descriptions.
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Page</th><th>File</th><th>Fields</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Privacy Policy <code>/privacy</code></td>
+            <td><code>src/lib/content/privacy.ts</code></td>
+            <td><code>metaTitle</code>, <code>metaDescription</code></td>
+          </tr>
+          <tr>
+            <td>Terms of Service <code>/terms</code></td>
+            <td><code>src/lib/content/terms.ts</code></td>
+            <td><code>metaTitle</code>, <code>metaDescription</code></td>
+          </tr>
+          <tr>
+            <td>FAQ <code>/faq</code></td>
+            <td><code>src/lib/content/site.ts</code> (global default)</td>
+            <td>Falls back to <code>defaultMeta.title</code> and <code>defaultMeta.description</code></td>
+          </tr>
+          <tr>
+            <td>404 <code>/404</code></td>
+            <td><code>src/lib/content/site.ts</code> (global default)</td>
+            <td>Falls back to global defaults; not indexed by search engines</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>What is handled automatically (no action needed)</h3>
+    <ul class="checklist">
+      <li><span class="check">✓</span><strong>Canonical URL</strong> — auto-generated from <code>Astro.url</code> on every page. Always correct, never needs manual input.</li>
+      <li><span class="check">✓</span><strong>Open Graph tags</strong> — <code>og:title</code>, <code>og:description</code>, <code>og:url</code>, and <code>og:image</code> are all populated from the same title/description props and the default OG image.</li>
+      <li><span class="check">✓</span><strong>Twitter Card tags</strong> — mirror the Open Graph values automatically.</li>
+      <li><span class="check">✓</span><strong>Sitemap</strong> — auto-generated at <code>/sitemap-index.xml</code> by <code>@astrojs/sitemap</code>. Every page is included automatically; <code>/404</code> is excluded.</li>
+      <li><span class="check">✓</span><strong>JSON-LD structured data</strong> — injected into <code>&lt;head&gt;</code> on every page: MedicalBusiness schema site-wide, FAQPage schema on FAQ pages, Service schema on service pages, and BreadcrumbList on service pages.</li>
+    </ul>
+
+    <h3>OG image</h3>
+    <p>
+      All pages share a single default OG image located at <code>public/og-image.webp</code>
+      (1080 × 1080 px). This is what appears when a link to the site is shared on social media
+      or messaging apps.
+    </p>
+    <ul style="font-size:.88rem;color:var(--gray-700);padding-left:18px;line-height:2">
+      <li>To <strong>replace the global OG image</strong>: swap the file at <code>public/og-image.webp</code> and redeploy. Keep the same filename and dimensions.</li>
+      <li>To <strong>set a different OG image on a specific page</strong>: pass an <code>ogImage</code> prop to <code>&lt;Layout /&gt;</code> — it accepts a root-relative path (e.g. <code>ogImage="/og-services.webp"</code>). This is a developer task.</li>
+    </ul>
+
+    <h3>Global SEO fallback</h3>
+    <p>
+      If a page or Sanity document has no <code>seoTitle</code> / <code>seoDescription</code>,
+      Layout falls back to the values in <code>src/lib/content/site.ts</code>:
+    </p>
+    <pre><code><span class="comment">// src/lib/content/site.ts</span>
+<span class="keyword">export const</span> <span class="var">defaultMeta</span> = {
+  title:       <span class="string">"MedZo - Medical Practice Management Software"</span>,
+  description: <span class="string">"..."</span>,
+};</code></pre>
+    <p>
+      Edit this file if the global fallback title or description needs updating.
+      This affects any page that does not provide its own SEO values.
+    </p>
+
+    <div class="callout warning">
+      <span class="callout-icon">&#9888;&#65039;</span>
+      <div>
+        <strong>Sanity SEO changes are not live until the site is rebuilt and re-uploaded.</strong>
+        Publishing in Studio does not update the live site — follow the steps in
+        <a href="#sanity-content-change">Making a Content Change</a>.
+      </div>
+    </div>
+  </section>
+
+  <section id="sanity-content-change">
+    <h2>Sanity — Making a Content Change</h2>
+
+    <div class="callout danger">
+      <span class="callout-icon">&#9888;&#65039;</span>
+      <div>
+        <strong>Publishing in Sanity Studio does NOT update the live website automatically.</strong>
+        <br /><br />
+        The live site at medzo.com.au is a set of static HTML files sitting on Hostinger.
+        It was generated the last time someone ran <code>npm run build</code>. It has
+        <strong>no connection to Sanity</strong> after that build — it does not check for
+        new content, it does not update on publish, and it has no awareness that Sanity
+        even exists at runtime.
+        <br /><br />
+        When you publish a change in Sanity Studio, the live site will continue showing
+        the old content until a developer rebuilds the site and re-uploads it to Hostinger.
+        There is currently no automated pipeline to do this — it is always a manual step.
+      </div>
+    </div>
+
+    <h3>Why does this happen?</h3>
+    <div class="card">
+      <p style="font-size:.88rem;color:var(--gray-700);margin-bottom:12px">
+        Astro builds the site statically — at build time it fetches all content from Sanity,
+        converts it into plain HTML files, and that's it. Think of it like printing a document:
+        once it's printed, changing the original file doesn't update the printed copy.
+        To get the new content onto the site, you have to "reprint" (rebuild) and replace
+        what's on Hostinger.
+      </p>
+      <div style="display:flex;gap:0;flex-direction:column;font-size:.82rem;">
+        <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--blue-light);border-radius:6px 6px 0 0;border:1px solid var(--blue-mid)">
+          <span style="font-size:1rem">&#9312;</span>
+          <span>You publish content in <strong>Sanity Studio</strong></span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--gray-100);border:1px solid var(--gray-200);border-top:none">
+          <span style="font-size:1rem">&#9313;</span>
+          <span>A developer runs <code>npm run build</code> — Astro fetches the latest Sanity content and generates new HTML files</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--gray-100);border:1px solid var(--gray-200);border-top:none">
+          <span style="font-size:1rem">&#9314;</span>
+          <span>Developer uploads <code>./dist/</code> to Hostinger <code>public_html/</code></span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--green-light);border-radius:0 0 6px 6px;border:1px solid #bbf7d0;border-top:none">
+          <span style="font-size:1rem">&#9315;</span>
+          <span><strong>Only now</strong> is the updated content visible on medzo.com.au</span>
+        </div>
+      </div>
+    </div>
+
+    <p>Follow these steps every time content is updated in Sanity Studio:</p>
+
+    <div class="card">
+      <h4>Step 1 — Edit in Sanity Studio</h4>
+      <ol style="padding-left:18px;font-size:.88rem;color:var(--gray-700);line-height:2">
+        <li>Go to <a href="https://medzo.sanity.studio" target="_blank" rel="noopener">https://medzo.sanity.studio</a> and sign in with <strong>admin@medzo.com.au</strong>.</li>
+        <li>Navigate to the relevant singleton (e.g. <em>Home Page</em>) or collection (e.g. <em>Services</em>).</li>
+        <li>Make your edits in the Studio fields.</li>
+        <li>Click <strong>Publish</strong> in the top-right corner. Do not leave documents in <em>Draft</em> state — drafts are not fetched at build time.</li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <h4>Step 2 — Rebuild the site locally</h4>
+      <ol style="padding-left:18px;font-size:.88rem;color:var(--gray-700);line-height:2">
+        <li>Make sure your <code>.env</code> file has the correct <code>PUBLIC_SANITY_PROJECT_ID</code> and <code>PUBLIC_SANITY_DATASET</code>.</li>
+        <li>Run <code>npm run build</code> in the project root. Astro will re-fetch all Sanity content and rebuild the static site into <code>./dist/</code>.</li>
+        <li>Optionally run <code>npm run preview</code> to verify the output locally before uploading.</li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <h4>Step 3 — Upload to Hostinger</h4>
+      <ol style="padding-left:18px;font-size:.88rem;color:var(--gray-700);line-height:2">
+        <li>Log in to Hostinger hPanel.</li>
+        <li>Open <strong>File Manager</strong> and navigate to <code>public_html/</code>.</li>
+        <li>Delete the existing contents of <code>public_html/</code> (or overwrite).</li>
+        <li>Upload all files from your local <code>./dist/</code> folder into <code>public_html/</code>.</li>
+        <li>Verify the live site at <strong>medzo.com.au</strong>.</li>
+      </ol>
+    </div>
+
+    <div class="callout info">
+      <span class="callout-icon">&#8505;&#65039;</span>
+      <div>
+        Published content in Sanity is <strong>not live until the site is rebuilt and
+        re-uploaded</strong>. The site is fully static — Sanity data is baked in at build time,
+        not fetched in the browser.
+      </div>
+    </div>
+  </section>
+
+  <section id="sanity-new-page">
+    <h2>Sanity — Adding a New Page</h2>
+    <p>
+      Adding a new page requires both a developer and (for CMS-managed content) a Sanity schema
+      change. Follow every step in order — skipping steps causes type errors or broken builds.
+    </p>
+
+    <div class="card">
+      <h4>Step 1 — Decide the content source</h4>
+      <p style="font-size:.88rem;margin-bottom:0">
+        Will the page be edited by the team via Sanity, or is it a static page like Privacy/Terms?
+      </p>
+      <ul style="font-size:.85rem;color:var(--gray-700);padding-left:18px;margin-top:8px;line-height:1.9">
+        <li><strong>CMS-managed</strong> (team edits content) → follow all steps below.</li>
+        <li><strong>Static</strong> (dev edits code only) → skip steps 2–4; add content to <code>src/lib/content/</code> and a type to <code>src/types/</code> instead.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h4>Step 2 — Add the Sanity document type (CMS pages only)</h4>
+      <ol style="padding-left:18px;font-size:.88rem;color:var(--gray-700);line-height:2">
+        <li>Create a new schema file in <code>sanity/schemas/</code> (e.g. <code>pricingPage.ts</code>) defining all the fields the page needs.</li>
+        <li>Register it in the root schema index so Sanity picks it up.</li>
+        <li>If it is a single page (not a collection), add it as a singleton in <code>src/structure/index.ts</code> so it appears correctly in the Studio sidebar.</li>
+        <li>Run <code>npx sanity schema deploy</code> to push the schema to Sanity cloud.</li>
+        <li>Run <code>npx sanity typegen generate</code> to regenerate TypeScript types from the new schema.</li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <h4>Step 3 — Add a TypeScript interface</h4>
+      <ol style="padding-left:18px;font-size:.88rem;color:var(--gray-700);line-height:2">
+        <li>Add a typed interface for the new page's content shape in the appropriate file under <code>src/types/</code> (e.g. add <code>PricingContent</code> to <code>src/types/pages.ts</code>).</li>
+        <li>Every field in the Sanity schema should have a matching property in the TypeScript interface.</li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <h4>Step 4 — Add a data fetcher (CMS pages only)</h4>
+      <ol style="padding-left:18px;font-size:.88rem;color:var(--gray-700);line-height:2">
+        <li>Create <code>src/lib/api/pricingPage.ts</code> (one file per page).</li>
+        <li>Write a GROQ query using <code>defineQuery()</code> that selects all the fields the page needs.</li>
+        <li>Export an async fetcher function that calls <code>sanityClient.fetch()</code> with that query.</li>
+      </ol>
+      <pre style="margin-top:12px;margin-bottom:0"><code><span class="keyword">import</span> { defineQuery } <span class="keyword">from</span> <span class="string">"groq"</span>;
+<span class="keyword">import</span> { sanityClient } <span class="keyword">from</span> <span class="string">"./sanity"</span>;
+
+<span class="keyword">export const</span> <span class="var">PRICING_PAGE_QUERY</span> = <span class="fn">defineQuery</span>(<span class="string">`
+  *[_type == "pricingPage"][0]{ heading, plans[] { ... } }
+`</span>);
+
+<span class="keyword">export async function</span> <span class="fn">getPricingPage</span>() {
+  <span class="keyword">return</span> sanityClient.<span class="fn">fetch</span>(<span class="var">PRICING_PAGE_QUERY</span>);
+}</code></pre>
+    </div>
+
+    <div class="card">
+      <h4>Step 5 — Build section components</h4>
+      <ol style="padding-left:18px;font-size:.88rem;color:var(--gray-700);line-height:2">
+        <li>Create one <code>.astro</code> component per visual section in <code>src/components/sections/</code>.</li>
+        <li>Each component must declare a typed <code>Props</code> interface at the top of its frontmatter.</li>
+        <li>Keep each file under ~80 lines. Extract sub-components if needed.</li>
+        <li>All text must come from props — no hardcoded strings in templates.</li>
+        <li>All SVGs must come from <code>icons["key"]</code> — no inline SVG blocks.</li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <h4>Step 6 — Create the page file</h4>
+      <ol style="padding-left:18px;font-size:.88rem;color:var(--gray-700);line-height:2">
+        <li>Create <code>src/pages/pricing.astro</code> (or the appropriate route).</li>
+        <li>In the frontmatter, call the fetcher and destructure the data.</li>
+        <li>In the template, import and compose the section components — no logic, no inline content.</li>
+        <li>Pass <code>title</code> and <code>description</code> to <code>&lt;Layout /&gt;</code> for correct <code>&lt;head&gt;</code> metadata.</li>
+        <li>Add the appropriate JSON-LD schema (breadcrumb, service, etc.) using builders from <code>src/lib/content/schema.ts</code>.</li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <h4>Step 7 — Wire up navigation &amp; links</h4>
+      <ol style="padding-left:18px;font-size:.88rem;color:var(--gray-700);line-height:2">
+        <li>If the page should appear in the top nav, add it via Sanity Studio → Site Settings → Navigation.</li>
+        <li>If it belongs in the footer, add the link to <code>src/lib/content/footer.ts</code>.</li>
+        <li>Check all existing pages for anywhere this page should be linked from.</li>
+        <li>Run <code>npx astro check</code> — fix any type errors before continuing.</li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <h4>Step 8 — Enter content in Sanity Studio</h4>
+      <ol style="padding-left:18px;font-size:.88rem;color:var(--gray-700);line-height:2">
+        <li>Open Sanity Studio, find the new document type, and fill in all fields.</li>
+        <li>Click <strong>Publish</strong>.</li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <h4>Step 9 — Build, verify, and deploy</h4>
+      <ol style="padding-left:18px;font-size:.88rem;color:var(--gray-700);line-height:2">
+        <li>Run <code>npm run build</code> — confirm no errors.</li>
+        <li>Run <code>npm run preview</code> and navigate to the new page.</li>
+        <li>Keyboard-navigate the page and run a Lighthouse accessibility audit.</li>
+        <li>Check that the sitemap includes the new URL (open <code>./dist/sitemap-*.xml</code>).</li>
+        <li>Upload <code>./dist/</code> to Hostinger <code>public_html/</code>.</li>
+        <li>Verify the live page at medzo.com.au/your-new-page.</li>
+      </ol>
+    </div>
+
+    <div class="callout success">
+      <span class="callout-icon">&#9989;</span>
+      <div>
+        <strong>Quick checklist for new pages:</strong>
+        typed interface in <code>src/types/</code> &rarr;
+        fetcher in <code>src/lib/api/</code> &rarr;
+        section components in <code>src/components/sections/</code> &rarr;
+        thin page file in <code>src/pages/</code> &rarr;
+        navigation wired &rarr;
+        <code>astro check</code> passes &rarr;
+        content published in Sanity &rarr;
+        build + upload.
+      </div>
+    </div>
+  </section>
+
+  <!-- ──────────────────────────────────────────────────
+       WEB3FORMS
+  ────────────────────────────────────────────────── -->
+  <section id="web3forms">
+    <h2>Web3Forms</h2>
+    <p>
+      The contact form on <code>/contact</code> submits to
+      <a href="https://web3forms.com" target="_blank" rel="noopener">Web3Forms</a> — a
+      third-party form submission service that forwards enquiries to a nominated email address
+      without requiring a backend server.
+    </p>
+
+    <div class="callout info">
+      <span class="callout-icon">&#8505;&#65039;</span>
+      <div>
+        <strong>Login:</strong> The Web3Forms account is accessed at
+        <a href="https://web3forms.com" target="_blank" rel="noopener">web3forms.com</a>
+        using <strong>info@medzo.com.au</strong>. This account holds the access key and
+        controls where form submissions are delivered.
+      </div>
+    </div>
+
+    <h3>How it works</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Detail</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Submission endpoint</td>
+            <td><code>https://api.web3forms.com/submit</code></td>
+          </tr>
+          <tr>
+            <td>Access key</td>
+            <td><code>PUBLIC_WEB3FORMS_KEY</code> env variable — injected as a hidden <code>&lt;input name="access_key"&gt;</code></td>
+          </tr>
+          <tr>
+            <td>Callback (redirect) URL</td>
+            <td><code>https://medzo.com.au/contact?success=1</code> — Web3Forms redirects back here after a successful submission</td>
+          </tr>
+          <tr>
+            <td>Success detection</td>
+            <td>On page load the script checks for <code>?success=1</code> in the URL, hides the form, and shows the success message. The query param is then removed from the URL silently.</td>
+          </tr>
+          <tr>
+            <td>Email subject</td>
+            <td>"Practice Management Enquiry" — set as a hidden <code>&lt;input name="subject"&gt;</code>, value comes from <code>src/lib/content/contact.ts → defaultSubject</code></td>
+          </tr>
+          <tr>
+            <td>Spam protection</td>
+            <td>Honeypot botcheck — a hidden checkbox (<code>name="botcheck"</code>) that is invisible to real users but triggers Web3Forms' spam filter if a bot fills it in</td>
+          </tr>
+          <tr>
+            <td>Re-submission guard</td>
+            <td>Client-side 60-second cooldown after a successful send prevents accidental double-submissions</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Submission flow</h3>
+    <ol style="padding-left:20px;font-size:.88rem;color:var(--gray-700);line-height:2.2">
+      <li>User fills in the form and clicks <strong>Send message</strong>.</li>
+      <li>The form data is sent via <code>fetch()</code> as JSON to <code>https://api.web3forms.com/submit</code>.</li>
+      <li>Web3Forms validates the access key and forwards the submission as an email to the address registered under the account (<strong>info@medzo.com.au</strong>).</li>
+      <li>On success, the form is hidden and the inline success message is shown — no page navigation occurs.</li>
+      <li>If the JS fetch fails (e.g. network error), the form falls back to a standard HTML POST to the same endpoint, which then redirects back to <code>/contact?success=1</code> where the success state is shown.</li>
+    </ol>
+
+    <h3>Changing the destination email</h3>
+    <p>
+      The email address that receives form submissions is configured inside the Web3Forms
+      account — it is <strong>not</strong> set in the codebase. To change it:
+    </p>
+    <ol style="padding-left:20px;font-size:.88rem;color:var(--gray-700);line-height:2">
+      <li>Log in to <a href="https://web3forms.com" target="_blank" rel="noopener">web3forms.com</a> with <strong>info@medzo.com.au</strong>.</li>
+      <li>Find the access key associated with this project.</li>
+      <li>Update the notification email address in the key settings.</li>
+    </ol>
+
+    <h3>Rotating the access key</h3>
+    <p>If the access key needs to be replaced (e.g. key is compromised):</p>
+    <ol style="padding-left:20px;font-size:.88rem;color:var(--gray-700);line-height:2">
+      <li>Log in to Web3Forms and generate a new access key.</li>
+      <li>Update <code>PUBLIC_WEB3FORMS_KEY</code> in the local <code>.env</code> file.</li>
+      <li>Rebuild the site with <code>npm run build</code> — the new key is baked into the form's hidden input at build time.</li>
+      <li>Upload the new <code>./dist/</code> to Hostinger.</li>
+    </ol>
+
+    <div class="callout warning">
+      <span class="callout-icon">&#9888;&#65039;</span>
+      <div>
+        The access key is prefixed <code>PUBLIC_</code> and is visible in the built HTML source.
+        This is intentional — Web3Forms keys are domain-scoped and designed to be public.
+        Submissions from unauthorised domains are rejected by Web3Forms automatically.
+      </div>
+    </div>
+
+    <h3>Changing the email subject line</h3>
+    <p>
+      The subject of every notification email is set in code, not in Web3Forms.
+      To change it, edit the <code>defaultSubject</code> field in
+      <code>src/lib/content/contact.ts</code>, then rebuild and redeploy.
+    </p>
+    <pre><code><span class="comment">// src/lib/content/contact.ts</span>
+defaultSubject: <span class="string">"Practice Management Enquiry"</span>,  <span class="comment">// &lt;-- edit this</span></code></pre>
+  </section>
+
+  <!-- ──────────────────────────────────────────────────
+       LOCAL DEV SETUP
+  ────────────────────────────────────────────────── -->
+  <section id="local-setup">
+    <h2>Local Development Setup</h2>
+    <p>Follow these steps once to get the project running on a new machine.</p>
+
+    <div class="card">
+      <h4>Prerequisites</h4>
+      <ul style="font-size:.88rem;color:var(--gray-700);padding-left:18px;line-height:2">
+        <li><strong>Node.js</strong> v22.12.0 or higher — download from <a href="https://nodejs.org" target="_blank" rel="noopener">nodejs.org</a></li>
+        <li><strong>npm</strong> v10 or higher (bundled with Node)</li>
+        <li><strong>Git</strong> — download from <a href="https://git-scm.com" target="_blank" rel="noopener">git-scm.com</a></li>
+        <li>A code editor — VS Code recommended</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h4>Step 1 — Clone the repository</h4>
+      <pre style="margin:0"><code>git clone https://github.com/alifatma13/MedZo.git
+cd MedZo</code></pre>
+    </div>
+
+    <div class="card">
+      <h4>Step 2 — Install dependencies</h4>
+      <pre style="margin:0"><code>npm install</code></pre>
+      <p style="font-size:.82rem;color:var(--gray-500);margin:8px 0 0">This installs all packages listed in <code>package.json</code> into <code>node_modules/</code>. Takes 1–2 minutes on first run.</p>
+    </div>
+
+    <div class="card">
+      <h4>Step 3 — Create the environment file</h4>
+      <p style="font-size:.88rem;color:var(--gray-700);margin-bottom:10px">
+        Create a file named <code>.env</code> in the project root (same level as <code>package.json</code>).
+        Get the values from the Sanity dashboard and Web3Forms account.
+      </p>
+      <pre style="margin:0"><code><span class="comment"># .env — never commit this file</span>
+<span class="var">PUBLIC_SANITY_PROJECT_ID</span>=your_project_id_here
+<span class="var">PUBLIC_SANITY_DATASET</span>=production
+<span class="var">PUBLIC_WEB3FORMS_KEY</span>=your_web3forms_access_key_here</code></pre>
+      <p style="font-size:.82rem;color:var(--gray-500);margin:8px 0 0">
+        <code>PUBLIC_SANITY_PROJECT_ID</code> is found in the Sanity dashboard under Project Settings. <code>PUBLIC_WEB3FORMS_KEY</code> is in the Web3Forms account at web3forms.com (login: info@medzo.com.au).
+      </p>
+    </div>
+
+    <div class="card">
+      <h4>Step 4 — Start the dev server</h4>
+      <pre style="margin:0"><code>npm run dev</code></pre>
+      <p style="font-size:.82rem;color:var(--gray-500);margin:8px 0 0">
+        Opens at <strong>http://localhost:4321</strong>. The site hot-reloads on file saves.
+        Sanity content is fetched fresh on every page request in dev mode (CDN bypassed).
+      </p>
+    </div>
+
+    <div class="callout info">
+      <span class="callout-icon">&#8505;&#65039;</span>
+      <div>
+        If you see a <strong>"Cannot find module"</strong> error after pulling new changes,
+        run <code>npm install</code> again — new packages may have been added.
+      </div>
+    </div>
+  </section>
+
+  <!-- ──────────────────────────────────────────────────
+       GIT & VERSION CONTROL
+  ────────────────────────────────────────────────── -->
+  <section id="git">
+    <h2>Git &amp; Version Control</h2>
+
+    <div class="callout info">
+      <span class="callout-icon">&#128279;</span>
+      <div>
+        <strong>Repository:</strong>
+        <a href="https://github.com/alifatma13/MedZo" target="_blank" rel="noopener">https://github.com/alifatma13/MedZo</a>
+      </div>
+    </div>
+
+    <h3>Branch strategy</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Branch</th><th>Purpose</th><th>Rule</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><code>main</code></td>
+            <td>Production-ready code</td>
+            <td>Only merge tested, reviewed changes. This is the branch that gets built and deployed.</td>
+          </tr>
+          <tr>
+            <td>feature branches</td>
+            <td>New features or pages</td>
+            <td>Branch off <code>main</code>, name as <code>feature/short-description</code>. Merge back via pull request.</td>
+          </tr>
+          <tr>
+            <td>fix branches</td>
+            <td>Bug fixes</td>
+            <td>Branch off <code>main</code>, name as <code>fix/short-description</code>. Merge back via pull request.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Common git workflow</h3>
+    <pre><code><span class="comment"># Pull the latest changes before starting any work</span>
+git pull origin main
+
+<span class="comment"># Create a new branch for your change</span>
+git checkout -b feature/add-pricing-page
+
+<span class="comment"># After making changes, stage and commit</span>
+git add src/pages/pricing.astro src/components/sections/PricingSection.astro
+git commit -m "add pricing page with Sanity-driven plan cards"
+
+<span class="comment"># Push the branch to GitHub</span>
+git push origin feature/add-pricing-page
+
+<span class="comment"># Open a pull request on GitHub, get it reviewed, then merge into main</span></code></pre>
+
+    <div class="callout warning">
+      <span class="callout-icon">&#9888;&#65039;</span>
+      <div>
+        <strong>Never push directly to <code>main</code>.</strong> Always work on a separate
+        branch and merge via a pull request so changes can be reviewed before going to production.
+      </div>
+    </div>
+
+    <h3>After merging to main</h3>
+    <p style="font-size:.88rem;color:var(--gray-700)">
+      There is no automatic deployment pipeline. After merging to <code>main</code>, you still need
+      to build the site locally and upload <code>./dist/</code> to Hostinger manually.
+      See <a href="#deployment">Deployment</a> for the full steps.
+    </p>
+  </section>
+
+  <!-- ──────────────────────────────────────────────────
+       THIRD-PARTY ACCOUNTS
+  ────────────────────────────────────────────────── -->
+  <section id="accounts">
+    <h2>Third-Party Accounts</h2>
+    <p>All external services used by the project, in one place.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Service</th><th>URL</th><th>Login email</th><th>What it controls</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Sanity Studio</strong></td>
+            <td><a href="https://medzo.sanity.studio" target="_blank" rel="noopener">medzo.sanity.studio</a></td>
+            <td>admin@medzo.com.au</td>
+            <td>All CMS content — home, about, contact, services, team, testimonials, FAQs, site settings</td>
+          </tr>
+          <tr>
+            <td><strong>Sanity Dashboard</strong></td>
+            <td><a href="https://sanity.io/manage" target="_blank" rel="noopener">sanity.io/manage</a></td>
+            <td>admin@medzo.com.au</td>
+            <td>Project settings, API tokens, dataset management, CORS origins, schema deployment</td>
+          </tr>
+          <tr>
+            <td><strong>Web3Forms</strong></td>
+            <td><a href="https://web3forms.com" target="_blank" rel="noopener">web3forms.com</a></td>
+            <td>info@medzo.com.au</td>
+            <td>Contact form submission — holds the access key and the destination email address for enquiries</td>
+          </tr>
+          <tr>
+            <td><strong>Hostinger</strong></td>
+            <td><a href="https://hpanel.hostinger.com" target="_blank" rel="noopener">hpanel.hostinger.com</a></td>
+            <td>—</td>
+            <td>Static file hosting — <code>public_html/</code> contains the built site; File Manager is used to deploy</td>
+          </tr>
+          <tr>
+            <td><strong>GitHub</strong></td>
+            <td><a href="https://github.com/alifatma13/MedZo" target="_blank" rel="noopener">github.com/alifatma13/MedZo</a></td>
+            <td>—</td>
+            <td>Source code version control and history</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout warning">
+      <span class="callout-icon">&#9888;&#65039;</span>
+      <div>
+        This document should never contain passwords. If you need credentials for any of
+        the above accounts, contact the project owner directly.
+      </div>
+    </div>
+  </section>
+
+  <!-- ──────────────────────────────────────────────────
+       PUBLIC FOLDER
+  ────────────────────────────────────────────────── -->
+  <section id="public-folder">
+    <h2>Public Folder</h2>
+    <p>
+      Files in <code>public/</code> are copied to the root of <code>./dist/</code> as-is
+      during build — no processing or optimisation. They are served at the root of the domain.
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>File</th><th>Served at</th><th>Purpose</th><th>How to update</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>favicon.ico</code></td>
+            <td><code>/favicon.ico</code></td>
+            <td>Browser tab icon (legacy format, supported by all browsers)</td>
+            <td>Replace the file. Keep the <code>.ico</code> format and the same filename.</td>
+          </tr>
+          <tr>
+            <td><code>favicon.png</code></td>
+            <td><code>/favicon.png</code></td>
+            <td>Browser tab icon (modern PNG format)</td>
+            <td>Replace with a 32×32 or 64×64 PNG. Keep the same filename.</td>
+          </tr>
+          <tr>
+            <td><code>apple-touch-icon.png</code></td>
+            <td><code>/apple-touch-icon.png</code></td>
+            <td>Icon shown when the site is saved to an iOS home screen</td>
+            <td>Replace with a 180×180 PNG. Keep the same filename.</td>
+          </tr>
+          <tr>
+            <td><code>og-image.webp</code></td>
+            <td><code>/og-image.webp</code></td>
+            <td>Default Open Graph image shown when any page is shared on social media or messaging apps</td>
+            <td>Replace with a 1080×1080 WebP. Keep the same filename. Rebuild and redeploy for changes to take effect.</td>
+          </tr>
+          <tr>
+            <td><code>robots.txt</code></td>
+            <td><code>/robots.txt</code></td>
+            <td>Tells search engine crawlers what to index. Currently allows all pages except <code>/404</code>. Points crawlers to the sitemap.</td>
+            <td>Edit the file directly. Changes take effect on next deploy.</td>
+          </tr>
+          <tr>
+            <td><code>_headers</code></td>
+            <td>N/A (Hostinger config)</td>
+            <td>HTTP response headers sent with every request (e.g. security headers, cache control)</td>
+            <td>Edit the file directly. Changes take effect on next deploy.</td>
+          </tr>
+          <tr>
+            <td><code>llms.txt</code></td>
+            <td><code>/llms.txt</code></td>
+            <td>Describes the site to AI language model crawlers — a convention for LLM-readable site summaries</td>
+            <td>Edit the file directly to keep the description current.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout info">
+      <span class="callout-icon">&#8505;&#65039;</span>
+      <div>
+        The sitemap (<code>/sitemap-index.xml</code>) is <strong>not</strong> in <code>public/</code> —
+        it is auto-generated by Astro at build time and written directly into <code>./dist/</code>.
+        You never need to edit it manually.
+      </div>
+    </div>
+  </section>
+
+  <!-- ──────────────────────────────────────────────────
+       TROUBLESHOOTING
+  ────────────────────────────────────────────────── -->
+  <section id="troubleshooting">
+    <h2>Troubleshooting</h2>
+    <p>Common issues and how to resolve them.</p>
+
+    <h3>Build &amp; development</h3>
+
+    <div class="card">
+      <h4>Build fails with "Cannot find module" or import errors</h4>
+      <p style="font-size:.88rem;color:var(--gray-700);margin-bottom:8px">Dependencies are missing or outdated after a pull.</p>
+      <pre style="margin:0"><code>npm install</code></pre>
+    </div>
+
+    <div class="card">
+      <h4>Build fails with TypeScript type errors</h4>
+      <p style="font-size:.88rem;color:var(--gray-700);margin-bottom:8px">
+        A component prop type doesn't match what's being passed, or a Sanity field was renamed.
+      </p>
+      <pre style="margin:0"><code><span class="comment"># Run the type checker to see all errors at once</span>
+npx astro check</code></pre>
+      <p style="font-size:.82rem;color:var(--gray-500);margin:8px 0 0">
+        Fix each reported mismatch. If a Sanity schema field was changed, also run
+        <code>npx sanity typegen generate</code> to regenerate the types.
+      </p>
+    </div>
+
+    <div class="card">
+      <h4>Dev server starts but pages are blank or show no content</h4>
+      <p style="font-size:.88rem;color:var(--gray-700);margin-bottom:8px">
+        The <code>.env</code> file is missing or the Sanity variables are wrong.
+      </p>
+      <ul style="font-size:.85rem;color:var(--gray-700);padding-left:18px;line-height:1.9;margin-bottom:0">
+        <li>Confirm <code>.env</code> exists in the project root (not inside <code>src/</code>).</li>
+        <li>Check <code>PUBLIC_SANITY_PROJECT_ID</code> matches the value in the Sanity dashboard under Project Settings.</li>
+        <li>Restart the dev server after editing <code>.env</code> — it is only read on startup.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h4>"astro check" reports broken links or missing pages</h4>
+      <p style="font-size:.88rem;color:var(--gray-700);margin-bottom:8px">
+        An internal link points to a page that doesn't exist.
+      </p>
+      <ul style="font-size:.85rem;color:var(--gray-700);padding-left:18px;line-height:1.9;margin-bottom:0">
+        <li>Either create the missing page or update the link in the relevant content file in <code>src/lib/content/</code>.</li>
+        <li>All internal links must use root-relative paths (e.g. <code>/about</code>, not <code>../about</code>).</li>
+      </ul>
+    </div>
+
+    <h3>Sanity &amp; content</h3>
+
+    <div class="card">
+      <h4>Content updated in Sanity but not showing on the live site</h4>
+      <p style="font-size:.88rem;color:var(--gray-700);margin-bottom:8px">
+        The site is static — Sanity content is baked in at build time, not fetched live.
+      </p>
+      <ul style="font-size:.85rem;color:var(--gray-700);padding-left:18px;line-height:1.9;margin-bottom:0">
+        <li>Make sure the document is <strong>Published</strong> in Sanity Studio, not just saved as a Draft.</li>
+        <li>Rebuild the site with <code>npm run build</code> and re-upload <code>./dist/</code> to Hostinger.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h4>Images uploaded to Sanity are not displaying</h4>
+      <ul style="font-size:.85rem;color:var(--gray-700);padding-left:18px;line-height:1.9;margin-bottom:0">
+        <li>Confirm the image asset was fully uploaded in Studio (no upload spinner visible).</li>
+        <li>Publish the document — draft images are not accessible via the CDN.</li>
+        <li>Check that <code>cdn.sanity.io</code> is in the <code>remotePatterns</code> list in <code>astro.config.mjs</code> — it is by default, so this only breaks if the config was changed.</li>
+        <li>Rebuild and redeploy.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h4>New service added in Sanity but no page created at /services/[slug]</h4>
+      <ul style="font-size:.85rem;color:var(--gray-700);padding-left:18px;line-height:1.9;margin-bottom:0">
+        <li>Make sure the service document has a <strong>slug</strong> field set in Studio.</li>
+        <li>Publish the document.</li>
+        <li>Rebuild — Astro generates the dynamic <code>/services/[slug]</code> route at build time using the slugs returned by the GROQ query.</li>
+      </ul>
+    </div>
+
+    <h3>Contact form</h3>
+
+    <div class="card">
+      <h4>Form submissions are not arriving by email</h4>
+      <ul style="font-size:.85rem;color:var(--gray-700);padding-left:18px;line-height:1.9;margin-bottom:0">
+        <li>Check the spam/junk folder for the destination email address.</li>
+        <li>Log in to Web3Forms (info@medzo.com.au) and check the submission log — if submissions appear there, the issue is email delivery, not the form.</li>
+        <li>Verify <code>PUBLIC_WEB3FORMS_KEY</code> in <code>.env</code> matches the active key in the Web3Forms account. If the key was rotated, rebuild and redeploy.</li>
+        <li>Open browser DevTools → Network tab, submit the form, and look for the request to <code>api.web3forms.com/submit</code>. A non-200 response indicates an invalid key or a blocked domain.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h4>Form shows success but no email received</h4>
+      <ul style="font-size:.85rem;color:var(--gray-700);padding-left:18px;line-height:1.9;margin-bottom:0">
+        <li>The form submitted successfully to Web3Forms but email delivery failed. Check spam folders first.</li>
+        <li>Log in to Web3Forms and verify the notification email address on the access key is correct.</li>
+        <li>Web3Forms has a free-tier submission limit — check if the monthly limit has been reached in the account dashboard.</li>
+      </ul>
+    </div>
+
+    <h3>Deployment</h3>
+
+    <div class="card">
+      <h4>Live site shows old content after uploading to Hostinger</h4>
+      <ul style="font-size:.85rem;color:var(--gray-700);padding-left:18px;line-height:1.9;margin-bottom:0">
+        <li>Hard-refresh the browser (<kbd>Ctrl + Shift + R</kbd> / <kbd>Cmd + Shift + R</kbd>) to bypass the browser cache.</li>
+        <li>Confirm all files from <code>./dist/</code> were uploaded, not just a subfolder.</li>
+        <li>Check that old files were deleted or overwritten in <code>public_html/</code> before uploading — stale files can persist if not removed.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h4>404 errors on all pages after uploading to Hostinger</h4>
+      <ul style="font-size:.85rem;color:var(--gray-700);padding-left:18px;line-height:1.9;margin-bottom:0">
+        <li>Files were likely uploaded into a subfolder inside <code>public_html/</code> rather than directly into it. The <code>index.html</code> must sit at the root of <code>public_html/</code>.</li>
+        <li>Verify via Hostinger File Manager that <code>public_html/index.html</code> exists.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ──────────────────────────────────────────────────
+       KNOWN LIMITATIONS
+  ────────────────────────────────────────────────── -->
+  <section id="limitations">
+    <h2>Known Limitations</h2>
+    <p>
+      These are current gaps in the project that the support team should be aware of.
+      None of them break the site — but they affect how certain tasks must be done.
+    </p>
+
+    <div class="card">
+      <h4>&#9312; Sanity content changes require a manual redeploy</h4>
+      <p style="font-size:.88rem;color:var(--gray-700);margin-bottom:6px">
+        Publishing in Sanity Studio does not update the live site. The site is static — content
+        is baked in at build time. Every Sanity change requires a developer to rebuild and
+        re-upload to Hostinger before it goes live.
+      </p>
+      <p style="font-size:.82rem;color:var(--gray-500);margin:0">
+        <strong>Future fix:</strong> Configure a Sanity webhook that triggers an automated
+        build pipeline (e.g. GitHub Actions) on every publish. This would eliminate the
+        manual step entirely.
+      </p>
+    </div>
+
+    <div class="card">
+      <h4>&#9313; No automated CI/CD pipeline</h4>
+      <p style="font-size:.88rem;color:var(--gray-700);margin-bottom:6px">
+        There is no automated build or deployment when code is pushed to GitHub. Every deploy
+        — whether a content change or a code change — is a fully manual process: build locally,
+        upload to Hostinger via File Manager.
+      </p>
+      <p style="font-size:.82rem;color:var(--gray-500);margin:0">
+        <strong>Future fix:</strong> Set up GitHub Actions to build on push to <code>main</code>
+        and auto-upload to Hostinger via FTP. Or migrate hosting to Vercel/Netlify which
+        handle this natively.
+      </p>
+    </div>
+
+    <div class="card">
+      <h4>&#9314; No staging environment</h4>
+      <p style="font-size:.88rem;color:var(--gray-700);margin-bottom:6px">
+        There is only one environment — production at medzo.com.au. Changes cannot be
+        previewed on a live URL before going public. The only way to verify before deploying
+        is to run <code>npm run preview</code> locally.
+      </p>
+      <p style="font-size:.82rem;color:var(--gray-500);margin:0">
+        <strong>Future fix:</strong> Create a separate Hostinger subdomain (e.g. staging.medzo.com.au)
+        or use a free Netlify/Vercel deployment as a preview environment.
+      </p>
+    </div>
+
+    <div class="card">
+      <h4>&#9315; No Sanity draft preview</h4>
+      <p style="font-size:.88rem;color:var(--gray-700);margin-bottom:6px">
+        There is no way to preview what a Sanity draft document looks like on the real site
+        without publishing it first. Draft content is invisible until published and the site
+        is rebuilt.
+      </p>
+      <p style="font-size:.82rem;color:var(--gray-500);margin:0">
+        <strong>Future fix:</strong> Implement Sanity's Visual Editing or draft mode with
+        an Astro SSR preview route that bypasses the CDN and reads unpublished drafts.
+      </p>
+    </div>
+
+    <div class="card">
+      <h4>&#9316; Web3Forms free tier submission limit</h4>
+      <p style="font-size:.88rem;color:var(--gray-700);margin-bottom:6px">
+        The Web3Forms free plan allows 250 contact form submissions per month. Submissions
+        beyond this limit will silently fail — no email is delivered and no error is shown
+        to the user.
+      </p>
+      <p style="font-size:.82rem;color:var(--gray-500);margin:0">
+        <strong>Fix:</strong> Monitor submission count in the Web3Forms dashboard
+        (login: info@medzo.com.au). Upgrade to a paid plan if the limit is regularly reached.
+      </p>
+    </div>
+
+    <div class="card">
+      <h4>&#9317; No automated tests</h4>
+      <p style="font-size:.88rem;color:var(--gray-700);margin-bottom:6px">
+        There are no unit tests, integration tests, or end-to-end tests. The only automated
+        check is <code>npx astro check</code> for TypeScript type errors. UI regressions
+        can only be caught by manually reviewing the site after each deploy.
+      </p>
+      <p style="font-size:.82rem;color:var(--gray-500);margin:0">
+        <strong>Future fix:</strong> Add Playwright end-to-end tests for critical flows
+        (home page load, contact form submission, service page navigation).
+      </p>
+    </div>
+
+    <div class="card">
+      <h4>&#9318; No error monitoring</h4>
+      <p style="font-size:.88rem;color:var(--gray-700);margin-bottom:6px">
+        There is no Sentry, LogRocket, or equivalent error tracking on the live site.
+        If a JavaScript error occurs or the contact form breaks, there is no alert —
+        it is only discovered when a user reports it or someone manually checks the site.
+      </p>
+      <p style="font-size:.82rem;color:var(--gray-500);margin:0">
+        <strong>Future fix:</strong> Add Sentry (free tier) or a simple error boundary
+        that logs to a monitoring service.
+      </p>
+    </div>
+
+    <div class="card">
+      <h4>&#9319; Sanity images are publicly accessible</h4>
+      <p style="font-size:.88rem;color:var(--gray-700);margin-bottom:6px">
+        All images uploaded to Sanity are served from <code>cdn.sanity.io</code> and are
+        publicly accessible to anyone who has the URL — there is no private asset support
+        on the current plan.
+      </p>
+      <p style="font-size:.82rem;color:var(--gray-500);margin:0">
+        <strong>Rule:</strong> Do not upload sensitive, confidential, or private documents
+        or images via Sanity Studio.
+      </p>
+    </div>
+  </section>
+
+  <section id="deployment">
+    <h2>Deployment</h2>
+
+    <h3>Build Flow</h3>
+    <ol style="padding-left:20px;font-size:.88rem;color:var(--gray-700);line-height:2">
+      <li><code>npm run build</code> — Astro fetches all Sanity content via GROQ, pre-renders all pages to static HTML in <code>./dist/</code></li>
+      <li>Sitemap generated at <code>/sitemap-index.xml</code> (excludes <code>/404</code>)</li>
+      <li>Upload the contents of <code>./dist/</code> to Hostinger via the File Manager or FTP</li>
+    </ol>
+
+    <div class="callout info">
+      <span class="callout-icon">&#8505;&#65039;</span>
+      <div>
+        Hostinger hosts the pre-built static files. There is no automatic CI/CD pipeline —
+        every deploy requires a manual build followed by uploading the <code>./dist/</code>
+        output to Hostinger.
+      </div>
+    </div>
+
+    <h3>What Requires a Redeploy</h3>
+    <div class="grid-2">
+      <div class="card">
+        <div class="tag tag-green" style="margin-bottom:8px">Requires rebuild + upload</div>
+        <ul style="font-size:.82rem;color:var(--gray-700);padding-left:16px;line-height:1.9">
+          <li>Any file change in <code>src/</code></li>
+          <li>Files in <code>public/</code></li>
+          <li><code>astro.config.mjs</code></li>
+          <li><code>package.json</code>, <code>tsconfig.json</code></li>
+          <li>Sanity Studio content edits</li>
+          <li>Sanity schema changes</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="tag tag-amber" style="margin-bottom:8px">Deploy steps</div>
+        <ol style="font-size:.82rem;color:var(--gray-700);padding-left:16px;line-height:1.9">
+          <li>Run <code>npm run build</code> locally</li>
+          <li>Open Hostinger hPanel → File Manager</li>
+          <li>Upload contents of <code>./dist/</code> to the <code>public_html/</code> directory</li>
+          <li>Verify live at medzo.com.au</li>
+        </ol>
+      </div>
+    </div>
+
+    <h3>Required Environment Variables (set in .env locally)</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Variable</th><th>Value</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><code>PUBLIC_SANITY_PROJECT_ID</code></td>
+            <td>From Sanity dashboard</td>
+            <td>Identifies the Sanity project for all API calls</td>
+          </tr>
+          <tr>
+            <td><code>PUBLIC_SANITY_DATASET</code></td>
+            <td><code>production</code></td>
+            <td>Targets the production dataset</td>
+          </tr>
+          <tr>
+            <td><code>PUBLIC_WEB3FORMS_KEY</code></td>
+            <td>From web3forms.com account</td>
+            <td>Access key for the contact form submission API. Injected as a hidden input field in the form — intentionally public, domain-scoped.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ──────────────────────────────────────────────────
+       COMMANDS
+  ────────────────────────────────────────────────── -->
+  <section id="commands">
+    <h2>Key Commands</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Command</th><th>Purpose</th><th>When to run</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>npm run dev</code></td>
+            <td>Start local dev server at localhost:4321</td>
+            <td>During development</td>
+          </tr>
+          <tr>
+            <td><code>npm run build</code></td>
+            <td>Build production site to <code>./dist/</code></td>
+            <td>Before deploy; to verify build succeeds</td>
+          </tr>
+          <tr>
+            <td><code>npm run preview</code></td>
+            <td>Preview the production build locally</td>
+            <td>After build, to verify the static output</td>
+          </tr>
+          <tr>
+            <td><code>npx astro check</code></td>
+            <td>TypeScript check all <code>.astro</code> files</td>
+            <td><strong>Before every commit</strong> — treat errors as blocking</td>
+          </tr>
+          <tr>
+            <td><code>npx sanity typegen generate</code></td>
+            <td>Regenerate TS types from Sanity schema</td>
+            <td>After changing the Sanity schema</td>
+          </tr>
+          <tr>
+            <td><code>npx sanity schema deploy</code></td>
+            <td>Push schema updates to Sanity cloud</td>
+            <td>After changing document types or fields</td>
+          </tr>
+          <tr>
+            <td><code>npx sanity dev</code></td>
+            <td>Run Sanity Studio locally</td>
+            <td>To preview Studio changes before pushing</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ──────────────────────────────────────────────────
+       ENV
+  ────────────────────────────────────────────────── -->
+  <section id="env">
+    <h2>Environment Variables</h2>
+    <pre><code><span class="comment"># .env (local development — never commit this file)</span>
+<span class="var">PUBLIC_SANITY_PROJECT_ID</span>=your_project_id_here
+<span class="var">PUBLIC_SANITY_DATASET</span>=production
+<span class="var">PUBLIC_WEB3FORMS_KEY</span>=your_web3forms_access_key_here</code></pre>
+
+    <div class="callout warning">
+      <span class="callout-icon">&#9888;&#65039;</span>
+      <div>
+        Variables prefixed <code>PUBLIC_</code> are exposed to the browser bundle.
+        <code>PUBLIC_WEB3FORMS_KEY</code> is a Web3Forms access key (not a secret — it is
+        intentionally public and scoped to your registered domain). Obtain it from
+        <strong>web3forms.com</strong> under your account's access keys.
+      </div>
+    </div>
+
+    <p>
+      Access environment variables in code via <code>import.meta.env.PUBLIC_SANITY_PROJECT_ID</code>.
+      Never hard-code project IDs or dataset names in source files.
+    </p>
+
+    <hr />
+
+    <p style="font-size:.8rem;color:var(--gray-500);text-align:center;margin-top:32px">
+      MedZo Engineering KT Document &mdash; Generated 2026 &mdash; medzo.com.au
+    </p>
+  </section>
+
+</main>
+</body>
+</html>
