@@ -948,7 +948,7 @@
         <strong>Studio URL:</strong>
         <a href="https://medzo.sanity.studio" target="_blank" rel="noopener">https://medzo.sanity.studio</a>
         &nbsp;&mdash;&nbsp;
-        <strong>Login email:</strong> admin@medzo.com.au
+        <strong>Login email:</strong> admin
       </div>
     </div>
 
@@ -1626,7 +1626,7 @@ animate(<span class="string">".selector"</span>, { opacity: [0, 1] }, { duration
     <p>
       All of the following can be updated directly in Sanity Studio at
       <a href="https://medzo.sanity.studio" target="_blank" rel="noopener">https://medzo.sanity.studio</a>
-      (log in with <strong>admin@medzo.com.au</strong>)
+      (log in with <strong>admin</strong>)
       without touching any code. After publishing changes, a manual redeploy on Hostinger is
       required for them to go live (see <a href="#sanity-content-change">Making a Content Change</a>).
     </p>
@@ -1950,7 +1950,7 @@ animate(<span class="string">".selector"</span>, { opacity: [0, 1] }, { duration
     <div class="card">
       <h4>Step 1 — Edit in Sanity Studio</h4>
       <ol style="padding-left:18px;font-size:.88rem;color:var(--gray-700);line-height:2">
-        <li>Go to <a href="https://medzo.sanity.studio" target="_blank" rel="noopener">https://medzo.sanity.studio</a> and sign in with <strong>admin@medzo.com.au</strong>.</li>
+        <li>Go to <a href="https://medzo.sanity.studio" target="_blank" rel="noopener">https://medzo.sanity.studio</a> and sign in with <strong>admin</strong>.</li>
         <li>Navigate to the relevant singleton (e.g. <em>Home Page</em>) or collection (e.g. <em>Services</em>).</li>
         <li>Make your edits in the Studio fields.</li>
         <li>Click <strong>Publish</strong> in the top-right corner. Do not leave documents in <em>Draft</em> state — drafts are not fetched at build time.</li>
@@ -2128,7 +2128,7 @@ animate(<span class="string">".selector"</span>, { opacity: [0, 1] }, { duration
       <div>
         <strong>Login:</strong> The Web3Forms account is accessed at
         <a href="https://web3forms.com" target="_blank" rel="noopener">web3forms.com</a>
-        using <strong>info@medzo.com.au</strong>. This account holds the access key and
+        using <strong>info</strong>. This account holds the access key and
         controls where form submissions are delivered.
       </div>
     </div>
@@ -2174,7 +2174,7 @@ animate(<span class="string">".selector"</span>, { opacity: [0, 1] }, { duration
     <ol style="padding-left:20px;font-size:.88rem;color:var(--gray-700);line-height:2.2">
       <li>User fills in the form and clicks <strong>Send message</strong>.</li>
       <li>The form data is sent via <code>fetch()</code> as JSON to <code>https://api.web3forms.com/submit</code>.</li>
-      <li>Web3Forms validates the access key and forwards the submission as an email to the address registered under the account (<strong>info@medzo.com.au</strong>).</li>
+      <li>Web3Forms validates the access key and forwards the submission as an email to the address registered under the account (<strong>info</strong>).</li>
       <li>On success, the form is hidden and the inline success message is shown — no page navigation occurs.</li>
       <li>If the JS fetch fails (e.g. network error), the form falls back to a standard HTML POST to the same endpoint, which then redirects back to <code>/contact?success=1</code> where the success state is shown.</li>
     </ol>
@@ -2185,7 +2185,7 @@ animate(<span class="string">".selector"</span>, { opacity: [0, 1] }, { duration
       account — it is <strong>not</strong> set in the codebase. To change it:
     </p>
     <ol style="padding-left:20px;font-size:.88rem;color:var(--gray-700);line-height:2">
-      <li>Log in to <a href="https://web3forms.com" target="_blank" rel="noopener">web3forms.com</a> with <strong>info@medzo.com.au</strong>.</li>
+      <li>Log in to <a href="https://web3forms.com" target="_blank" rel="noopener">web3forms.com</a> with <strong>info</strong>.</li>
       <li>Find the access key associated with this project.</li>
       <li>Update the notification email address in the key settings.</li>
     </ol>
@@ -2258,7 +2258,7 @@ cd MedZo</code></pre>
 <span class="var">PUBLIC_SANITY_DATASET</span>=production
 <span class="var">PUBLIC_WEB3FORMS_KEY</span>=your_web3forms_access_key_here</code></pre>
       <p style="font-size:.82rem;color:var(--gray-500);margin:8px 0 0">
-        <code>PUBLIC_SANITY_PROJECT_ID</code> is found in the Sanity dashboard under Project Settings. <code>PUBLIC_WEB3FORMS_KEY</code> is in the Web3Forms account at web3forms.com (login: info@medzo.com.au).
+        <code>PUBLIC_SANITY_PROJECT_ID</code> is found in the Sanity dashboard under Project Settings. <code>PUBLIC_WEB3FORMS_KEY</code> is in the Web3Forms account at web3forms.com (login: info).
       </p>
     </div>
 
@@ -2366,19 +2366,19 @@ git push origin feature/add-pricing-page
           <tr>
             <td><strong>Sanity Studio</strong></td>
             <td><a href="https://medzo.sanity.studio" target="_blank" rel="noopener">medzo.sanity.studio</a></td>
-            <td>admin@medzo.com.au</td>
+            <td>admin</td>
             <td>All CMS content — home, about, contact, services, team, testimonials, FAQs, site settings</td>
           </tr>
           <tr>
             <td><strong>Sanity Dashboard</strong></td>
             <td><a href="https://sanity.io/manage" target="_blank" rel="noopener">sanity.io/manage</a></td>
-            <td>admin@medzo.com.au</td>
+            <td>admin</td>
             <td>Project settings, API tokens, dataset management, CORS origins, schema deployment</td>
           </tr>
           <tr>
             <td><strong>Web3Forms</strong></td>
             <td><a href="https://web3forms.com" target="_blank" rel="noopener">web3forms.com</a></td>
-            <td>info@medzo.com.au</td>
+            <td>info</td>
             <td>Contact form submission — holds the access key and the destination email address for enquiries</td>
           </tr>
           <tr>
@@ -2567,7 +2567,7 @@ npx astro check</code></pre>
       <h4>Form submissions are not arriving by email</h4>
       <ul style="font-size:.85rem;color:var(--gray-700);padding-left:18px;line-height:1.9;margin-bottom:0">
         <li>Check the spam/junk folder for the destination email address.</li>
-        <li>Log in to Web3Forms (info@medzo.com.au) and check the submission log — if submissions appear there, the issue is email delivery, not the form.</li>
+        <li>Log in to Web3Forms (info) and check the submission log — if submissions appear there, the issue is email delivery, not the form.</li>
         <li>Verify <code>PUBLIC_WEB3FORMS_KEY</code> in <code>.env</code> matches the active key in the Web3Forms account. If the key was rotated, rebuild and redeploy.</li>
         <li>Open browser DevTools → Network tab, submit the form, and look for the request to <code>api.web3forms.com/submit</code>. A non-200 response indicates an invalid key or a blocked domain.</li>
       </ul>
@@ -2675,7 +2675,7 @@ npx astro check</code></pre>
       </p>
       <p style="font-size:.82rem;color:var(--gray-500);margin:0">
         <strong>Fix:</strong> Monitor submission count in the Web3Forms dashboard
-        (login: info@medzo.com.au). Upgrade to a paid plan if the limit is regularly reached.
+        (login: info). Upgrade to a paid plan if the limit is regularly reached.
       </p>
     </div>
 

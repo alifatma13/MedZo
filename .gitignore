@@ -36,3 +36,6 @@ desktop.ini
 # tooling
 .claude/
 .agents/
+
+# sanity generated runtime
+.sanity/
