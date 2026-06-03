@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import sanity from '@sanity/astro';
+import react from '@astrojs/react';
 import { loadEnv } from 'vite';
 
 // Load .env so PUBLIC_SANITY_* vars are available at config time
@@ -11,14 +12,14 @@ const env = loadEnv('', process.cwd(), '');
 export default defineConfig({
   site: "https://medzo.com.au",
   integrations: [
+    react(),
     sitemap({
       filter: (page) => !page.includes("/404"),
     }),
     sanity({
       projectId: env.PUBLIC_SANITY_PROJECT_ID,
       dataset: env.PUBLIC_SANITY_DATASET,
-      // Studio is hosted externally at medzo.sanity.studio — not embedded here.
-      // Use CDN in production for faster reads; bypass in dev for fresh data.
+      studioBasePath: '/studio',
       useCdn: process.env.NODE_ENV === 'production',
     }),
   ],

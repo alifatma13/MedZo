@@ -400,6 +400,13 @@
     /* ── Section anchor offset ──────────────────────── */
     section { scroll-margin-top: 24px; }
 
+    /* ── Blog & Insights headings ───────────────────── */
+    .blog-h2 { font-weight: 800; letter-spacing: -0.75px; }
+
+    .sidebar nav .group-label-blog {
+      font-weight: 800;
+    }
+
     /* ── Responsive ─────────────────────────────────── */
     @media (max-width: 900px) {
       .sidebar { display: none; }
@@ -453,6 +460,13 @@
       <li><a href="#sanity-seo">SEO</a></li>
       <li><a href="#sanity-content-change">Making a Content Change</a></li>
       <li><a href="#sanity-new-page">Adding a New Page</a></li>
+
+      <li class="group-label group-label-blog">Blog &amp; Insights</li>
+      <li><a href="#blog-overview">Overview</a></li>
+      <li><a href="#blog-sanity">Sanity Schema</a></li>
+      <li><a href="#blog-render">Post Renderer</a></li>
+      <li><a href="#blog-editing">Editing Posts</a></li>
+      <li><a href="#blog-toggle">Enabling / Disabling</a></li>
 
       <li class="group-label">Integrations</li>
       <li><a href="#web3forms">Web3Forms</a></li>
@@ -640,6 +654,9 @@
 │   ├── <span class="file">privacy.astro</span>   <span class="note"># Privacy policy (static)</span>
 │   ├── <span class="file">terms.astro</span>     <span class="note"># Terms of service (static)</span>
 │   ├── <span class="file">404.astro</span>       <span class="note"># Custom not-found page</span>
+│   ├── <span class="file">insights.astro</span>  <span class="note"># Blog listing (Sanity-driven)</span>
+│   ├── <span class="dir">insights/</span>
+│   │   └── <span class="file">[slug].astro</span>    <span class="note"># Blog post detail (Portable Text renderer)</span>
 │   └── <span class="dir">services/</span>
 │       └── <span class="file">[service].astro</span> <span class="note"># Dynamic route per Sanity service</span>
 ├── <span class="dir">lib/</span>
@@ -652,6 +669,7 @@
 │   │   ├── <span class="file">team.ts</span>
 │   │   ├── <span class="file">testimonials.ts</span>
 │   │   ├── <span class="file">faq.ts</span>
+│   │   ├── <span class="file">blog.ts</span>         <span class="note"># getBlogPosts, getBlogPostSlugs, getBlogPostBySlug</span>
 │   │   └── <span class="file">siteSettings.ts</span>
 │   ├── <span class="dir">content/</span>        <span class="note"># Developer-managed static content (not in CMS)</span>
 │   │   ├── <span class="file">site.ts</span>         <span class="note"># SITE_NAME, SITE_DOMAIN, defaultMeta</span>
@@ -673,7 +691,8 @@
 │   ├── <span class="file">layout.ts</span>       <span class="note"># Nav &amp; footer types</span>
 │   ├── <span class="file">pages.ts</span>        <span class="note"># Full page content types</span>
 │   ├── <span class="file">sanity.ts</span>       <span class="note"># SanityImage, SanityImageAsset</span>
-│   └── <span class="file">services.ts</span>     <span class="note"># ServiceCard, ServiceFeature</span>
+│   ├── <span class="file">services.ts</span>     <span class="note"># ServiceCard, ServiceFeature</span>
+│   └── <span class="file">blog.ts</span>         <span class="note"># SanityBlogCard, SanityBlogPost</span>
 ├── <span class="dir">structure/</span>
 │   └── <span class="file">index.ts</span>        <span class="note"># Sanity Studio navigation structure</span>
 ├── <span class="dir">styles/</span>
@@ -792,6 +811,18 @@
             <td>ServicePageHero, ServiceFeatureGrid, ServicePageCTA</td>
           </tr>
           <tr>
+            <td><code>/insights</code></td>
+            <td>pages/insights.astro</td>
+            <td><span class="tag tag-blue">Sanity</span></td>
+            <td>Blog listing — banner + 3-column card grid of all published blogPost documents</td>
+          </tr>
+          <tr>
+            <td><code>/insights/[slug]</code></td>
+            <td>pages/insights/[slug].astro</td>
+            <td><span class="tag tag-blue">Sanity</span></td>
+            <td>Blog post detail — breadcrumb, hero, cover image, Portable Text body, back link. Static dynamic route — slugs pre-fetched at build time.</td>
+          </tr>
+          <tr>
             <td><code>/404</code></td>
             <td>pages/404.astro</td>
             <td><span class="tag tag-green">Code</span></td>
@@ -844,6 +875,8 @@
           <tr><td>ServicePageHero</td><td>Services/[slug]</td><td>Dynamic hero with service title, description, and icon</td></tr>
           <tr><td>ServiceFeatureGrid</td><td>Services/[slug]</td><td>Grid of service feature cards (icon, title, body)</td></tr>
           <tr><td>ServicePageCTA</td><td>Services/[slug]</td><td>Service-specific CTA panel</td></tr>
+          <tr><td>BlogListSection</td><td>Insights</td><td>Full-width banner + 3-column post card grid. Accepts heading, subheading, body, and posts array. Shows role="status" empty state when no posts exist.</td></tr>
+          <tr><td>BlogCard</td><td>Insights</td><td>Single post preview card. Image link is aria-hidden/tabindex=-1; title link is the sole keyboard tab stop per card. article is aria-labelledby the card heading.</td></tr>
         </tbody>
       </table>
     </div>
@@ -971,6 +1004,7 @@
           <li><strong>teamMember</strong> — Team roster (name, role, bio, photo)</li>
           <li><strong>testimonial</strong> — Customer quotes (quote, name, role)</li>
           <li><strong>faqItem</strong> — FAQ question/answer pairs</li>
+          <li><strong>blogPost</strong> — Blog / Insights articles (title, slug, body, cover image, excerpt, category, author, SEO fields)</li>
         </ul>
       </div>
     </div>
@@ -1249,6 +1283,11 @@
                →   successHeading, successBody}}
 <span class="type">PolicyContent</span>  → metaTitle, metaDescription, title, lastUpdated, intro,
                →   sidebarAriaLabel, backLink, sections[], faqs?, faqsHeading?</code></pre>
+
+    <h3>blog.ts — Blog / Insights types</h3>
+    <pre><code><span class="type">SanityBlogCard</span>  → href, title, excerpt?, publishedAt?, category?, author?,
+               →   coverImage? (SanityImage with alt + lqip)
+<span class="type">SanityBlogPost</span>  → all SanityBlogCard fields + body: any[], seoTitle?, seoDescription?</code></pre>
 
     <h3>Props Interface Pattern</h3>
     <p>Every component declares its props interface at the top of its frontmatter:</p>
@@ -1717,6 +1756,11 @@ animate(<span class="string">".selector"</span>, { opacity: [0, 1] }, { duration
             <td>Add, edit, or delete FAQ documents (question, answer). Order can be set via a sort field.</td>
             <td>Populates both the FAQ section on the home page and the full <code>/faq</code> page. Also drives the FAQPage JSON-LD structured data.</td>
           </tr>
+          <tr>
+            <td><strong>Blog Posts</strong></td>
+            <td>Add, edit, or delete blogPost documents. Fields: title, slug, published date, category, author, excerpt, cover image (with alt), body (Portable Text — paragraphs, headings h2/h3/h4, bullet and numbered lists, blockquotes, hyperlinks), seoTitle, seoDescription.</td>
+            <td>Each published post appears as a card on <code>/insights</code> and generates a full detail page at <code>/insights/[slug]</code>. Requires a rebuild to go live.</td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -2107,6 +2151,273 @@ animate(<span class="string">".selector"</span>, { opacity: [0, 1] }, { duration
         <code>astro check</code> passes &rarr;
         content published in Sanity &rarr;
         build + upload.
+      </div>
+    </div>
+  </section>
+
+  <!-- ──────────────────────────────────────────────────
+       BLOG & INSIGHTS
+  ────────────────────────────────────────────────── -->
+  <section id="blog-overview">
+    <h2 class="blog-h2">Blog &amp; Insights — Overview</h2>
+    <p>
+      The Insights section is a Sanity-driven blog. Posts live in the <strong>blogPost</strong>
+      collection in Sanity Studio. Two pages serve them:
+    </p>
+    <div class="grid-2">
+      <div class="card">
+        <div class="tag tag-blue" style="margin-bottom:8px">Listing — /insights</div>
+        <p style="margin:0;font-size:.88rem;color:var(--gray-600)">
+          <code>src/pages/insights.astro</code> — calls <code>getBlogPosts()</code>
+          and passes all published posts to <code>BlogListSection</code>, which renders them
+          as a 3-column card grid via <code>BlogCard</code>.
+        </p>
+      </div>
+      <div class="card">
+        <div class="tag tag-blue" style="margin-bottom:8px">Detail — /insights/[slug]</div>
+        <p style="margin:0;font-size:.88rem;color:var(--gray-600)">
+          <code>src/pages/insights/[slug].astro</code> — a static dynamic route.
+          All slugs are pre-fetched at build time via <code>getStaticPaths()</code>.
+          The full post is fetched individually per slug and rendered to HTML by two
+          pure-TS functions: <code>renderSpan</code> and <code>renderBlocks</code>.
+        </p>
+      </div>
+    </div>
+
+    <h3>Data Flow</h3>
+    <div style="display:flex;gap:0;flex-direction:column;font-size:.82rem;margin:12px 0">
+      <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--blue-light);border-radius:6px 6px 0 0;border:1px solid var(--blue-mid)">
+        <span style="font-size:1rem">&#9312;</span>
+        <span>Content authored and published in <strong>Sanity Studio</strong> — blogPost collection</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--gray-100);border:1px solid var(--gray-200);border-top:none">
+        <span style="font-size:1rem">&#9313;</span>
+        <span><code>npm run build</code> — <code>getBlogPosts()</code> and <code>getBlogPostBySlug()</code> fetch via GROQ</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--gray-100);border:1px solid var(--gray-200);border-top:none">
+        <span style="font-size:1rem">&#9314;</span>
+        <span>Astro pre-renders <code>/insights</code> + one <code>/insights/[slug]</code> per published post</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--green-light);border-radius:0 0 6px 6px;border:1px solid #bbf7d0;border-top:none">
+        <span style="font-size:1rem">&#9315;</span>
+        <span>Static HTML uploaded to Hostinger — new or edited posts go live</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="blog-sanity">
+    <h2 class="blog-h2">Blog &amp; Insights — Sanity Schema</h2>
+
+    <h3>blogPost — field reference</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Field</th><th>Type</th><th>Required</th><th>Purpose</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>title</code></td><td>string</td><td>Yes</td><td>Post title — used in the card, post hero, page &lt;title&gt;, and breadcrumb</td></tr>
+          <tr><td><code>slug</code></td><td>slug</td><td>Yes</td><td>URL slug — generates <code>/insights/[slug]</code>. Never change after publishing (see warning below).</td></tr>
+          <tr><td><code>publishedAt</code></td><td>datetime</td><td>No</td><td>Date shown on the card and in the post header. Used to sort posts newest-first.</td></tr>
+          <tr><td><code>category</code></td><td>string</td><td>No</td><td>Label pill shown on card and post header (e.g. "Practice Management")</td></tr>
+          <tr><td><code>author</code></td><td>string</td><td>No</td><td>"By …" attribution shown in the post header</td></tr>
+          <tr><td><code>excerpt</code></td><td>text</td><td>No</td><td>Short summary — card body copy and italic subtitle in the post hero. Also used as meta description fallback.</td></tr>
+          <tr><td><code>coverImage</code></td><td>image</td><td>No</td><td>Card thumbnail (720×480) and full-width post cover (1200×630). Always fill in the image's <strong>alt text</strong> field in Studio.</td></tr>
+          <tr><td><code>body</code></td><td>array (Portable Text)</td><td>No</td><td>Full post body. Supports: paragraphs, h2/h3/h4, bullet lists, numbered lists, blockquotes, bold, italic, underline, hyperlinks.</td></tr>
+          <tr><td><code>seoTitle</code></td><td>string</td><td>No</td><td>Overrides the page &lt;title&gt; tag. Leave blank to fall back to <code>title</code>.</td></tr>
+          <tr><td><code>seoDescription</code></td><td>string</td><td>No</td><td>Overrides the meta description. Leave blank to fall back to <code>excerpt</code>.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout warning">
+      <span class="callout-icon">&#9888;&#65039;</span>
+      <div>
+        <strong>Never change a post's slug after it has been published</strong> unless you also
+        add a server-side redirect from the old URL. The old URL will return 404 and any
+        external links or Google-indexed results will break.
+      </div>
+    </div>
+
+    <h3>Data Fetchers — src/lib/api/blog.ts</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Function</th><th>Returns</th><th>Used by</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><code>getBlogPosts()</code></td>
+            <td><code>SanityBlogCard[]</code> — card data only, sorted by publishedAt desc</td>
+            <td>insights.astro (listing page)</td>
+          </tr>
+          <tr>
+            <td><code>getBlogPostSlugs()</code></td>
+            <td><code>{ slug: string }[]</code> — slugs only</td>
+            <td>[slug].astro <code>getStaticPaths()</code></td>
+          </tr>
+          <tr>
+            <td><code>getBlogPostBySlug(slug)</code></td>
+            <td>Full post object with body</td>
+            <td>[slug].astro (detail page)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="blog-render">
+    <h2 class="blog-h2">Blog &amp; Insights — Post Body Renderer</h2>
+    <p>
+      The detail page uses <code>set:html</code> to inject the post body, so Astro's
+      server-only <code>&lt;Image /&gt;</code> component cannot be used. The body is converted
+      to an HTML string at build time by two pure TypeScript functions defined at the top of
+      <code>src/pages/insights/[slug].astro</code>.
+    </p>
+
+    <h3>renderSpan(span, defs) — inline content</h3>
+    <p>Renders a single Portable Text span. Handles the following marks:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Mark</th><th>Output</th></tr></thead>
+        <tbody>
+          <tr><td><code>strong</code></td><td><code>&lt;strong&gt;</code></td></tr>
+          <tr><td><code>em</code></td><td><code>&lt;em&gt;</code></td></tr>
+          <tr><td><code>underline</code></td><td><code>&lt;u&gt;</code></td></tr>
+          <tr><td><code>link</code> annotation</td><td><code>&lt;a href="…" class="post-link"&gt;</code>. External URLs (http/https) get <code>target="_blank" rel="noopener noreferrer"</code>. The href is HTML-attribute-escaped.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>renderBlocks(blocks) — block-level content</h3>
+    <p>Iterates the full <code>body</code> array with a <code>while</code> loop (not <code>.map()</code>) so consecutive list items can be grouped into a single <code>&lt;ul&gt;</code> or <code>&lt;ol&gt;</code>.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Portable Text block</th><th>Renders as</th></tr></thead>
+        <tbody>
+          <tr><td><code>style: "normal"</code></td><td><code>&lt;p class="post-p"&gt;</code></td></tr>
+          <tr><td><code>style: "h2"</code></td><td><code>&lt;h2 class="post-h2"&gt;</code></td></tr>
+          <tr><td><code>style: "h3"</code></td><td><code>&lt;h3 class="post-h3"&gt;</code></td></tr>
+          <tr><td><code>style: "h4"</code></td><td><code>&lt;h4 class="post-h4"&gt;</code></td></tr>
+          <tr><td><code>style: "blockquote"</code></td><td><code>&lt;blockquote class="post-blockquote"&gt;&lt;p&gt;…&lt;/p&gt;&lt;/blockquote&gt;</code></td></tr>
+          <tr><td>Consecutive <code>listItem: "bullet"</code> blocks</td><td><code>&lt;ul class="post-list"&gt;&lt;li class="post-li"&gt;…&lt;/li&gt;…&lt;/ul&gt;</code></td></tr>
+          <tr><td>Consecutive <code>listItem: "number"</code> blocks</td><td><code>&lt;ol class="post-list"&gt;&lt;li class="post-li"&gt;…&lt;/li&gt;…&lt;/ol&gt;</code></td></tr>
+          <tr><td>Any other <code>_type</code> (e.g. image blocks)</td><td>Silently skipped</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout warning">
+      <span class="callout-icon">&#9888;&#65039;</span>
+      <div>
+        <strong>Nested lists are not supported.</strong> Portable Text can express
+        nested levels (<code>level: 2</code>), but <code>renderBlocks</code> groups by
+        <code>listItem</code> type only and flattens all levels. Extend the function if
+        nested lists are ever needed.
+      </div>
+    </div>
+    <div class="callout info">
+      <span class="callout-icon">&#8505;&#65039;</span>
+      <div>
+        <strong>Image blocks in body:</strong> Sanity Portable Text supports
+        <code>_type: "image"</code> blocks. These are currently silently skipped.
+        To support them, add a handler for <code>block._type === "image"</code> that
+        returns an <code>&lt;img&gt;</code> tag built with <code>urlFor()</code>.
+      </div>
+    </div>
+  </section>
+
+  <section id="blog-editing">
+    <h2 class="blog-h2">Blog &amp; Insights — Editing Posts</h2>
+    <p>
+      Blog posts are entirely managed in Sanity Studio. No code changes are needed to create,
+      update, or delete a post.
+    </p>
+
+    <div class="card">
+      <h4>Creating a new post</h4>
+      <ol style="padding-left:18px;font-size:.88rem;color:var(--gray-700);line-height:2">
+        <li>Go to <a href="https://medzo.sanity.studio" target="_blank" rel="noopener">medzo.sanity.studio</a> and sign in.</li>
+        <li>Click <strong>Blog Posts</strong> in the Studio sidebar.</li>
+        <li>Click <strong>+ New blog post</strong>.</li>
+        <li>Fill in at minimum: <strong>Title</strong> and <strong>Slug</strong> (click Generate to auto-fill from the title).</li>
+        <li>Add body content using the Portable Text editor. Use the heading styles (H2, H3, H4), bullet/numbered lists, blockquote, bold, italic, and link options.</li>
+        <li>Upload a cover image — always fill in its <strong>alt text</strong> field.</li>
+        <li>Set <strong>Published At</strong> to control sort order. Posts with no date appear last.</li>
+        <li>Optionally fill in seoTitle and seoDescription (50–60 chars / 140–160 chars).</li>
+        <li>Click <strong>Publish</strong>.</li>
+        <li>Rebuild and redeploy — the post appears at <code>/insights/[slug]</code> and as a card on <code>/insights</code>.</li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <h4>Editing an existing post</h4>
+      <ol style="padding-left:18px;font-size:.88rem;color:var(--gray-700);line-height:2">
+        <li>Open the post in Studio, make changes, and click <strong>Publish</strong>.</li>
+        <li>Rebuild and redeploy for the change to appear on the live site.</li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <h4>Unpublishing / deleting a post</h4>
+      <ul style="padding-left:18px;font-size:.88rem;color:var(--gray-700);line-height:2;margin-bottom:0">
+        <li><strong>Unpublish</strong> (soft remove): click the three-dot menu on the document and select <em>Unpublish</em>. After a rebuild the post disappears from the site but the document remains in Studio and can be re-published.</li>
+        <li><strong>Delete</strong> (permanent): use <em>Delete document</em>. Cannot be undone.</li>
+        <li>In both cases, rebuild and redeploy for the removal to take effect on the live site.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="blog-toggle">
+    <h2 class="blog-h2">Blog &amp; Insights — Enabling / Disabling</h2>
+    <p>
+      The Insights section can be shown or hidden without touching any code. The pages are always
+      built — the toggle controls whether users can find them.
+    </p>
+
+    <h3>Soft hide — remove from navigation</h3>
+    <p>Hides the blog from all nav/footer links. Pages still exist and are accessible via direct URL.</p>
+    <ol style="padding-left:20px;font-size:.88rem;color:var(--gray-700);line-height:2">
+      <li>In Sanity Studio, open <strong>Site Settings</strong> &rarr; <strong>Navigation</strong> and remove the "Insights" entry.</li>
+      <li>If "Insights" also appears in the footer services column, remove it from <strong>Site Settings</strong> &rarr; <strong>Footer</strong> as well.</li>
+      <li>Rebuild and redeploy.</li>
+    </ol>
+
+    <div class="callout info">
+      <span class="callout-icon">&#8505;&#65039;</span>
+      <div>
+        After a soft hide, <code>/insights</code> and all <code>/insights/[slug]</code>
+        pages are still built into <code>./dist/</code> and remain accessible by direct URL.
+        Search engines that have already crawled the pages will continue to find them.
+        The sitemap still includes them.
+      </div>
+    </div>
+
+    <h3>Hard disable — redirect the pages</h3>
+    <p>
+      If the pages must not be accessible at all (e.g. during a content freeze or pre-launch),
+      add a redirect at the top of each page's frontmatter:
+    </p>
+    <pre><code><span class="comment">// src/pages/insights.astro — add as the very first line of the frontmatter</span>
+<span class="keyword">return</span> Astro.<span class="fn">redirect</span>(<span class="string">"/"</span>, 307);
+
+<span class="comment">// src/pages/insights/[slug].astro — same, right after getStaticPaths</span>
+<span class="keyword">return</span> Astro.<span class="fn">redirect</span>(<span class="string">"/"</span>, 307);</code></pre>
+    <p style="font-size:.88rem;color:var(--gray-600)">
+      Rebuild and redeploy after adding. Remove the redirect lines to re-enable, then rebuild again.
+    </p>
+
+    <h3>Re-enabling</h3>
+    <ol style="padding-left:20px;font-size:.88rem;color:var(--gray-700);line-height:2">
+      <li>In Sanity Studio, add an "Insights" link (href <code>/insights</code>) back to <strong>Site Settings</strong> &rarr; <strong>Navigation</strong>.</li>
+      <li>Remove any redirect lines from <code>insights.astro</code> and <code>[slug].astro</code> if a hard disable was applied.</li>
+      <li>Rebuild and redeploy.</li>
+    </ol>
+
+    <div class="callout warning">
+      <span class="callout-icon">&#9888;&#65039;</span>
+      <div>
+        Hiding the blog from the nav does <strong>not</strong> remove it from the sitemap.
+        To exclude <code>/insights*</code> from the sitemap during a disable, edit
+        <code>astro.config.mjs</code> and add the patterns to the sitemap's
+        <code>customPages</code> exclusion list — this is a code change and requires a redeploy.
       </div>
     </div>
   </section>
